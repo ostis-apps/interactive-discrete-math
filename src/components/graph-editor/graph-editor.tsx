@@ -16,7 +16,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
 
   useLayoutEffect(() => {
     const effect = async () => {
-      elements.value = (await import('../../../../preact-graph/src/dev/mockmin.json'))
+      elements.value = (await import('./mockmin.json'))
         .default as unknown as GraphElements
       const data = simulate(elements.value, { animate: false })
       elements.value = deepSignal(data) as DeepSignal<GraphElements>
