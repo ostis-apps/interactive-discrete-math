@@ -16,9 +16,9 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
 
   useLayoutEffect(() => {
     const effect = async () => {
-      elements.value = (await import('./mockmin.json'))
-        .default as unknown as GraphElements
-      const data = simulate(elements.value, { animate: false })
+      const mock = (await import('./mockmin.json')).default as unknown as GraphElements
+      elements.value = deepSignal(structuredClone(mock))
+      const data = simulate(mock, { animate: false })
       elements.value = deepSignal(data) as DeepSignal<GraphElements>
     }
     effect()
@@ -49,8 +49,8 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
 
   return (
     <div {...props}>
-      <Graph
-        elements={elements.value ?? { nodes: [], edges: [], groups: [] }}
+      {elements.value && <Graph
+        elements={elements.value}
         addNode={addNode}
         addEdge={addEdge}
         addGroup={addGroup}
@@ -58,7 +58,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
         height={h}
         padding={15}
         edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
-      />
+      />}
     </div>
   )
 }
