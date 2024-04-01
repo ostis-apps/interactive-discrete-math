@@ -1,0 +1,43 @@
+{
+  "name": "interactive-discrete-math",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --p ./tsconfig.build.json && vite build && esbuild --minify dist/index.js --outfile=dist/index.js --allow-overwrite",
+    "build:app": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ennealand/enigraph": "^0.0.2",
+    "@ennealand/enneract": "^0.2.1",
+    "@preact/signals": "^1.2.3",
+    "d3": "^7.8.5",
+    "deepsignal": "^1.5.0",
+    "preact": "^10.19.6",
+    "react-icons": "^5.0.1"
+  },
+  "devDependencies": {
+    "@preact/preset-vite": "^2.8.1",
+    "@types/d3": "^7.4.3",
+    "@types/node": "^20.11.25",
+    "autoprefixer": "^10.4.18",
+    "esbuild": "^0.20.1",
+    "million": "^3.0.6",
+    "postcss": "^8.4.35",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.12",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.2",
+    "vite": "^5.1.5",
+    "vite-plugin-css-injected-by-js": "^3.4.0",
+    "vite-plugin-dts": "^3.7.3"
+  }
+}
