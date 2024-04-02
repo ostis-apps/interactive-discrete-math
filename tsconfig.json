@@ -27,7 +27,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "rootDirs": [".", "/Volumes/Dev/2024/ennealand/enneract/core/**/*"]
+    "rootDirs": ["."]
   },
-  "include": ["src", "../../../../.ostis/ostis-web-platform/gt-ostis-drawings/lib", "/Volumes/Dev/2024/ennealand/enneract/core/**/*"]
+  "include": ["src"]
 }
