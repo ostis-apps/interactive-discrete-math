@@ -1,9 +1,9 @@
+import { EdgeType, Graph, GraphEdge, GraphElements, GraphGroup, GraphNode } from '@ennealand/enigraph'
 import { useSignal } from '@preact/signals'
 import { DeepSignal, deepSignal } from 'deepsignal'
-import { Graph, GraphEdge, GraphElements, GraphNode, GraphGroup, EdgeType } from '@ennealand/enigraph'
-import { useLayoutEffect } from 'preact/hooks'
-import { simulate } from './simulation'
+import { useEffect } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
+import { simulate } from './simulation'
 // import WorkerScript from './force-worker?raw'
 
 type Props = {
@@ -14,12 +14,12 @@ type Props = {
 export const GraphComponent = ({ w, h, ...props }: Props) => {
   const elements = useSignal<DeepSignal<GraphElements> | undefined>(undefined)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const effect = async () => {
       const mock = (await import('./mockmin.json')).default as unknown as GraphElements
       elements.value = deepSignal(structuredClone(mock))
       const data = simulate(mock, { animate: false })
-      elements.value = deepSignal(data) as DeepSignal<GraphElements>
+      setTimeout(() => (elements.value = deepSignal(data) as DeepSignal<GraphElements>), 10)
     }
     effect()
     // const worker = new Worker(URL.createObjectURL(new Blob([WorkerScript], { type: 'javascript/worker' })), {
