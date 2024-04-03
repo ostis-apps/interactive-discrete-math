@@ -1,6 +1,6 @@
 import { useStoreFactory } from './factory'
 
-import { workspaceSlice } from './workspace'
+import { workspaceSlice } from './slices/workspace'
 
 export const { StoreContext, useCreateStore, useStore } = useStoreFactory({
   workspace: workspaceSlice,
@@ -8,4 +8,4 @@ export const { StoreContext, useCreateStore, useStore } = useStoreFactory({
 
 export const useWorkspace = () => useStore().workspace
 
-export {} from './workspace'
+export {} from './slices/workspace'

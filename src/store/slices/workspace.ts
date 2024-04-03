@@ -1,5 +1,5 @@
-import { PlaygroundOptionTypeIcons } from '../components/playground/option-type-icon'
-import { slice } from './factory'
+import { PlaygroundOptionTypeIcons } from '../../components/playground/option-type-icon'
+import { slice } from '../factory'
 
 export enum OptionState {
   True,

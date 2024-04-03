@@ -4,7 +4,7 @@ import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-i
 import { PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
 import { useWorkspace } from '../../store/store'
-import { OptionState } from '../../store/workspace'
+import { OptionState } from '../../store/slices/workspace'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
