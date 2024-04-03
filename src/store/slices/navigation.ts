@@ -1,4 +1,4 @@
-import { computed } from '@preact/signals'
+import { Signal } from '@preact/signals'
 import { magic } from '../core.ts'
 
 export enum View {
@@ -10,44 +10,43 @@ export enum View {
 }
 
 const { AppNavigationSlice, AppView } = magic
+const slice = (await AppNavigationSlice`default`.ref.one)!
 
-/** Define the Navigation Slice element */
-const NavigationSlice = AppNavigationSlice`default`
-if (!NavigationSlice) throw 'NavigationSlice does not exist.'
-
-/** Set Navigation Slice to default values */
-await NavigationSlice.current_view.relink(AppView`landing`)
-await NavigationSlice.current_addr.relink('__def__')
-
-/** Subscribe to Navigation Slice state */
-const [state] = await NavigationSlice.get({
-  current_view: { name: 'view', ref: 'viewRef' },
-  current_addr: 'current',
-}).reactive
-
-/** Create Navigation Slice interface (getters & actions) */
+/** Defines general in-app navigation between different Views */
 export const navigation = {
-  view: computed(() => state.view as View),
+  /**
+   * Currently active application view
+   */
+  view: (await slice.current_view.name.one.reactive) as Signal<View>,
 
   /**
-   * #### The identifier of current sandbox object
-   * In scweb, subscribe to this signal to update tabs accorddingly.
-   * This way, the app's state remain independent from scweb.
+   * The identifier of current sandbox object
    */
-  current: computed(() => state.current),
+  current: await slice.current_addr.one.reactive,
 
-  openTask(taskIdtf: string) {
-    NavigationSlice.current_view.relink(AppView`task_module`)
-    NavigationSlice.current_addr.relink(taskIdtf)
+  /**
+   * Opens a task module
+   * @param taskId Id of the task module to open
+   */
+  openTask(taskId: string) {
+    slice.current_view.update(AppView`task_module`)
+    slice.current_addr.update(taskId)
   },
-  
-  openSpace(spaceIdtf?: string) {
-    if (!spaceIdtf) spaceIdtf = 'my-new-space-idtf'
-    NavigationSlice.current_view.relink(AppView`playground`)
-    NavigationSlice.current_addr.relink(spaceIdtf)
+
+  /**
+   * Opens a workspace (playground)
+   * @param taskId Id of the workspace to open
+   */
+  openSpace(spaceId?: string) {
+    if (!spaceId) spaceId = 'my-new-space-idtf'
+    slice.current_view.update(AppView`playground`)
+    slice.current_addr.update(spaceId)
   },
-  
+
+  /**
+   * Switches back to Layout view
+   */
   gotoLanding() {
-    NavigationSlice.current_view.relink(AppView`landing`)
+    slice.current_view.update(AppView`landing`)
   },
 }
