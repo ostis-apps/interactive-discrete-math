@@ -1,4 +1,4 @@
-import { computed, effect } from '@preact/signals'
+import { computed } from '@preact/signals'
 import { magic } from '../core.ts'
 
 export enum View {
@@ -11,19 +11,21 @@ export enum View {
 
 const { AppNavigationSlice, AppView } = magic
 
+/** Define the Navigation Slice element */
 const NavigationSlice = AppNavigationSlice`default`
 if (!NavigationSlice) throw 'NavigationSlice does not exist.'
 
-await NavigationSlice.current_view.unlink()
-await NavigationSlice.current_view.link(AppView`landing`)
-await NavigationSlice.current_addr.unlink()
-await NavigationSlice.current_addr.link('__def__')
+/** Set Navigation Slice to default values */
+await NavigationSlice.current_view.relink(AppView`landing`)
+await NavigationSlice.current_addr.relink('__def__')
 
+/** Subscribe to Navigation Slice state */
 const [state] = await NavigationSlice.get({
   current_view: { name: 'view', ref: 'viewRef' },
   current_addr: 'current',
 }).reactive
 
+/** Create Navigation Slice interface (getters & actions) */
 export const navigation = {
   view: computed(() => state.view as View),
 
@@ -33,26 +35,19 @@ export const navigation = {
    * This way, the app's state remain independent from scweb.
    */
   current: computed(() => state.current),
+
   openTask(taskIdtf: string) {
-    NavigationSlice.current_view.unlink(state.viewRef)
-    NavigationSlice.current_view.link(AppView`task_module`)
-    NavigationSlice.current_addr.unlink(state.current)
-    NavigationSlice.current_addr.link(taskIdtf)
+    NavigationSlice.current_view.relink(AppView`task_module`)
+    NavigationSlice.current_addr.relink(taskIdtf)
   },
+  
   openSpace(spaceIdtf?: string) {
     if (!spaceIdtf) spaceIdtf = 'my-new-space-idtf'
-    NavigationSlice.current_view.unlink(state.viewRef)
-    NavigationSlice.current_view.link(AppView`playground`)
-    NavigationSlice.current_addr.unlink(state.current)
-    NavigationSlice.current_addr.link(spaceIdtf)
+    NavigationSlice.current_view.relink(AppView`playground`)
+    NavigationSlice.current_addr.relink(spaceIdtf)
   },
-  async gotoLanding() {
-    NavigationSlice.current_view.unlink(state.viewRef)
-    NavigationSlice.current_view.link(AppView`landing`)
+  
+  gotoLanding() {
+    NavigationSlice.current_view.relink(AppView`landing`)
   },
 }
-
-effect(async () => {
-  console.warn('View', navigation.view.value)
-  console.warn('Ref', state.viewRef.ref.addr)
-})

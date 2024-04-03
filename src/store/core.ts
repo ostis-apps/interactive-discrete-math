@@ -1,5 +1,5 @@
 import { Enneract } from '@ennealand/enneract'
-import type { Magic } from '../../node_modules/@ennealand/enneract/dist/types/magic-types.js'
+import type { Magic } from '../../node_modules/@ennealand/enneract/dist/types/magic-types.d.ts'
 import { App } from './types.ts'
 import { DeepSignal } from 'deepsignal'
 

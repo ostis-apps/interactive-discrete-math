@@ -9,8 +9,8 @@ dependencies:
     specifier: ^0.0.2
     version: 0.0.2
   '@ennealand/enneract':
-    specifier: ^0.2.3
-    version: 0.2.3(preact@10.20.1)
+    specifier: ^0.3.0
+    version: 0.3.0(preact@10.20.1)
   '@preact/signals':
     specifier: ^1.2.3
     version: 1.2.3(preact@10.20.1)
@@ -335,8 +335,8 @@ packages:
       - '@preact/signals-react'
     dev: false
 
-  /@ennealand/enneract@0.2.3(preact@10.20.1):
-    resolution: {integrity: sha512-KdnO8WYdxa3UbAkJz67Gq9roUiJd/FMPK0FxrNtibQFgQI54ow2WXLOZWQrrm5Ss+3yyYCppSMgeuaMA+/pSNQ==, tarball: https://npm.pkg.github.com/download/@ennealand/enneract/0.2.3/433755c301631268bd1706b5743ede2a6547b8d6}
+  /@ennealand/enneract@0.3.0(preact@10.20.1):
+    resolution: {integrity: sha512-c8LOTeeabJY4arEWf10BB1KUuaPmhsxoO0xzcncFJWvhfHuso0TdwR4C6OIHNq+uDYiyCr4w5b/oEK1fUbvVug==, tarball: https://npm.pkg.github.com/download/@ennealand/enneract/0.3.0/17ba2f4765fb5432c7f739a572a0dfb1febc4eb1}
     dependencies:
       '@preact/signals': 1.2.3(preact@10.20.1)
       deepsignal: 1.5.0(@preact/signals@1.2.3)(preact@10.20.1)
