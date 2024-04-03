@@ -2,7 +2,8 @@ import { useSignal } from '@preact/signals'
 import { useLayoutEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
 import { PiSelectionBold } from 'react-icons/pi'
-import { useNavigation, useWorkspace } from '../../store/store'
+import { navigation } from '../../store/slices/navigation'
+import { useWorkspace } from '../../store/store'
 import { OptionState } from '../../store/workspace'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
@@ -10,7 +11,7 @@ import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
 
 export const Playground = () => {
-  const { gotoLanding } = useNavigation()
+  const { gotoLanding } = navigation
   const workspace = useWorkspace()
 
   const ref = useRef<HTMLDivElement>(null)

@@ -1,9 +1,9 @@
-import { useNavigation } from '../../store/store'
+import { navigation } from '../../store/slices/navigation'
 import { LandingCard } from './landing-card'
 
 export const Landing = () => {
-  const { openTask, openSpace } = useNavigation()
-
+  const { openTask, openSpace } = navigation
+  
   return (
     <div class='flex h-full flex-col'>
       <section class='pb-5'>
@@ -11,7 +11,9 @@ export const Landing = () => {
         <div class='flex gap-4 py-2'>
           <LandingCard>База знаний</LandingCard>
           <LandingCard>Карта понятий</LandingCard>
-          <LandingCard click={() => (document.querySelector('a[sc_addr="94325"]') as any)?.click()}>SCn код</LandingCard>
+          <LandingCard click={() => (document.querySelector('a[sc_addr="94325"]') as any)?.click()}>
+            SCn код
+          </LandingCard>
         </div>
       </section>
 
