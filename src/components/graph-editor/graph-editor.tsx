@@ -49,16 +49,20 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
 
   return (
     <div {...props}>
-      {elements.value && <Graph
-        elements={elements.value}
-        addNode={addNode}
-        addEdge={addEdge}
-        addGroup={addGroup}
-        width={w}
-        height={h}
-        padding={15}
-        edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
-      />}
+      {elements.value ? (
+        <Graph
+          elements={elements.value}
+          addNode={addNode}
+          addEdge={addEdge}
+          addGroup={addGroup}
+          width={w}
+          height={h}
+          padding={15}
+          edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
+        />
+      ) : (
+        <div style={{ width: w, height: h }}></div>
+      )}
     </div>
   )
 }
