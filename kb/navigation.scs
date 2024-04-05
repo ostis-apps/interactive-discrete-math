@@ -17,6 +17,7 @@ concept_app_view
   *);;
 
 concept_app_navigation_slice
+  <- sc_node_class;
   -> app_navigation_slice_default;;
 
 app_navigation_slice_default

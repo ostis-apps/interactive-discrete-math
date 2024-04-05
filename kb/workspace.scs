@@ -1,0 +1,32 @@
+concept_app_workspace
+  <- sc_node_class;
+  -> app_workspace_example;;
+
+app_workspace_example
+  => nrel_main_idtf: [Workspace "Example"] (* <- lang_en;; *);
+  -> rrel_vertex:
+    ... (*
+      <- concept_vertex;;
+      <- sc_node;;
+      <- sc_const;;
+      => nrel_x: [-39];;
+      => nrel_y: [-132];;
+    *);
+    ... (*
+      <- concept_vertex;;
+      <- sc_node;;
+      <- sc_const;;
+      => nrel_x: [131];;
+      => nrel_y: [-14];;
+    *);
+    ... (*
+      <- concept_vertex;;
+      <- sc_node;;
+      <- sc_const;;
+      => nrel_x: [-86];;
+      => nrel_y: [-57];;
+    *);;
+
+sc_node_norole_relation
+  -> nrel_x;
+  -> nrel_y;;

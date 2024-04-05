@@ -1,18 +1,19 @@
 import { useSignal } from '@preact/signals'
-import { useLayoutEffect, useRef } from 'preact/hooks'
+import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
 import { PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
-import { useWorkspace } from '../../store/store'
-import { OptionState } from '../../store/slices/workspace'
+import { OptionState } from '../../store/slices/workspace-tools'
+import { useWorkspaceTools } from '../../store/store'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
+import { workspace } from '../../store/slices/workspace'
 
 export const Playground = () => {
   const { gotoLanding } = navigation
-  const workspace = useWorkspace()
+  const workspaceTools = useWorkspaceTools()
 
   const ref = useRef<HTMLDivElement>(null)
   const width = useSignal(0)
@@ -25,7 +26,11 @@ export const Playground = () => {
     height.value = Math.round(rect.height) * 0.95 - 2
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    console.log(Array.from(workspace.vertices))
+  }, [])
+
+  useEffect(() => {
     const windowsListButton = document.querySelector('#windows-list')
     if (windowsListButton) windowsListButton.addEventListener('click', resize)
     window.addEventListener('resize', resize)
@@ -46,8 +51,8 @@ export const Playground = () => {
         <input class='cursor-default px-5 text-right text-lg focus:cursor-text' placeholder={'Новое пространство'} />
       </div>
 
-      <div class='flex gap-1'>
-        <GraphComponent class='w-fit rounded border ' w={width.value} h={height.value} />
+      <div class='flex gap-1 h-full'>
+        <GraphComponent class='w-fit rounded border' w={width.value} h={height.value} />
         <div class='w-full rounded border p-3'>
           <div class='flex items-end justify-between pb-4'>
             <div class='pt-0.5 text-lg font-semibold'>Параметры</div>
@@ -62,7 +67,7 @@ export const Playground = () => {
           </div>
 
           <ul class='gap-y- flex flex-col'>
-            {workspace.displayedMyOptions.map(({ type: _type, title, state }) => (
+            {workspaceTools.displayedMyOptions.map(({ type: _type, title, state }) => (
               <li class='flex cursor-default items-center gap-x-2 rounded border border-transparent px-3 py-1.5 hover:border-inherit'>
                 <span class='text-sm text-green-600'>
                   {
@@ -90,8 +95,8 @@ export const Playground = () => {
             ))}
           </ul>
 
-          <Button class='mt-3' onClick={workspace.toggleNewOptions}>
-            {workspace.newOptionsExpanded ? (
+          <Button class='mt-3' onClick={workspaceTools.toggleNewOptions}>
+            {workspaceTools.newOptionsExpanded ? (
               <>
                 {/* <FaAngleLeft /> */}
                 Добавление...
@@ -104,10 +109,10 @@ export const Playground = () => {
             )}
           </Button>
 
-          {workspace.newOptionsExpanded &&
-            (!workspace.newOptionType ? (
+          {workspaceTools.newOptionsExpanded &&
+            (!workspaceTools.newOptionType ? (
               <div class='mt-3 grid grid-cols-2 gap-3 px-3'>
-                {workspace.displayedAvailableOptionTypes.map(({ click, title, icon }) => (
+                {workspaceTools.displayedAvailableOptionTypes.map(({ click, title, icon }) => (
                   <Button class='h-24 flex-col gap-y-1 text-center text-sm' onClick={click}>
                     <PlaygroundOptionTypeIcon icon={icon} />
                     {title}
@@ -116,13 +121,13 @@ export const Playground = () => {
               </div>
             ) : (
               <>
-                <Button class='mt-3' onClick={() => workspace.selectNewOptionType(undefined)}>
-                  {workspace.selectedNewOptionTypeTitle}
+                <Button class='mt-3' onClick={() => workspaceTools.selectNewOptionType(undefined)}>
+                  {workspaceTools.selectedNewOptionTypeTitle}
                 </Button>
-                {!workspace.selectedNewOptionId ? (
+                {!workspaceTools.selectedNewOptionId ? (
                   <div class='mx-3 mt-3 flex max-h-72 flex-col gap-y-2 overflow-y-auto rounded px-2 scroll-default'>
-                    {workspace.displayedAvailableOptions.length ? (
-                      workspace.displayedAvailableOptions.map(({ id, title, click }) => (
+                    {workspaceTools.displayedAvailableOptions.length ? (
+                      workspaceTools.displayedAvailableOptions.map(({ id, title, click }) => (
                         <Button key={id} onClick={click}>
                           {title}
                         </Button>
@@ -133,12 +138,12 @@ export const Playground = () => {
                   </div>
                 ) : (
                   <>
-                    <Button class='mt-3' onClick={() => workspace.selectNewOption(undefined)}>
-                      {workspace.selectedNewOptionTitle}
+                    <Button class='mt-3' onClick={() => workspaceTools.selectNewOption(undefined)}>
+                      {workspaceTools.selectedNewOptionTitle}
                     </Button>
 
                     <div class='mt-3 flex-wrap gap-3 px-3 centeric'>
-                      {workspace.selectedNewOptionTypeArgs.map(({ title, selected, click }, index) => (
+                      {workspaceTools.selectedNewOptionTypeArgs.map(({ title, selected, click }, index) => (
                         <Button
                           class={`relative h-20 !w-32 flex-col gap-y-1 text-center text-sm ${selected ? 'border-primary bg-gray-100' : '!text-gray-400 hover:border-gray-300'}`}
                           onClick={click}
@@ -150,8 +155,8 @@ export const Playground = () => {
                           <span class='absolute right-1.5 top-1.5 text-xs'>{index + 1}</span>
                         </Button>
                       ))}
-                      {workspace.selectedNewOptionArgs.filter(Boolean).length ===
-                        workspace.selectedNewOptionTypeArgs.length && (
+                      {workspaceTools.selectedNewOptionArgs.filter(Boolean).length ===
+                        workspaceTools.selectedNewOptionTypeArgs.length && (
                         <Button class='w-[16.75rem] text-center text-sm' onClick={() => {}}>
                           Готово
                         </Button>

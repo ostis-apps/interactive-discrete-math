@@ -1,5 +1,4 @@
-import { Signal } from '@preact/signals'
-import { magic } from '../core.ts'
+import { AppNavigationSlice, AppView } from '../core.ts'
 
 export enum View {
   Landing = 'Landing',
@@ -9,7 +8,6 @@ export enum View {
   Playground = 'Playground',
 }
 
-const { AppNavigationSlice, AppView } = magic
 const slice = (await AppNavigationSlice`default`.ref.one)!
 
 /** Defines general in-app navigation between different Views */
@@ -17,7 +15,7 @@ export const navigation = {
   /**
    * Currently active application view
    */
-  view: (await slice.current_view.name.one.reactive) as Signal<View>,
+  view: await slice.current_view.name.one.reactive,
 
   /**
    * The identifier of current sandbox object

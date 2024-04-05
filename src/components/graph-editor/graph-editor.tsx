@@ -1,9 +1,9 @@
-import { EdgeType, Graph, GraphEdge, GraphElements, GraphGroup, GraphNode } from '@ennealand/enigraph'
+import { EdgeType, Graph, GraphEdge, GraphElements, GraphGroup } from '@ennealand/enigraph'
 import { useSignal } from '@preact/signals'
 import { DeepSignal, deepSignal } from 'deepsignal'
 import { useEffect } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
-import { simulate } from './simulation'
+import { workspace } from '../../store/slices/workspace'
 // import WorkerScript from './force-worker?raw'
 
 type Props = {
@@ -16,23 +16,18 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
 
   useEffect(() => {
     const effect = async () => {
-      const mock = (await import('./mockmin.json')).default as unknown as GraphElements
-      elements.value = deepSignal(structuredClone(mock))
-      const data = simulate(mock, { animate: false })
-      setTimeout(() => (elements.value = deepSignal(data) as DeepSignal<GraphElements>), 10)
+      elements.value = deepSignal({ nodes: [], edges: [], groups: [] })
+      elements.value.$nodes!.value = workspace.vertices
     }
     effect()
-    // const worker = new Worker(URL.createObjectURL(new Blob([WorkerScript], { type: 'javascript/worker' })), {
-    //   type: 'module',
-    //   name: 'worker.mjs'
-    // })
-    // worker.postMessage(source)
-    // worker.onmessage = (e: any) => (elements.value = deepSignal(e.data))
   }, [])
 
-  const addNode = (node: GraphNode) => {
-    elements.value?.nodes.push(node)
-  }
+  // const addNode = async (node: GraphNode) => {
+  //   // elements.value?.nodes.push(node)
+  //   const newn = await new Vertex({ name: 'D', type: node.type, x: node.x, y: node.y }).create
+  //   console.log(newn.ref.addr)
+  //   console.log('umm')
+  // }
 
   const addEdge = (edge: GraphEdge) => {
     if (edge.source !== edge.target) {
@@ -48,11 +43,11 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
   }
 
   return (
-    <div {...props}>
+    <div {...props} style={{ minWidth: w || 'calc(100% - 360px)', minHeight: h || '100%' }}>
       {elements.value ? (
         <Graph
           elements={elements.value}
-          addNode={addNode}
+          addNode={workspace.addNode.bind(workspace)}
           addEdge={addEdge}
           addGroup={addGroup}
           width={w}

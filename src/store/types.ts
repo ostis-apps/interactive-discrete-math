@@ -1,6 +1,9 @@
+import { EdgeType, NodeType } from '@ennealand/enigraph'
+import { View } from './slices/navigation'
+
 export interface App {
   AppView: {
-    name: string
+    name: View
   }
   AppNavigationSlice: {
     current_view: 'AppView'
@@ -10,18 +13,26 @@ export interface App {
     rrelVertex: 'Vertex'
     rrelEdge: 'Edge'
   }
+
+  AppWorkspace: {
+    elementVertex: 'Vertex'
+    elementEdge: 'Edge'
+  }
+
   Vertex: {
-    coordinates: 'Coordinates'
+    x: number
+    y: number
+    type: NodeType
+    name: string
   }
   Edge: {
     from: 'Vertex'
     to: 'Vertex'
+    type: EdgeType
+    name: string
   }
   Group: {
     element: 'Vertex'
-    coordinates: 'Coordinates'
-  }
-  Coordinates: {
     x1: string
     y1: string
     x2: string
