@@ -18,6 +18,7 @@ export interface App {
   AppWorkspace: {
     elementVertex: 'Vertex'
     elementEdge: 'Edge'
+    elementGroup: 'Group'
   }
 
   Vertex: {
@@ -35,9 +36,5 @@ export interface App {
   }
   Group: {
     element: 'Vertex'
-    x1: string
-    y1: string
-    x2: string
-    y2: string
   }
 }

@@ -1,7 +1,7 @@
-import { GraphEdge, GraphNode } from '@ennealand/enigraph'
-import { ScType } from '@ennealand/enneract'
+import { GraphEdge, GraphGroup, GraphNode } from '@ennealand/enigraph'
+import { ScType, deepSignal } from '@ennealand/enneract'
 import { computed } from '@preact/signals'
-import { AppWorkspace, Edge, Vertex } from '../core.ts'
+import { AppWorkspace, Edge, Group, Vertex } from '../core.ts'
 import { $defined } from '../store.ts'
 
 const slice = (await AppWorkspace`example`.ref.one)!
@@ -45,6 +45,22 @@ const edges = computed(
 )
 
 /**
+ * Array of groups data in the workspace
+ */
+const groupsArray = await slice.elementGroup.get({ ref: { addr: 'id' }, element: { ref: { addr: 'element' } } }).reactive
+const groups = computed(() => {
+  const result = new Map<number, GraphGroup>()
+  for (const group of groupsArray) {
+    let existing = result.get(group.id)
+    if (!existing)
+      result.set(group.id, (existing = { id: group.id, label: '', values: new Set(), position: { bottom: 0, left: 0, right: 0, top: 0 } }))
+    existing.values.add(group.element)
+  }
+  console.log('%cgroups:', 'color:seagreen', result)
+  return deepSignal(Array.from(result.values()))
+})
+
+/**
  * Helper map object to associate newly created temporal node objects with the promises of their new ids.
  * This is primarly used when creating both new nodes and edge to wait for node ids to be resolved first.
  */
@@ -83,5 +99,17 @@ const addEdge = async (edge: GraphEdge) => {
   edgeIds.push({ from, to, type: edge.type, id: newEdge.ref.addr })
 }
 
+/**
+ * Create a new graph group in sc-memory associated with the current workspace.
+ * Update the local state by pusing new group with its new sc-addr used as id to
+ * eliminate delay of receiving an update from sc-memory.
+ * @param node GraphGroup object with all information about new edge
+ */
+const addGroup = async (group: GraphGroup) => {
+  const newGroup = await new Group({ is: { elementGroup: slice } }).create
+  for (const element of group.values) groupsArray.push({ id: newGroup.ref.addr, element })
+  await newGroup.element.link(Array.from(group.values).map(id => Vertex`${id}`))
+}
+
 /** Workspace store slice */
-export const workspace = { vertices, edges, addNode, addEdge }
+export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup }

@@ -9,6 +9,7 @@ export const resetWorkspace = async () => {
   const slice = (await AppWorkspace`example`.ref.one)!
   console.log(await slice.elementEdge.ref.delete)
   console.log(await slice.elementVertex.ref.delete)
+  console.log(await slice.elementGroup.ref.delete)
   const vertices = await new Vertex([
     { name: 'A', customType: NodeType.Const, x: -39, y: -13 },
     { name: 'B', customType: NodeType.Const, x: 131, y: -14 },

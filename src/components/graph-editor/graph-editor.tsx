@@ -1,10 +1,9 @@
-import { EdgeType, Graph, GraphElements, GraphGroup } from '@ennealand/enigraph'
+import { EdgeType, Graph, GraphElements } from '@ennealand/enigraph'
 import { useSignal } from '@preact/signals'
 import { DeepSignal, deepSignal } from 'deepsignal'
 import { useEffect } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
 import { workspace } from '../../store/slices/workspace'
-// import WorkerScript from './force-worker?raw'
 
 type Props = {
   w: number
@@ -19,33 +18,20 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
       elements.value = deepSignal({ nodes: [], edges: [], groups: [] })
       elements.value.$nodes!.value = workspace.vertices
       elements.value.$edges = workspace.edges
+      elements.value.$groups = workspace.groups
       console.log(workspace.edges.value)
     }
     effect()
   }, [])
-
-  // const addNode = async (node: GraphNode) => {
-  //   // elements.value?.nodes.push(node)
-  //   const newn = await new Vertex({ name: 'D', type: node.type, x: node.x, y: node.y }).create
-  //   console.log(newn.ref.addr)
-  //   console.log('umm')
-  // }
-
-  const addGroup = (group: GraphGroup) => {
-    if (!elements.value) return
-    elements.value.groups.push(deepSignal(group))
-    elements.value.groups = [...elements.value.groups]
-    elements.value = { ...elements.value }
-  }
 
   return (
     <div {...props} style={{ minWidth: w || 'calc(100% - 360px)', minHeight: h || '100%' }}>
       {elements.value ? (
         <Graph
           elements={elements.value}
-          addNode={workspace.addNode.bind(workspace)}
-          addEdge={workspace.addEdge.bind(workspace)}
-          addGroup={addGroup}
+          addNode={workspace.addNode}
+          addEdge={workspace.addEdge}
+          addGroup={workspace.addGroup}
           width={w}
           height={h}
           padding={15}
