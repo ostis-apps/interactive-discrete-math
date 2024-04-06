@@ -17,10 +17,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "declaration": false,
     "jsx": "react-jsx",
     "jsxImportSource": "preact",
     "allowSyntheticDefaultImports": true,
-    "composite": true,
 
     /* Linting */
     "strict": true,

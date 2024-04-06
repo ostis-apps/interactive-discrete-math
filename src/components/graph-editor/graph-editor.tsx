@@ -1,4 +1,4 @@
-import { EdgeType, Graph, GraphEdge, GraphElements, GraphGroup } from '@ennealand/enigraph'
+import { EdgeType, Graph, GraphElements, GraphGroup } from '@ennealand/enigraph'
 import { useSignal } from '@preact/signals'
 import { DeepSignal, deepSignal } from 'deepsignal'
 import { useEffect } from 'preact/hooks'
@@ -18,6 +18,8 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
     const effect = async () => {
       elements.value = deepSignal({ nodes: [], edges: [], groups: [] })
       elements.value.$nodes!.value = workspace.vertices
+      elements.value.$edges = workspace.edges
+      console.log(workspace.edges.value)
     }
     effect()
   }, [])
@@ -28,12 +30,6 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
   //   console.log(newn.ref.addr)
   //   console.log('umm')
   // }
-
-  const addEdge = (edge: GraphEdge) => {
-    if (edge.source !== edge.target) {
-      elements.value?.edges.push(edge)
-    }
-  }
 
   const addGroup = (group: GraphGroup) => {
     if (!elements.value) return
@@ -48,7 +44,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
         <Graph
           elements={elements.value}
           addNode={workspace.addNode.bind(workspace)}
-          addEdge={addEdge}
+          addEdge={workspace.addEdge.bind(workspace)}
           addGroup={addGroup}
           width={w}
           height={h}

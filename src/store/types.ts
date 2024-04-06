@@ -1,4 +1,5 @@
 import { EdgeType, NodeType } from '@ennealand/enigraph'
+import { ScType } from '@ennealand/enneract'
 import { View } from './slices/navigation'
 
 export interface App {
@@ -22,13 +23,14 @@ export interface App {
   Vertex: {
     x: number
     y: number
-    type: NodeType
+    customType: NodeType
     name: string
   }
   Edge: {
+    sc: ScType.EdgeUCommonVar | ScType.EdgeDCommonVar | ScType.EdgeAccessVarPosPerm
     from: 'Vertex'
     to: 'Vertex'
-    type: EdgeType
+    customType: EdgeType
     name: string
   }
   Group: {
