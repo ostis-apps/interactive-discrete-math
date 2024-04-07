@@ -10,6 +10,7 @@ import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
 import { workspace } from '../../store/slices/workspace'
+import { executeAction } from '../../store/slices/workspace-tools-new'
 
 export const Playground = () => {
   const { gotoLanding } = navigation
@@ -154,7 +155,7 @@ export const Playground = () => {
                         </Button>
                       ))}
                       {workspaceTools.selectedNewOptionArgs.filter(Boolean).length === workspaceTools.selectedNewOptionTypeArgs.length && (
-                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => {}}>
+                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(workspaceTools.selectedNewOptionTypeArgs.map(_ => _.value!))}>
                           Готово
                         </Button>
                       )}

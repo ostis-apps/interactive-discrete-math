@@ -1,16 +1,16 @@
 concept_app_workspace_tools
   <- sc_node_class;
   -> app_workspace_tools_default (*
-    => nrel_buttons: ... (*
+    => nrel_buttons: set_of_buttons_default (*
       <- sc_node_struct;;
       <- concept_set_of_buttons;;
-      -> ... (*
+      -> button_classification (*
         <- concept_button;;
         => nrel_main_idtf: [Классификация] (* <- lang_ru;; *);;
         => nrel_icon: [tag];;
-        => nrel_decomposition: ... (*
+        => nrel_decomposition: set_of_actions_classification (*
           <- concept_set_of_actions;;
-          -> ... (*
+          -> action_directed_graph (*
             <- concept_action;;
             => nrel_main_idtf: [Ориентированный граф] (* <- lang_ru;; *);;
             => nrel_agent_arg: concept_directed_graph;;
@@ -18,19 +18,19 @@ concept_app_workspace_tools
           *);;
         *);;
       *);;
-      -> ... (*
+      -> button_operations (*
         <- concept_button;;
         => nrel_main_idtf: [Операция] (* <- lang_ru;; *);;
         => nrel_icon: [math];;
-        => nrel_decomposition: ... (*
+        => nrel_decomposition: set_of_actions_operations (*
           <- concept_set_of_actions;;
-          -> ... (*
+          -> action_union (*
             <- concept_action;;
             => nrel_main_idtf: [Объединение] (* <- lang_ru;; *);;
             => nrel_agent_arg: nrel_graph_union;;
             => nrel_agent_type: question_using_binary_operation;;
           *);;
-          -> ... (*
+          -> action_intersection (*
             <- concept_action;;
             => nrel_main_idtf: [Пересечение] (* <- lang_ru;; *);;
             => nrel_agent_arg: nrel_graph_intersection;;
@@ -41,12 +41,26 @@ concept_app_workspace_tools
     *);;
   *);;
 
+concept_app_workspace_tools_slice
+  <- sc_node_class;
+  -> app_workspace_tools_slice_default;;
+
+app_workspace_tools_slice_default
+  => nrel_opened: set_of_buttons_default;
+  => nrel_opened: button_classification;
+  => nrel_opened: set_of_actions_classification;
+  => nrel_opened: action_directed_graph;
+  => nrel_arg_selector: [0];
+  => nrel_args: fake_graph_group;;
+
+
 concept_agent_arg ->
   concept_directed_graph;
   nrel_graph_union;
   nrel_graph_intersection;;
 
 concept_agent_type -> 
+  question_initiated;
   question_using_unary_operation;
   question_using_binary_operation;;
 
@@ -58,6 +72,8 @@ sc_node_norole_relation
   -> nrel_icon;;
 
 sc_node_class
+  -> concept_runner;
+  -> concept_question;
   -> concept_app_workspace_tools;
   -> concept_set_of_buttons;
   -> concept_button;

@@ -36,7 +36,8 @@ export interface App {
     name: string
   }
   Group: {
-    element: 'Vertex'
+    element_vertex: 'Vertex'
+    sc: ScType.NodeVarStruct
   }
 
   AppWorkspaceTools: {
@@ -65,5 +66,18 @@ export interface App {
 
   AgentArg: {}
 
-  AgentType: {}
+  AgentType: {
+    element: 'Question'
+  }
+
+  Question: {
+    element: 'Runner'
+  }
+
+  Runner: {
+    answer: 'Group'
+    element_1: 'Group'
+    element_2: 'Group'
+    element_3: 'AgentArg'
+  }
 }

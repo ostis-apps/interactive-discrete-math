@@ -47,7 +47,7 @@ const edges = computed(
 /**
  * Array of groups data in the workspace
  */
-const groupsArray = await slice.elementGroup.get({ ref: { addr: 'id' }, element: { ref: { addr: 'element' } } }).reactive
+const groupsArray = await slice.elementGroup.get({ ref: { addr: 'id' }, element_vertex: { ref: { addr: 'element' } } }).reactive
 const groups = computed(() => {
   const result = new Map<number, GraphGroup>()
   for (const group of groupsArray) {
@@ -106,9 +106,9 @@ const addEdge = async (edge: GraphEdge) => {
  * @param node GraphGroup object with all information about new edge
  */
 const addGroup = async (group: GraphGroup) => {
-  const newGroup = await new Group({ is: { elementGroup: slice } }).create
+  const newGroup = await new Group({ is: { elementGroup: slice }, sc: ScType.NodeVarStruct }).create
   for (const element of group.values) groupsArray.push({ id: newGroup.ref.addr, element })
-  await newGroup.element.link(Array.from(group.values).map(id => Vertex`${id}`))
+  await newGroup.element_vertex.link(Array.from(group.values).map(id => Vertex`${id}`))
 }
 
 /**
