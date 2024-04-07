@@ -26,6 +26,7 @@ export interface App {
     y: number
     customType: NodeType
     name: string
+    sc: ScType
   }
   Edge: {
     sc: ScType.EdgeUCommonVar | ScType.EdgeDCommonVar | ScType.EdgeAccessVarPosPerm
@@ -37,4 +38,32 @@ export interface App {
   Group: {
     element: 'Vertex'
   }
+
+  AppWorkspaceTools: {
+    buttons: 'SetOfButtons'
+  }
+
+  SetOfButtons: {
+    element: 'Button'
+  }
+
+  Button: {
+    name: string
+    icon: string
+    decomposition: 'SetOfActions'
+  }
+
+  SetOfActions: {
+    element: 'Action'
+  }
+
+  Action: {
+    name: string
+    agentArg: 'AgentArg'
+    agentType: 'AgentType'
+  }
+
+  AgentArg: {}
+
+  AgentType: {}
 }
