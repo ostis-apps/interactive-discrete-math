@@ -111,5 +111,16 @@ const addGroup = async (group: GraphGroup) => {
   await newGroup.element.link(Array.from(group.values).map(id => Vertex`${id}`))
 }
 
+/**
+ * Change the node label to a new one in both sc-memory associated with the current workspace
+ * and local state.
+ * @param node GraphNode object the label belongs to
+ * @param label The new label value
+ */
+const changeNodeLabel = async (node: GraphNode, label: string) => {
+  node.label = label
+  await Vertex`${node.id}`.name.update(label)
+}
+
 /** Workspace store slice */
-export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup }
+export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel }

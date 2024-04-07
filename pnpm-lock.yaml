@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@ennealand/enigraph':
-    specifier: ^0.0.2
-    version: 0.0.2
+    specifier: ^0.0.5
+    version: 0.0.5
   '@ennealand/enneract':
     specifier: ^0.6.2
     version: 0.6.2(preact@10.20.1)
@@ -390,8 +390,8 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@ennealand/enigraph@0.0.2:
-    resolution: {integrity: sha512-4HlVnpRHfDo/IeCBK3+kj4K/euQS8MnMNBK+sPmfjJjFLG9V6NNNT1SJhMABYf3+zyIPpk6Ka0JKvhQHGzEQBg==, tarball: https://npm.pkg.github.com/download/@ennealand/enigraph/0.0.2/f52af96a33a4d716f73a42e6d28f1bf3b22cfc82}
+  /@ennealand/enigraph@0.0.5:
+    resolution: {integrity: sha512-auPU2lsAS28QqhuxzIXfiKNM8cZ20YcIUUto0gRIImcuJ2v0p8A98uusrsJz9rknXImnHoqB8JG9bG4vZqLSpw==, tarball: https://npm.pkg.github.com/download/@ennealand/enigraph/0.0.5/41a470c70a371cefc0b3f47b6a9f8e86c18c5ac8}
     dependencies:
       '@preact/signals': 1.2.3(preact@10.20.1)
       deepsignal: 1.5.0(@preact/signals@1.2.3)(preact@10.20.1)

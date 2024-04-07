@@ -33,6 +33,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           addNode={workspace.addNode}
           addEdge={workspace.addEdge}
           addGroup={workspace.addGroup}
+          changeNodeLabel={workspace.changeNodeLabel}
           width={w}
           height={h}
           padding={15}
