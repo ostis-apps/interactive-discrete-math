@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
-import { PiSelectionBold } from 'react-icons/pi'
+import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
 import { OptionState } from '../../store/slices/workspace-tools'
 import { useWorkspaceTools } from '../../store/store'
@@ -51,7 +51,7 @@ export const Playground = () => {
         <input class='cursor-default px-5 text-right text-lg focus:cursor-text' placeholder={'Новое пространство'} />
       </div>
 
-      <div class='flex gap-1 h-full'>
+      <div class='flex h-full gap-1'>
         <GraphComponent class='w-fit rounded border' w={width.value} h={height.value} />
         <div class='w-full rounded border p-3'>
           <div class='flex items-end justify-between pb-4'>
@@ -143,20 +143,17 @@ export const Playground = () => {
                     </Button>
 
                     <div class='mt-3 flex-wrap gap-3 px-3 centeric'>
-                      {workspaceTools.selectedNewOptionTypeArgs.map(({ title, selected, click }, index) => (
+                      {workspaceTools.selectedNewOptionTypeArgs.map(({ title, value, selected, click }, index) => (
                         <Button
                           class={`relative h-20 !w-32 flex-col gap-y-1 text-center text-sm ${selected ? 'border-primary bg-gray-100' : '!text-gray-400 hover:border-gray-300'}`}
                           onClick={click}
                         >
-                          <span class='text-xl'>
-                            <PiSelectionBold />
-                          </span>
-                          {title}
+                          <span class='text-xl'>{value ? <PiSelectionAllFill /> : <PiSelectionBold />}</span>
+                          {value ? String(value) : title}
                           <span class='absolute right-1.5 top-1.5 text-xs'>{index + 1}</span>
                         </Button>
                       ))}
-                      {workspaceTools.selectedNewOptionArgs.filter(Boolean).length ===
-                        workspaceTools.selectedNewOptionTypeArgs.length && (
+                      {workspaceTools.selectedNewOptionArgs.filter(Boolean).length === workspaceTools.selectedNewOptionTypeArgs.length && (
                         <Button class='w-[16.75rem] text-center text-sm' onClick={() => {}}>
                           Готово
                         </Button>

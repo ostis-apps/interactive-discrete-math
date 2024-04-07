@@ -4,6 +4,7 @@ import { DeepSignal, deepSignal } from 'deepsignal'
 import { useEffect } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
 import { workspace } from '../../store/slices/workspace'
+import { workspaceToolsSlice } from '../../store/slices/workspace-tools'
 
 type Props = {
   w: number
@@ -36,6 +37,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           height={h}
           padding={15}
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
+          objectSelection={workspaceToolsSlice.groupSelection}
         />
       ) : (
         <div style={{ width: w, height: h }}></div>

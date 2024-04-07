@@ -9,10 +9,12 @@ export enum OptionState {
 
 type OptionId = number & Number
 type OptionTypeId = number & Number
-type ScAddr = number & Number
+// type ScAddr = number & Number
 
 type Option = { type: OptionTypeId; title: string }
 type OptionType = { title: string; icon: PlaygroundOptionTypeIcons; args: { title: string }[] }
+
+type GroupSelection = { type: 'group'; action: (id: number) => void; values: Set<number>; indicators: Map<number, string> } | undefined
 
 export const workspaceToolsSlice = slice({
   /**
@@ -33,7 +35,7 @@ export const workspaceToolsSlice = slice({
   /**
    * The id of "new option" chosen
    */
-  selectedNewOptionArgs: [] as (ScAddr | undefined)[],
+  selectedNewOptionArgs: [] as (number | undefined)[],
 
   /**
    * The index of new option arg that is being currently selected
@@ -90,13 +92,11 @@ export const workspaceToolsSlice = slice({
    * The data of available option types
    */
   get displayedAvailableOptionTypes() {
-    return Object.entries<{ title: string; icon: PlaygroundOptionTypeIcons }>(this.availableOptionTypes).map(
-      ([type, value]) => ({
-        ...value,
-        type: +type,
-        click: () => this.selectNewOptionType(+type),
-      })
-    )
+    return Object.entries<{ title: string; icon: PlaygroundOptionTypeIcons }>(this.availableOptionTypes).map(([type, value]) => ({
+      ...value,
+      type: +type,
+      click: () => this.selectNewOptionType(+type),
+    }))
   },
 
   /**
@@ -133,12 +133,13 @@ export const workspaceToolsSlice = slice({
   /**
    * The title of selected new option type
    */
-  get selectedNewOptionTypeArgs(): { title: string; selected: boolean; click: () => void }[] {
+  get selectedNewOptionTypeArgs(): { title: string; value?: number; selected: boolean; click: () => void }[] {
     if (this.newOptionType === undefined) return []
     return this.availableOptionTypes[this.newOptionType].args.map((value, index) => ({
-      ...value,
+      title: value.title,
+      value: this.selectedNewOptionArgs[index],
       selected: this.newOptionArgSelection === index,
-      click: () => (this.newOptionArgSelection = this.newOptionArgSelection === index ? undefined : index),
+      click: () => this.newOptionArgClick(index),
     }))
   },
 
@@ -177,8 +178,41 @@ export const workspaceToolsSlice = slice({
     }
   },
 
-  selectNewOptionArg(index: number, scaddr?: ScAddr) {
-    this.selectedNewOptionArgs[index] = scaddr
+  groupSelection: undefined as GroupSelection,
+  newOptionArgClick(index: number) {
+    if (this.newOptionArgSelection === index) {
+      this.newOptionArgSelection = undefined
+      this.groupSelection = undefined
+      return
+    }
+    this.newOptionArgSelection = index
+
+    if (this.groupSelection) return
+
+    this.groupSelection = {
+      type: 'group',
+      action: this.selectNewOptionArg,
+      values: new Set(),
+      indicators: new Map(),
+    }
+  },
+
+  selectNewOptionArg(groupId: number) {
+    const index = this.newOptionArgSelection
+    if (!this.groupSelection || index === undefined) return
+    console.log('got a new group selected:', groupId)
+    const existing = this.selectedNewOptionArgs[index]
+    if (existing) this.groupSelection.indicators.delete(existing)
+
+    if (existing === groupId) {
+      this.selectedNewOptionArgs[index] = undefined
+    } else {
+      const existingIndex = this.groupSelection.indicators.get(groupId)
+      if (existingIndex !== undefined) this.selectedNewOptionArgs[+existingIndex - 1] = undefined
+      this.selectedNewOptionArgs[index] = groupId
+      this.groupSelection.indicators.set(groupId, String(index + 1))
+    }
+    this.groupSelection.values = new Set(this.groupSelection.indicators.keys())
   },
 
   addNewOption(id: number) {
