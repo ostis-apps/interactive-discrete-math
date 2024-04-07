@@ -19,6 +19,8 @@ export const {
   Action,
   AgentArg,
   AgentType,
+  Question,
+  Runner,
 } = enneract.magic as Magic<App>
 
 export const $extract = <T extends unknown>(args: T[]) => args[0] as Required<DeepSignal<T>>

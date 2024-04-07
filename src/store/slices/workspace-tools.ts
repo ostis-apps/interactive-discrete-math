@@ -21,26 +21,31 @@ export const workspaceToolsSlice = slice({
    * The toggle state of "new options" in Workspace tools
    */
   newOptionsExpanded: false,
+  // => nrel_opened: set_of_buttons_default;
 
   /**
    * The type of "new options" chosen
    */
   newOptionType: undefined as OptionTypeId | undefined,
+  // => nrel_opened: set_of_actions_classification;
 
   /**
    * The id of "new option" chosen
    */
   selectedNewOptionId: undefined as OptionId | undefined,
+  // => nrel_opened: action_directed_graph;
 
   /**
    * The id of "new option" chosen
    */
   selectedNewOptionArgs: [] as (number | undefined)[],
+  // => nrel_args: fake_graph_group;
 
   /**
    * The index of new option arg that is being currently selected
    */
   newOptionArgSelection: undefined as number | undefined,
+  // => nrel_arg_selector: [0];
 
   /**
    * The list of available option types
