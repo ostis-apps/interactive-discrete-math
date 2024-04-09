@@ -2,7 +2,7 @@ import { GraphNode, GraphEdge } from '@ennealand/enigraph'
 import * as d3 from 'd3'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const simulate = <T extends { nodes: any; edges: any }>(data: T, options: { animate?: boolean } = {}): T => {
+export const simulate = <T extends { nodes: any; edges: any }>(data: T, options: { animate?: boolean, strength?: number } = {}): T => {
   // prettier-ignore
   const simulation = d3
 		.forceSimulation(data.nodes)
@@ -43,7 +43,7 @@ export const simulate = <T extends { nodes: any; edges: any }>(data: T, options:
 				// 	return -900
 				// }
 
-				return -700 // -700
+				return options.strength ?? -700
 			})
 		)
 		.force(

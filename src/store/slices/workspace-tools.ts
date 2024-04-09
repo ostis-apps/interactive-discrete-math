@@ -107,7 +107,7 @@ export const workspaceToolsSlice = slice({
   /**
    * The list of available options filtered by `newOptionType`
    */
-  get displayedAvailableOptions() {
+  get displayedAvailableOptions(): { id: string; title: string; click: () => void }[] {
     if (!this.newOptionsExpanded || !this.newOptionType) return []
     const toDisplay = []
     for (const [id, { type, title }] of Object.entries<Option>(this.availableOptions)) {
@@ -156,13 +156,18 @@ export const workspaceToolsSlice = slice({
     return this.availableOptions[this.selectedNewOptionId].title
   },
 
+  resetArguments() {
+    this.newOptionArgSelection = undefined
+    this.selectedNewOptionArgs = []
+    this.groupSelection = undefined
+  },
+
   toggleNewOptions() {
     this.newOptionsExpanded = !this.newOptionsExpanded
     if (!this.newOptionsExpanded) {
       this.newOptionType = undefined
       this.selectedNewOptionId = undefined
-      if (this.selectedNewOptionArgs.length) this.selectedNewOptionArgs = []
-      this.newOptionArgSelection = undefined
+      this.resetArguments()
     }
   },
 
@@ -170,23 +175,21 @@ export const workspaceToolsSlice = slice({
     this.newOptionType = type
     if (type === undefined) {
       this.selectedNewOptionId = undefined
-      if (this.selectedNewOptionArgs.length) this.selectedNewOptionArgs = []
-      this.newOptionArgSelection = undefined
+      this.resetArguments()
     }
   },
 
   selectNewOption(id?: number) {
     this.selectedNewOptionId = id
     if (this.selectedNewOptionId === undefined) {
-      if (this.selectedNewOptionArgs.length) this.selectedNewOptionArgs = []
-      this.newOptionArgSelection = undefined
+      this.resetArguments()
     }
   },
 
   groupSelection: undefined as GroupSelection,
   newOptionArgClick(index: number) {
     if (this.newOptionArgSelection === index) {
-      this.newOptionArgSelection = undefined
+      this.resetArguments()
       this.groupSelection = undefined
       return
     }

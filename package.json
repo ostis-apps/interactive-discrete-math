@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@ennealand/enigraph": "^0.0.7",
-    "@ennealand/enneract": "^0.7.4",
+    "@ennealand/enneract": "^0.7.5",
     "@preact/signals": "^1.2.3",
     "d3": "^7.8.5",
     "deepsignal": "^1.5.0",

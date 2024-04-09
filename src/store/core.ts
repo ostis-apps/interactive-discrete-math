@@ -12,6 +12,8 @@ export const {
   Group,
   Vertex,
   ElementVertex,
+  ElementEdge,
+  ElementGroup,
   SetOfElementVertices,
   AppWorkspaceTools,
   SetOfButtons,

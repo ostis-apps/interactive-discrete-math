@@ -28,6 +28,7 @@ export interface App {
 
   ElementGroup: {
     elements: 'SetOfElementVertices'
+    to: 'AnotherGroup'
   }
 
   SetOfElementVertices: {
@@ -45,6 +46,10 @@ export interface App {
     to: 'Vertex'
     customType: EdgeType
     name: string
+  }
+  AnotherGroup: {
+    element_vertex: 'Vertex'
+    sc: ScType.NodeVarStruct
   }
   Group: {
     element_vertex: 'Vertex'
@@ -92,8 +97,8 @@ export interface App {
 
   Runner: {
     name: string
-    element_1: 'Group'
-    element_2: 'Group'
+    element_1: 'Group' | 'AnotherGroup'
+    element_2: 'Group' | 'AnotherGroup'
     element_3: 'AgentArg'
   }
 }
