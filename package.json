@@ -16,8 +16,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@ennealand/enigraph": "^0.0.5",
-    "@ennealand/enneract": "^0.6.2",
+    "@ennealand/enigraph": "^0.0.7",
+    "@ennealand/enneract": "^0.7.3",
     "@preact/signals": "^1.2.3",
     "d3": "^7.8.5",
     "deepsignal": "^1.5.0",

@@ -10,20 +10,24 @@ export interface App {
     current_view: 'AppView'
     current_addr: string
   }
-  Graph: {
-    rrelVertex: 'Vertex'
-    rrelEdge: 'Edge'
-  }
-
+  
   AppWorkspace: {
     elementVertex: 'Vertex'
     elementEdge: 'Edge'
     elementGroup: 'Group'
   }
 
-  Vertex: {
+  ElementVertex: {
     x: number
     y: number
+  }
+
+  ElementEdge: {
+    source: 'ElementVertex'
+    target: 'ElementVertex'
+  }
+
+  Vertex: {
     customType: NodeType
     name: string
     sc: ScType
@@ -72,10 +76,15 @@ export interface App {
 
   Question: {
     element: 'Runner'
+    answer: 'Answer'
+  }
+
+  Answer: {
+    element_1: 'Group'
   }
 
   Runner: {
-    answer: 'Group'
+    name: string
     element_1: 'Group'
     element_2: 'Group'
     element_3: 'AgentArg'
