@@ -43,31 +43,35 @@ export const executeAction = async (args: number[]) => {
     // Wrap the solution addr into RefValue
     const group = Group`${solution.value}`
 
-    // Make the solution a Group
-    await Group.element.link(group)
-
     // Get the list of actual vertices inside the solution graph
     const vertices = await group.element_vertex.ref.many
     console.log(vertices)
+
+    // Create a set for new "views" of the vertices inside the workspace
+    const elementsReq = new SetOfElementVertices().create
 
     // Generate positions of the vertices
     const nodes = vertices.map(vertex => ({ id: vertex.ref.addr, x: 0, y: 0, vertex }))
     simulate({ nodes, edges: [] }, { strength: -16 })
 
-    // Create a set for new "views" of the vertices inside the workspace
-    const elements = await new SetOfElementVertices().create
+    // Await the creation of a set for new "views" of the vertices inside the workspace
+    const elements = await elementsReq
 
     // Create new "view" of the vertices inside the workspace and push it to the set
     const relations = await Promise.all(
       nodes.map(node => AppWorkspace`example`.elementVertex.link(node.vertex, { x: node.x, y: node.y, is: { element: elements } }))
     )
 
-    // Assiciate new "view" of the group inside the workspace with the set of new "views" of the vertices
-    console.log(relations.map(x => x.ref.addr))
-    await elements.element.link(relations)
-
-    // Create new "view" of the group inside the workspace with its attributes
-    await AppWorkspace`example`.elementGroup.link(group, { elements })
+    await Promise.all([
+      // Assiciate new "view" of the group inside the workspace with the set of new "views" of the vertices
+      elements.element.link(relations),
+  
+      // Create new "view" of the group inside the workspace with its attributes
+      AppWorkspace`example`.elementGroup.link(group, { elements }),
+  
+      // Make the solution a Group
+      Group.element.link(group),
+    ])
 
     workspaceToolsSlice.resetArguments()
   })
