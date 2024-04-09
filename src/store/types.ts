@@ -10,7 +10,6 @@ export interface App {
     current_view: 'AppView'
     current_addr: string
   }
-  
   AppWorkspace: {
     elementVertex: 'Vertex'
     elementEdge: 'Edge'
@@ -25,6 +24,14 @@ export interface App {
   ElementEdge: {
     source: 'ElementVertex'
     target: 'ElementVertex'
+  }
+
+  ElementGroup: {
+    elements: 'SetOfElementVertices'
+  }
+
+  SetOfElementVertices: {
+    element: 'ElementVertex'
   }
 
   Vertex: {

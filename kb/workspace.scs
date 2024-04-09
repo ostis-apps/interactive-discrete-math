@@ -36,6 +36,9 @@ app_workspace_example
 sc_node_norole_relation
   -> nrel_x;
   -> nrel_y;
+  -> nrel_source;
+  -> nrel_target;
+  -> nrel_elements;
   -> nrel_custom_type;;
 
 sc_node_role_relation
@@ -47,4 +50,4 @@ sc_node_class
   -> concept_vertex;
   -> concept_edge;
   -> concept_group;
-  -> concept_graph;;
+  -> concept_set_of_element_vertices;;

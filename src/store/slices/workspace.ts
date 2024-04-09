@@ -1,7 +1,7 @@
 import { GraphEdge, GraphGroup, GraphNode } from '@ennealand/enigraph'
 import { ScType, deepSignal } from '@ennealand/enneract'
 import { computed, effect } from '@preact/signals'
-import { AppWorkspace, Edge, ElementVertex, Group, Vertex } from '../core.ts'
+import { AppWorkspace, Edge, ElementVertex, Group, SetOfElementVertices, Vertex } from '../core.ts'
 import { $defined } from '../store.ts'
 
 const slice = (await AppWorkspace`example`.ref.one)!
@@ -64,7 +64,10 @@ const edges = computed(
 /**
  * Array of groups data in the workspace
  */
-const groupsArray = await slice.elementGroup.get({ ref: { addr: 'id' }, element_vertex: { ref: { addr: 'element' } } }).reactive
+const groupsArray = await slice.elementGroup.get({
+  ref: { addr: 'addr' },
+  relation: { ref: { addr: 'id' }, elements: { element: { ref: { addr: 'element' } } } },
+}).reactive
 const groups = computed(() => {
   const result = new Map<number, GraphGroup>()
   for (const group of groupsArray) {
@@ -113,7 +116,6 @@ const addEdge = async (edge: GraphEdgeExtended) => {
   const to = edge.target.addr || (await newNodeIds.get(edge.target)!.addr)
   const source = edge.source.id || (await newNodeIds.get(edge.source)!.id)
   const target = edge.target.id || (await newNodeIds.get(edge.target)!.id)
-  console.log(from, to, source, target)
   const newEdge = await new Edge({
     from: Vertex`${from}`,
     to: Vertex`${to}`,
@@ -131,9 +133,11 @@ const addEdge = async (edge: GraphEdgeExtended) => {
  * @param node GraphGroup object with all information about new edge
  */
 const addGroup = async (group: GraphGroup) => {
-  const newGroup = await new Group({ is: { elementGroup: slice }, sc: ScType.NodeVarStruct }).create
-  for (const element of group.values) groupsArray.push({ id: newGroup.ref.addr, element })
-  await newGroup.element_vertex.link(Array.from(group.values).map(id => Vertex`${id}`))
+  const elements = await new SetOfElementVertices().create
+  const newGroup = await new Group({ is: { elementGroup: { value: slice, relation: { elements } } } }).create
+  for (const element of group.values) groupsArray.push({ addr: newGroup.ref.addr, id: newGroup.relations[0], element })
+  await elements.element.link(Array.from(group.values).map(id => ElementVertex`${id}`))
+  await newGroup.element_vertex.link(vertices.filter(vertex => group.values.has(vertex.id)).map(vertex => Vertex`${vertex.addr}}`))
 }
 
 /**
