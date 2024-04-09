@@ -120,7 +120,20 @@ const addGroup = async (group: GraphGroup) => {
 const changeNodeLabel = async (node: GraphNode, label: string) => {
   node.label = label
   await Vertex`${node.id}`.name.update(label)
+
+/**
+ * Change the node position to a new one in both sc-memory associated with the current workspace
+ * and local state.
+ * @param node GraphNode object the label belongs to
+ * @param x The new x-coordinate
+ * @param y The new y-coordinate
+ */
+const changeNodePosition = async (node: GraphNode, x: number, y: number) => {
+  node.x = x
+  node.y = y
+  await ElementVertex`${node.id}`.x.write(x)
+  await ElementVertex`${node.id}`.y.write(y)
 }
 
 /** Workspace store slice */
-export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel }
+export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel, changeNodePosition }
