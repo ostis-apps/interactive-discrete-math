@@ -1,7 +1,7 @@
 import { EdgeType, GraphEdge, GraphGroup, GraphNode, NodeType } from '@ennealand/enigraph'
 import { ScType, deepSignal } from '@ennealand/enneract'
 import { computed } from '@preact/signals'
-import { AppWorkspace, Edge, ElementEdge, ElementVertex, Group, SetOfElementVertices, Vertex } from '../core.ts'
+import { AppWorkspace, Edge, ElementEdge, ElementGroup, ElementVertex, Group, SetOfElementVertices, Vertex } from '../core.ts'
 import { $defined } from '../store.ts'
 
 const slice = (await AppWorkspace`example`.ref.one)!
@@ -205,12 +205,26 @@ const changeNodeLabel = async (reactiveNode: GraphNodeExtended, label: string) =
   reactiveNode.type = vertex.type
   for (const edge of untrackedEdgeIds) {
     if (edge.source === node.id) {
-      await smartAddEdge({ from: vertex.addr, to: edge.to, source: vertex.id, target: edge.target, type: edge.type }, mutableUntrackedEdgeIds)
+      await smartAddEdge(
+        { from: vertex.addr, to: edge.to, source: vertex.id, target: edge.target, type: edge.type },
+        mutableUntrackedEdgeIds
+      )
       await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
     }
     if (edge.target === node.id) {
-      await smartAddEdge({ from: edge.from, to: vertex.addr, source: edge.source, target: vertex.id, type: edge.type }, mutableUntrackedEdgeIds)
+      await smartAddEdge(
+        { from: edge.from, to: vertex.addr, source: edge.source, target: vertex.id, type: edge.type },
+        mutableUntrackedEdgeIds
+      )
       await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+    }
+  }
+  for (const group of groupsArray) {
+    if (group.element === node.id) {
+      Group`${group.addr}`.element_vertex.link(Vertex`${vertex.addr}`)
+      Group`${group.addr}`.element_vertex.unlink(Vertex`${node.addr}`)
+      ElementGroup`${group.id}`.elements.element.link(ElementVertex`${vertex.id}`)
+      ElementGroup`${group.id}`.elements.element.unlink(ElementVertex`${node.id}`)
     }
   }
   smartDeleteVertex(node, untrackedVertices)
