@@ -105,6 +105,7 @@ const addNode = async (node: GraphNode) => {
  * @param node GraphEdge object with all information about new edge
  */
 const addEdge = async (edge: GraphEdgeExtended) => {
+  if (edge.source.id === edge.target.id) return
   const from = edge.source.addr || (await newNodeIds.get(edge.source)!.addr)
   const to = edge.target.addr || (await newNodeIds.get(edge.target)!.addr)
   const source = edge.source.id || (await newNodeIds.get(edge.source)!.id)
