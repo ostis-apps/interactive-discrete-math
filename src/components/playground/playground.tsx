@@ -10,6 +10,7 @@ import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
+import { workspaceToolsNew } from '../../store/slices/workspace-tools-new'
 
 export const Playground = () => {
   const { gotoLanding } = navigation
@@ -91,8 +92,11 @@ export const Playground = () => {
             ))}
           </ul>
 
-          <Button class='mt-3' onClick={workspaceTools.toggleNewOptions}>
-            {workspaceTools.newOptionsExpanded ? (
+          <Button class='mt-3' onClick={() => {
+            if (workspaceToolsNew.openedMenu.value) workspaceToolsNew.closeMenu()
+            else workspaceToolsNew.openActionsMenu()
+          }}>
+            {workspaceToolsNew.openedMenu.value ? (
               <>
                 {/* <FaAngleLeft /> */}
                 Добавление...
@@ -105,52 +109,56 @@ export const Playground = () => {
             )}
           </Button>
 
-          {workspaceTools.newOptionsExpanded &&
-            (!workspaceTools.newOptionType ? (
+          {workspaceToolsNew.openedMenu.value &&
+            (!workspaceToolsNew.openedActionClass.value ? (
               <div class='mt-3 grid grid-cols-2 gap-3 px-3'>
-                {workspaceTools.displayedAvailableOptionTypes.map(({ click, title, icon }) => (
-                  <Button class='h-24 flex-col gap-y-1 text-center text-sm' onClick={click}>
+                {workspaceToolsNew.actionClasses.map(({ name, icon, ref }) => (
+                  <Button key={ref.ref.addr} class='h-24 flex-col gap-y-1 text-center text-sm' onClick={() => {
+                    workspaceToolsNew.openActionsClass(ref)
+                  }}>
                     <PlaygroundOptionTypeIcon icon={icon} />
-                    {title}
+                    {name}
                   </Button>
                 ))}
               </div>
             ) : (
               <>
-                <Button class='mt-3' onClick={() => workspaceTools.selectNewOptionType(undefined)}>
-                  {workspaceTools.selectedNewOptionTypeTitle}
+                <Button class='mt-3' onClick={() => workspaceToolsNew.closeActionClass()}>
+                  {workspaceToolsNew.openedActionClassName.value ?? ''}
                 </Button>
-                {!workspaceTools.selectedNewOptionId ? (
+                {!workspaceToolsNew.openedAction[0] ? (
                   <div class='mx-3 mt-3 flex max-h-72 flex-col gap-y-2 overflow-y-auto rounded px-2 scroll-default'>
-                    {workspaceTools.displayedAvailableOptions.length ? (
-                      workspaceTools.displayedAvailableOptions.map(({ id, title, click }) => (
-                        <Button key={id} onClick={click}>
-                          {title}
+                    {workspaceToolsNew.actions.length ? (
+                      workspaceToolsNew.actions.map(({ name, ref, actionClassAddr }) => actionClassAddr === workspaceToolsNew.openedActionClass.value ? (
+                        <Button key={ref.ref.addr} onClick={() => {
+                          workspaceToolsNew.openActions(ref)
+                        }}>
+                          {name}
                         </Button>
-                      ))
+                      ) : null)
                     ) : (
                       <div class='gap-2 rounded border-transparent text-gray-700 centeric'>- - -</div>
                     )}
                   </div>
                 ) : (
                   <>
-                    <Button class='mt-3' onClick={() => workspaceTools.selectNewOption(undefined)}>
-                      {workspaceTools.selectedNewOptionTitle}
+                    <Button class='mt-3' onClick={() => workspaceToolsNew.closeAction()}>
+                      {workspaceToolsNew.openedAction[0]?.name}
                     </Button>
 
                     <div class='mt-3 flex-wrap gap-3 px-3 centeric'>
-                      {workspaceTools.selectedNewOptionTypeArgs.map(({ title, value, selected, click }, index) => (
+                      {workspaceToolsNew.openedArguments.value.map(({ title, value, selected }, index) => (
                         <Button
                           class={`relative h-20 !w-32 flex-col gap-y-1 text-center text-sm ${selected ? 'border-primary bg-gray-100' : '!text-gray-400 hover:border-gray-300'}`}
-                          onClick={click}
+                          onClick={() => workspaceToolsNew.setArgSelector(index)}
                         >
                           <span class='text-xl'>{value ? <PiSelectionAllFill /> : <PiSelectionBold />}</span>
                           {value ? String(value) : title}
                           <span class='absolute right-1.5 top-1.5 text-xs'>{index + 1}</span>
                         </Button>
                       ))}
-                      {workspaceTools.selectedNewOptionArgs.filter(Boolean).length === workspaceTools.selectedNewOptionTypeArgs.length && (
-                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(workspaceTools.selectedNewOptionTypeArgs.map(_ => _.value!))}>
+                      {workspaceToolsNew.openedArguments.value.every(_ => _.value) && (
+                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(workspaceToolsNew.openedArguments.value.map(_ => _.value.ref.addr))}>
                           Готово
                         </Button>
                       )}

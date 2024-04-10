@@ -45,22 +45,25 @@ workspace_menu_actions
 concept_app_workspace_tools_slice
   <- sc_node_class;
   -> app_workspace_tools_slice_default;;
-// slice.opened.where({ ref: WorkspaceMenu`actions`.ref.one! })
-// WorkspaceMenu`actions`.where({ is: { opened: slice } }).ref
+
 app_workspace_tools_slice_default
-  => nrel_opened: set_of_buttons_default;
-  => nrel_opened: button_classification;
-  => nrel_opened: set_of_actions_classification;
-  => nrel_opened: action_directed_graph;
+  => nrel_opened: workspace_menu_actions;
+  => nrel_opened: action_class_operations;
+  => nrel_opened: action_union;
   => nrel_arg_selector: [0];
-  => nrel_args: fake_graph_group;
+  => nrel_args: ... (*
+    <- concept_set_of_groups;;
+    -> fake_graph_group_1;;
+    -> fake_graph_group_2;;
+  *);;
 
   => nrel_properties: ... (*
-    <- concept_set_active_actions;;
+    <- concept_set_of_active_actions;;
     -> ... (*
       <- concept_active_action;;
-      => nrel_action: action_directed_graph;;
+      => nrel_action: action_union;;
       => nrel_args: ... (*
+        <- concept_set_of_groups;;
         -> fake_graph_group_1;;
         -> fake_graph_group_2;;
       *);;
@@ -79,19 +82,22 @@ concept_agent_type ->
 
 sc_node_norole_relation ->
   nrel_decomposition;
-  nrel_buttons;
   nrel_agent_arg;
   nrel_agent_type;
+  nrel_opened;
+  nrel_arg_selector;
+  nrel_properties;
+  nrel_args;
   nrel_icon;;
 
 sc_node_class ->
-  concept_set_active_actions;
+  concept_action_class;
+  concept_set_of_groups;
+  concept_set_of_action_classes;
+  concept_set_of_active_actions;
   concept_active_action;
   concept_runner;
   concept_question;
-  concept_app_workspace_tools;
-  concept_set_of_buttons;
-  concept_button;
   concept_set_of_actions;
   concept_agent_arg;
   concept_action;;

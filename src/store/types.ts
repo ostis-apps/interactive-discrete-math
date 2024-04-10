@@ -1,6 +1,7 @@
 import { EdgeType, NodeType } from '@ennealand/enigraph'
 import { ScType } from '@ennealand/enneract'
 import { View } from './slices/navigation'
+import { PlaygroundOptionTypeIcons } from '../components/playground/option-type-icon'
 
 export interface App {
   AppView: {
@@ -62,23 +63,33 @@ export interface App {
     sc: ScType.NodeVarStruct
   }
 
-  AppWorkspaceToolsSlice: {
-    opened: 'SetOfButtons' | 'SetOfActions' | 'Action'
-    arg_selector: ''
-    args: ''
+  Question: {
+    element: 'Runner'
+    answer: 'Answer'
   }
 
-  AppWorkspaceTools: {
-    buttons: 'SetOfButtons'
+  Answer: {
+    element_1: 'Group'
   }
 
-  SetOfButtons: {
-    element: 'Button'
-  }
-
-  Button: {
+  Runner: {
     name: string
-    icon: string
+    element_1: 'Group' | 'AnotherGroup'
+    element_2: 'Group' | 'AnotherGroup'
+    element_3: 'AgentArg'
+  }
+
+  WorkspaceMenu: {
+    decomposition: 'SetOfActionClasses'
+  }
+
+  SetOfActionClasses: {
+    element: 'ActionClass'
+  }
+
+  ActionClass: {
+    name: string
+    icon: PlaygroundOptionTypeIcons
     decomposition: 'SetOfActions'
   }
 
@@ -98,19 +109,23 @@ export interface App {
     element: 'Question'
   }
 
-  Question: {
-    element: 'Runner'
-    answer: 'Answer'
+  AppWorkspaceToolsSlice: {
+    opened: 'Action'
+    argSelector: number
+    args: 'SetOfGroups'
+    properties: 'SetOfActiveActions'
   }
 
-  Answer: {
-    element_1: 'Group'
+  SetOfActiveActions: {
+    element: 'ActiveAction'
   }
 
-  Runner: {
-    name: string
-    element_1: 'Group' | 'AnotherGroup'
-    element_2: 'Group' | 'AnotherGroup'
-    element_3: 'AgentArg'
+  ActiveAction: {
+    action: 'Action'
+    args: 'SetOfGroups'
+  }
+
+  SetOfGroups: {
+    element: 'Group'
   }
 }

@@ -8,7 +8,7 @@ import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { MdOutlineCategory } from 'react-icons/md'
 import { PiSelectionAllBold } from 'react-icons/pi'
 import { workspace } from '../../store/slices/workspace'
-import { workspaceToolsSlice } from '../../store/slices/workspace-tools'
+import { workspaceToolsNew } from '../../store/slices/workspace-tools-new'
 
 type Props = {
   w: number
@@ -45,7 +45,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           height={h}
           padding={15}
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
-          objectSelection={workspaceToolsSlice.groupSelection}
+          objectSelection={workspaceToolsNew.groupSelection}
           changeNodePosition={workspace.changeNodePosition}
           removeNode={workspace.removeNode}
           buttonIcons={{
