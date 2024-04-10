@@ -9,7 +9,6 @@ import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
-import { workspace } from '../../store/slices/workspace'
 import { executeAction } from '../../store/slices/workspace-tools-new'
 
 export const Playground = () => {
@@ -26,10 +25,6 @@ export const Playground = () => {
     width.value = Math.round(rect.width) - 360
     height.value = Math.round(rect.height) * 0.95 - 2
   }
-
-  useEffect(() => {
-    console.log(Array.from(workspace.vertices))
-  }, [])
 
   useEffect(() => {
     const windowsListButton = document.querySelector('#windows-list')

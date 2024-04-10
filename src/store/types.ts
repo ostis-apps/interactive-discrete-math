@@ -48,8 +48,13 @@ export interface App {
     name: string
   }
   AnotherGroup: {
-    element_vertex: 'Vertex'
+    element_vertex: 'AnotherVertex'
     sc: ScType.NodeVarStruct
+  }
+  AnotherVertex: {
+    customType: NodeType
+    name: string
+    sc: ScType
   }
   Group: {
     element_vertex: 'Vertex'

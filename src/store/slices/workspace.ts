@@ -1,7 +1,7 @@
-import { GraphEdge, GraphGroup, GraphNode } from '@ennealand/enigraph'
+import { EdgeType, GraphEdge, GraphGroup, GraphNode, NodeType } from '@ennealand/enigraph'
 import { ScType, deepSignal } from '@ennealand/enneract'
-import { computed, effect } from '@preact/signals'
-import { AppWorkspace, Edge, ElementVertex, Group, SetOfElementVertices, Vertex } from '../core.ts'
+import { computed } from '@preact/signals'
+import { AppWorkspace, Edge, ElementEdge, ElementVertex, Group, SetOfElementVertices, Vertex } from '../core.ts'
 import { $defined } from '../store.ts'
 
 const slice = (await AppWorkspace`example`.ref.one)!
@@ -25,10 +25,6 @@ const vertices = await slice.elementVertex.get({
   name: 'label',
 }).reactive
 
-effect(async () => {
-  console.log(vertices.map(v => ({ id: v.id, addr: v.addr })))
-})
-
 /**
  * Array of edges data in the workspace
  */
@@ -43,22 +39,19 @@ const edgeIds = await slice.elementEdge.get({
 /**
  * Array of edges data in the workspace with sources and targets mapped to reactive vertices
  */
-const edges = computed(
-  () => (
-    console.warn('updated'),
-    edgeIds
-      .map<GraphEdgeExtended | undefined>(edge => {
-        const source = vertices.find(v => v.id === edge.source)
-        const target = vertices.find(v => v.id === edge.target)
-        if (!source || !target) {
-          console.log(edge, vertices)
-          console.error('source or target is missing')
-          return
-        }
-        return { source, target, id: edge.id, type: edge.type }
-      })
-      .filter($defined)
-  )
+const edges = computed(() =>
+  edgeIds
+    .map<GraphEdgeExtended | undefined>(edge => {
+      const source = vertices.find(v => v.id === edge.source)
+      const target = vertices.find(v => v.id === edge.target)
+      if (!source || !target) {
+        // console.log({ ...edge }, vertices.map(_ => ({ ..._ })))
+        // console.error('source or target is missing')
+        return
+      }
+      return { source, target, id: edge.id, type: edge.type }
+    })
+    .filter($defined)
 )
 
 /**
@@ -76,7 +69,7 @@ const groups = computed(() => {
       result.set(group.id, (existing = { id: group.id, label: '', values: new Set(), position: { bottom: 0, left: 0, right: 0, top: 0 } }))
     existing.values.add(group.element)
   }
-  console.log('%cgroups:', 'color:seagreen', result)
+  // console.logMediumSeaGreen('groups:', result)
   return deepSignal(Array.from(result.values()))
 })
 
@@ -116,14 +109,69 @@ const addEdge = async (edge: GraphEdgeExtended) => {
   const to = edge.target.addr || (await newNodeIds.get(edge.target)!.addr)
   const source = edge.source.id || (await newNodeIds.get(edge.source)!.id)
   const target = edge.target.id || (await newNodeIds.get(edge.target)!.id)
+  await smartAddEdge({ from, to, source, target, type: edge.type })
+}
+
+const smartAddEdge = async (edge: { from: number; to: number; source: number; target: number; type: EdgeType }, root = edgeIds) => {
+  // Check if the edge already exists and thus only its "view" should be added.
+  const existingEdge = root.find(e => e.from === edge.from && e.to === edge.to && e.type === edge.type)
+  if (existingEdge) {
+    const relation = await slice.elementEdge.link(Edge`${existingEdge.addr}`, {
+      source: ElementVertex`${edge.source}`,
+      target: ElementVertex`${edge.target}`,
+    })
+    edgeIds.push({ ...edge, id: relation.ref.addr, addr: existingEdge.addr })
+    root.push({ ...edge, id: relation.ref.addr, addr: existingEdge.addr })
+    console.logMediumSeaGreen('Edge created:', `id ${relation.ref.addr}`)
+    return
+  }
   const newEdge = await new Edge({
-    from: Vertex`${from}`,
-    to: Vertex`${to}`,
+    from: Vertex`${edge.from}`,
+    to: Vertex`${edge.to}`,
     sc: ScType.EdgeDCommonVar,
     customType: edge.type,
-    is: { elementEdge: { value: slice, relation: { source: ElementVertex`${source}`, target: ElementVertex`${target}` } } },
+    is: { elementEdge: { value: slice, relation: { source: ElementVertex`${edge.source}`, target: ElementVertex`${edge.target}` } } },
   }).create
-  edgeIds.push({ from, to, type: edge.type, id: newEdge.ref.addr, addr: newEdge.relations[0], source, target })
+  edgeIds.push({ ...edge, id: newEdge.relations[0], addr: newEdge.ref.addr })
+  root.push({ ...edge, id: newEdge.relations[0], addr: newEdge.ref.addr })
+  console.logMediumSeaGreen('Edge created:', `addr ${newEdge.ref.addr}`)
+}
+
+const smartDeleteEdge = async (edge: { addr: number; id: number }, root = edgeIds) => {
+  const anotherEdge = root.some(e => e.addr === edge.addr && e.id !== edge.id)
+  const edgeIndex = root.findIndex(e => e.id === edge.id)
+  if (edgeIndex !== -1) root.splice(edgeIndex, 1)
+  if (anotherEdge) await ElementEdge`${edge.id}`.ref.delete
+  else await Edge`${edge.addr}`.ref.delete
+  console.logDeepPink('Edge deleted:', anotherEdge ? `id ${edge.id}` : `addr ${edge.addr}`)
+}
+
+const smartAddVertex = async (
+  vertex: { label: string; x: number; y: number; type: NodeType; id?: number; addr?: number },
+  root = vertices
+) => {
+  const existingNode = root.find(v => v.label === vertex.label)
+  if (existingNode) {
+    const relation = await slice.elementVertex.link(Vertex`${existingNode.addr}`, { x: vertex.x, y: vertex.y })
+    console.logMediumSeaGreen('Vertex created:', `id ${relation.ref.addr}`)
+    return { ...vertex, id: relation.ref.addr, addr: existingNode.addr, type: existingNode.type }
+  } else {
+    const newVertex = await new Vertex({
+      customType: vertex.type,
+      name: vertex.label,
+      sc: ScType.NodeVarClass,
+      is: { elementVertex: { value: slice, relation: { x: vertex.x, y: vertex.y } } },
+    }).create
+    console.logMediumSeaGreen('Vertex created:', `addr ${vertex.addr}`)
+    return { ...vertex, id: newVertex.relations[0], addr: newVertex.ref.addr }
+  }
+}
+
+const smartDeleteVertex = async (node: { addr: number; id: number }, root = vertices) => {
+  const anotherVertex = root.some(v => v.addr === node.addr && v.id !== node.id)
+  if (anotherVertex) await ElementVertex`${node.id}`.ref.delete
+  else await Vertex`${node.addr}`.ref.delete
+  console.logDeepPink('Vertex deleted:', anotherVertex ? `id ${node.id}` : `addr ${node.addr}`)
 }
 
 /**
@@ -146,9 +194,26 @@ const addGroup = async (group: GraphGroup) => {
  * @param node GraphNode object the label belongs to
  * @param label The new label value
  */
-const changeNodeLabel = async (node: GraphNodeExtended, label: string) => {
-  node.label = label
-  await Vertex`${node.addr}`.name.update(label)
+const changeNodeLabel = async (reactiveNode: GraphNodeExtended, label: string) => {
+  if (reactiveNode.label === label) return
+  const untrackedVertices = vertices.map(_ => ({ ..._ })) as typeof vertices
+  const untrackedEdgeIds = edgeIds.map(_ => ({ ..._ })) as typeof edgeIds
+  const mutableUntrackedEdgeIds = edgeIds.map(_ => ({ ..._ })) as typeof edgeIds
+  reactiveNode.label = label
+  const node = { ...reactiveNode }
+  const vertex = await smartAddVertex({ ...node, label }, untrackedVertices)
+  reactiveNode.type = vertex.type
+  for (const edge of untrackedEdgeIds) {
+    if (edge.source === node.id) {
+      await smartAddEdge({ from: vertex.addr, to: edge.to, source: vertex.id, target: edge.target, type: edge.type }, mutableUntrackedEdgeIds)
+      await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+    }
+    if (edge.target === node.id) {
+      await smartAddEdge({ from: edge.from, to: vertex.addr, source: edge.source, target: vertex.id, type: edge.type }, mutableUntrackedEdgeIds)
+      await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+    }
+  }
+  smartDeleteVertex(node, untrackedVertices)
 }
 
 /**
