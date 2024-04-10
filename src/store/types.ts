@@ -62,6 +62,12 @@ export interface App {
     sc: ScType.NodeVarStruct
   }
 
+  AppWorkspaceToolsSlice: {
+    opened: 'SetOfButtons' | 'SetOfActions' | 'Action'
+    arg_selector: ''
+    args: ''
+  }
+
   AppWorkspaceTools: {
     buttons: 'SetOfButtons'
   }

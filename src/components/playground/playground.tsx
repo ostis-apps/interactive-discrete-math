@@ -2,6 +2,7 @@ import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
+import { executeAction } from '../../store/slices/agents'
 import { navigation } from '../../store/slices/navigation'
 import { OptionState } from '../../store/slices/workspace-tools'
 import { useWorkspaceTools } from '../../store/store'
@@ -9,7 +10,6 @@ import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
-import { executeAction } from '../../store/slices/workspace-tools-new'
 
 export const Playground = () => {
   const { gotoLanding } = navigation
