@@ -58,6 +58,7 @@ export interface App {
   }
   Group: {
     element_vertex: 'Vertex'
+    element_oredge: 'Edge'
     sc: ScType.NodeVarStruct
   }
 

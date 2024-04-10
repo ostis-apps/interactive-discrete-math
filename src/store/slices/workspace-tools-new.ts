@@ -47,12 +47,20 @@ export const executeAction = async (args: number[]) => {
     const vertices = await group.element_vertex.ref.many
     console.log(vertices)
 
+    // Get the list of actual edges inside the solution graph
+    const oredges = await group.element_oredge.get({ ref: true, from: { ref: { addr: 'from' } }, to: { ref: { addr: 'to' } } })
+
     // Create a set for new "views" of the vertices inside the workspace
     const elementsReq = new SetOfElementVertices().create
 
     // Generate positions of the vertices
     const nodes = vertices.map(vertex => ({ id: vertex.ref.addr, x: 0, y: 0, vertex }))
-    simulate({ nodes, edges: [] }, { strength: -16 })
+    const edges = oredges.map(edge => {
+      const sourceIndex = nodes.findIndex(n => n.id === edge.from)
+      const targetIndex = nodes.findIndex(n => n.id === edge.to)
+      return { id: edge.ref.ref.addr, source: nodes[sourceIndex], target: nodes[targetIndex], sourceIndex, targetIndex, value: edge.ref }
+    })
+    simulate({ nodes, edges }, { strength: -16 })
 
     // Await the creation of a set for new "views" of the vertices inside the workspace
     const elements = await elementsReq
@@ -62,13 +70,20 @@ export const executeAction = async (args: number[]) => {
       nodes.map(node => AppWorkspace`example`.elementVertex.link(node.vertex, { x: node.x, y: node.y, is: { element: elements } }))
     )
 
+    // Create new "view" of the edges inside the workspace
+    await Promise.all(
+      edges.map(edge =>
+        AppWorkspace`example`.elementEdge.link(edge.value, { source: relations[edge.sourceIndex], target: relations[edge.targetIndex] })
+      )
+    )
+
     await Promise.all([
       // Assiciate new "view" of the group inside the workspace with the set of new "views" of the vertices
       elements.element.link(relations),
-  
+
       // Create new "view" of the group inside the workspace with its attributes
       AppWorkspace`example`.elementGroup.link(group, { elements }),
-  
+
       // Make the solution a Group
       Group.element.link(group),
     ])

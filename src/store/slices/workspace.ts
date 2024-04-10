@@ -185,8 +185,11 @@ const addGroup = async (group: GraphGroup) => {
   const elements = await new SetOfElementVertices().create
   const newGroup = await new Group({ is: { elementGroup: { value: slice, relation: { elements } } } }).create
   for (const element of group.values) groupsArray.push({ addr: newGroup.ref.addr, id: newGroup.relations[0], element })
-  await elements.element.link(Array.from(group.values).map(id => ElementVertex`${id}`))
-  await newGroup.element_vertex.link(vertices.filter(vertex => group.values.has(vertex.id)).map(vertex => Vertex`${vertex.addr}}`))
+  await Promise.all([
+    elements.element.link(Array.from(group.values).map(id => ElementVertex`${id}`)),
+    newGroup.element_vertex.link(vertices.filter(vertex => group.values.has(vertex.id)).map(vertex => Vertex`${vertex.addr}}`)),
+    newGroup.element_oredge.link(edgeIds.filter(e => group.values.has(e.source) || group.values.has(e.target)).map(e => Edge`${e.addr}}`)),
+  ])
 }
 
 /**
