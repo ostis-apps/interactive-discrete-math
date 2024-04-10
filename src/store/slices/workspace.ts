@@ -245,5 +245,15 @@ const changeNodePosition = async (node: GraphNode, x: number, y: number) => {
   await ElementVertex`${node.id}`.y.write(y)
 }
 
+const removeNode = async (id: number) => {
+  for (const edge of edgeIds) {
+    if (edge.source === id || edge.target === id) {
+      smartDeleteEdge(edge)
+    }
+  }
+  const vertex = vertices.find(v => v.id === id)
+  if (vertex) smartDeleteVertex(vertex)
+}
+
 /** Workspace store slice */
-export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel, changeNodePosition }
+export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel, changeNodePosition, removeNode }

@@ -43,6 +43,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
           objectSelection={workspaceToolsSlice.groupSelection}
           changeNodePosition={workspace.changeNodePosition}
+          removeNode={workspace.removeNode}
         />
       ) : (
         <div style={{ width: w, height: h }}></div>
