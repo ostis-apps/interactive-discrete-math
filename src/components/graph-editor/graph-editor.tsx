@@ -3,6 +3,10 @@ import { useSignal } from '@preact/signals'
 import { DeepSignal, deepSignal } from 'deepsignal'
 import { useEffect } from 'preact/hooks'
 import { JSX } from 'preact/jsx-runtime'
+import { CgArrowsExpandUpRight } from 'react-icons/cg'
+import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
+import { MdOutlineCategory } from 'react-icons/md'
+import { PiSelectionAllBold } from 'react-icons/pi'
 import { workspace } from '../../store/slices/workspace'
 import { workspaceToolsSlice } from '../../store/slices/workspace-tools'
 
@@ -44,6 +48,13 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           objectSelection={workspaceToolsSlice.groupSelection}
           changeNodePosition={workspace.changeNodePosition}
           removeNode={workspace.removeNode}
+          buttonIcons={{
+            type: <MdOutlineCategory />,
+            arrow: <CgArrowsExpandUpRight />,
+            group: <PiSelectionAllBold />,
+            rename: <LuPencilLine />,
+            delete: <LuTrash2 />,
+          }}
         />
       ) : (
         <div style={{ width: w, height: h }}></div>
