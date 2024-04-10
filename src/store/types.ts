@@ -69,7 +69,7 @@ export interface App {
   }
 
   Answer: {
-    element_1: 'Group'
+    element_1: 'AnotherGroup'
   }
 
   Runner: {
@@ -126,6 +126,11 @@ export interface App {
   }
 
   SetOfGroups: {
-    element: 'Group'
+    element_1: 'ElementGroup_'
+    element_2: 'ElementGroup_'
   }
+  ElementGroup_: {
+    to: 'Group_'
+  }
+  Group_: {}
 }

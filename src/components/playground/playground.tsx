@@ -158,7 +158,7 @@ export const Playground = () => {
                         </Button>
                       ))}
                       {workspaceToolsNew.openedArguments.value.every(_ => _.value) && (
-                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(workspaceToolsNew.openedArguments.value.map(_ => _.value.ref.addr))}>
+                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(workspaceToolsNew.openedArguments.value.map(_ => _.value))}>
                           Готово
                         </Button>
                       )}

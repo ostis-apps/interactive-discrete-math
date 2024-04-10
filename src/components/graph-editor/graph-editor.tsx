@@ -45,7 +45,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           height={h}
           padding={15}
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
-          objectSelection={workspaceToolsNew.groupSelection}
+          objectSelection={workspaceToolsNew.groupSelection.value}
           changeNodePosition={workspace.changeNodePosition}
           removeNode={workspace.removeNode}
           buttonIcons={{

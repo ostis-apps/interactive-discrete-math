@@ -1,5 +1,5 @@
 import { computed } from '@preact/signals';
-import { Action, ActionClass, AppWorkspaceToolsSlice, WorkspaceMenu, AgentType } from '../core.ts';
+import { Action, ActionClass, AgentType, AppWorkspaceToolsSlice, ElementGroup, WorkspaceMenu } from '../core.ts';
 
 
 const slice = (await AppWorkspaceToolsSlice`default`.ref.one)!
@@ -16,7 +16,10 @@ const closeMenu = async () => {
 }
 
 const actionClasses = await WorkspaceMenu`actions`.decomposition.element.get({ name: true, icon: true, ref: true }).reactive
-const actions = await WorkspaceMenu`actions`.decomposition.element.get({ decomposition: { element: { name: 'name', ref: 'ref' } }, ref: { addr: 'actionClassAddr' } }).reactive
+const actions = await WorkspaceMenu`actions`.decomposition.element.get({
+  decomposition: { element: { name: 'name', ref: 'ref' } },
+  ref: { addr: 'actionClassAddr' },
+}).reactive
 
 
 
@@ -34,48 +37,84 @@ const closeActionClass = async () => {
 
 
 
-
 const openedAction = await slice.opened.where(Action as never).get({
   agentArg: { ref: 'agentArg' },
   agentType: { ref: { addr: 'agentTypeAddr' } },
   name: true
 }).reactive
+
+const openActions = async (ref: unknown) => {
+  await Promise.all([
+    slice.args.element_1.unlink(),
+    slice.args.element_2.unlink(),
+    slice.argSelector.unlink(),
+    slice.opened.unlink(Action.element),
+  ])
+  await slice.opened.link(ref as never)
+}
+
+const closeAction = async () => {
+  await slice.opened.unlink(Action.element)
+}
+
 const unaryOperation = await AgentType.$`question_using_unary_operation`.ref.addr.one
 const binaryOperation = await AgentType.$`question_using_binary_operation`.ref.addr.one
 
-const actionArguments = await slice.args.element.ref.many.reactive
+const actionArgument1 = await slice.args.element_1.ref.addr.one.reactive
+const actionArgument2 = await slice.args.element_2.ref.addr.one.reactive
 const actionArgSelector = await slice.argSelector.one.reactive
 
 const openedArguments = computed(() => {
   if (!openedAction[0]) return []
   if (openedAction[0].agentTypeAddr === unaryOperation) return [
-    { title: 'Выберите граф', value: actionArguments[0], selected: actionArgSelector.value === 0 }
+    { title: 'Выберите граф', value: actionArgument1.value, selected: actionArgSelector.value === 0 }
   ]
   if (openedAction[0].agentTypeAddr === binaryOperation) return [
-    { title: 'Выберите граф', value: actionArguments[0], selected: actionArgSelector.value === 0 },
-    { title: 'Выберите граф', value: actionArguments[1], selected: actionArgSelector.value === 1 }
+    { title: 'Выберите граф', value: actionArgument1.value, selected: actionArgSelector.value === 0 },
+    { title: 'Выберите граф', value: actionArgument2.value, selected: actionArgSelector.value === 1 }
   ]
   return []
 })
 
-const openActions = async (ref: unknown) => {
-  await slice.opened.unlink(Action.element as never)
-  await slice.opened.link(ref as never)
-}
 
-const closeAction = async () => {
-  await slice.opened.unlink(Action.element as never)
-}
 
 const setArgSelector = async (index: number) => {
-  await slice.argSelector.write(index)
+  if (actionArgSelector.value === index) {
+    await slice.argSelector.unlink()
+    return
+  }
+
+  if (actionArgSelector.value === undefined) await slice.argSelector.link(index)
+  else await slice.argSelector.write(index)
+
   actionArgSelector.value = index
 }
 
 
-
 type GroupSelection = { type: 'group'; action: (id: number) => void; values: Set<number>; indicators: Map<number, string> } | undefined
-const groupSelection: GroupSelection | undefined = undefined
+const groupSelection = computed<GroupSelection | undefined>(() => {
+  if (actionArgSelector.value === undefined) return undefined
+
+  const indicators = new Map()
+  if (actionArgument1.value) indicators.set(actionArgument1.value, '1')
+  if (actionArgument2.value) indicators.set(actionArgument2.value, '2')
+  return {
+    type: 'group',
+    action: async (id: number) => {
+      console.logDarkOrange('id', id)
+      const current = actionArgSelector.value === 0 ? actionArgument1.value : actionArgument2.value
+      const another = actionArgSelector.value === 0 ? actionArgument2.value : actionArgument1.value
+      const currentElement = actionArgSelector.value === 0 ? slice.args.element_1 : slice.args.element_2
+      const anotherElement = actionArgSelector.value === 0 ? slice.args.element_2 : slice.args.element_1
+      if (another === id) anotherElement.unlink()
+      if (current === id) currentElement.unlink()
+      else currentElement.update(ElementGroup`${id}` as never)
+    },
+    indicators,
+    values: new Set(indicators.keys()),
+  }
+})
+
 
 
 export const workspaceToolsNew = {
@@ -99,44 +138,7 @@ export const workspaceToolsNew = {
   unaryOperation,
 
   openedArguments,
-  actionArguments,
   setArgSelector,
 
   groupSelection,
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const buttonsResponse = await AppWorkspaceTools`default`.buttons.element.get({ ref: true, name: 'title', icon: true })
-// const buttons = Object.fromEntries(buttonsResponse.map(button => [button.ref.ref.addr, { title: button.title, icon: button.icon }]))
-
-// console.log('buttons', buttons)
-
-// const acitionsResponse = await AppWorkspaceTools`default`.buttons.element.get({
-//   ref: 'buttonRef',
-//   decomposition: {
-//     element: {
-//       name: 'title',
-//       agentArg: { ref: 'agentArg' },
-//       agentType: { ref: 'agentType' },
-//       ref: 'ref',
-//     },
-//   },
-// })
-
-// const actions = acitionsResponse.map(({ ref, ...action }) => [ref.ref.addr, action])
-// console.log('actions', actions)
