@@ -7,8 +7,7 @@ import { CgArrowsExpandUpRight } from 'react-icons/cg'
 import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { MdOutlineCategory } from 'react-icons/md'
 import { PiSelectionAllBold } from 'react-icons/pi'
-import { workspace } from '../../store/slices/workspace'
-import { workspaceToolsNew } from '../../store/slices/workspace-tools-new'
+import { actionsMenuSlice, workspaceSlice } from '../../store/slices/workspace'
 
 type Props = {
   w: number
@@ -24,9 +23,9 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
       // elements.value.$nodes!.value = workspace.vertices.map(v => ({ ...v, x: 0, y: 0 }))
       // elements.value.edges = workspace.edges.value.map(e => ({ ...e, source: { ...e.source, x: 0, y: 0 }, target: { ...e.target, x: 0, y: 0 } }))
       // setTimeout(() => {
-      elements.value.$edges = workspace.edges
-      elements.value.$groups = workspace.groups
-      elements.value.$nodes!.value = workspace.vertices
+      elements.value.$edges = workspaceSlice.edges
+      elements.value.$groups = workspaceSlice.groups
+      elements.value.$nodes!.value = workspaceSlice.vertices
       // }, 20);
     }
     effect()
@@ -37,17 +36,17 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
       {elements.value ? (
         <Graph
           elements={elements.value}
-          addNode={workspace.addNode}
-          addEdge={workspace.addEdge}
-          addGroup={workspace.addGroup}
-          changeNodeLabel={workspace.changeNodeLabel}
+          addNode={workspaceSlice.addNode}
+          addEdge={workspaceSlice.addEdge}
+          addGroup={workspaceSlice.addGroup}
+          changeNodeLabel={workspaceSlice.changeNodeLabel}
           width={w}
           height={h}
           padding={15}
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
-          objectSelection={workspaceToolsNew.groupSelection.value}
-          changeNodePosition={workspace.changeNodePosition}
-          removeNode={workspace.removeNode}
+          objectSelection={actionsMenuSlice.groupSelection.value}
+          changeNodePosition={workspaceSlice.changeNodePosition}
+          removeNode={workspaceSlice.removeNode}
           buttonIcons={{
             type: <MdOutlineCategory />,
             arrow: <CgArrowsExpandUpRight />,

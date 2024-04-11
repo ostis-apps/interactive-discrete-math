@@ -2,19 +2,16 @@ import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
-import { executeAction } from '../../store/slices/agents'
+import { executeAction } from '../../store/slices/workspace/agents'
 import { navigation } from '../../store/slices/navigation'
-import { OptionState } from '../../store/slices/workspace-tools'
-import { useWorkspaceTools } from '../../store/store'
+import { actionsMenuSlice } from '../../store/slices/workspace'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
-import { workspaceToolsNew } from '../../store/slices/workspace-tools-new'
 
 export const Playground = () => {
   const { gotoLanding } = navigation
-  const workspaceTools = useWorkspaceTools()
 
   const ref = useRef<HTMLDivElement>(null)
   const width = useSignal(0)
@@ -64,7 +61,7 @@ export const Playground = () => {
           </div>
 
           <ul class='gap-y- flex flex-col'>
-            {workspaceTools.displayedMyOptions.map(({ type: _type, title, state }) => (
+            {/* {workspaceTools.displayedMyOptions.map(({ type: _type, title, state }) => (
               <li class='flex cursor-default items-center gap-x-2 rounded border border-transparent px-3 py-1.5 hover:border-inherit'>
                 <span class='text-sm text-green-600'>
                   {
@@ -89,14 +86,14 @@ export const Playground = () => {
                 </span>
                 <Link>{title}</Link>
               </li>
-            ))}
+            ))} */}
           </ul>
 
           <Button class='mt-3' onClick={() => {
-            if (workspaceToolsNew.openedMenu.value) workspaceToolsNew.closeMenu()
-            else workspaceToolsNew.openActionsMenu()
+            if (actionsMenuSlice.openedMenu.value) actionsMenuSlice.closeMenu()
+            else actionsMenuSlice.openActionsMenu()
           }}>
-            {workspaceToolsNew.openedMenu.value ? (
+            {actionsMenuSlice.openedMenu.value ? (
               <>
                 {/* <FaAngleLeft /> */}
                 Добавление...
@@ -109,12 +106,12 @@ export const Playground = () => {
             )}
           </Button>
 
-          {workspaceToolsNew.openedMenu.value &&
-            (!workspaceToolsNew.openedActionClass.value ? (
+          {actionsMenuSlice.openedMenu.value &&
+            (!actionsMenuSlice.openedActionClass.value ? (
               <div class='mt-3 grid grid-cols-2 gap-3 px-3'>
-                {workspaceToolsNew.actionClasses.map(({ name, icon, ref }) => (
+                {actionsMenuSlice.actionClasses.map(({ name, icon, ref }) => (
                   <Button key={ref.ref.addr} class='h-24 flex-col gap-y-1 text-center text-sm' onClick={() => {
-                    workspaceToolsNew.openActionsClass(ref)
+                    actionsMenuSlice.openActionsClass(ref)
                   }}>
                     <PlaygroundOptionTypeIcon icon={icon} />
                     {name}
@@ -123,15 +120,15 @@ export const Playground = () => {
               </div>
             ) : (
               <>
-                <Button class='mt-3' onClick={() => workspaceToolsNew.closeActionClass()}>
-                  {workspaceToolsNew.openedActionClassName.value ?? ''}
+                <Button class='mt-3' onClick={() => actionsMenuSlice.closeActionClass()}>
+                  {actionsMenuSlice.openedActionClassName.value ?? ''}
                 </Button>
-                {!workspaceToolsNew.openedAction[0] ? (
+                {!actionsMenuSlice.openedAction[0] ? (
                   <div class='mx-3 mt-3 flex max-h-72 flex-col gap-y-2 overflow-y-auto rounded px-2 scroll-default'>
-                    {workspaceToolsNew.actions.length ? (
-                      workspaceToolsNew.actions.map(({ name, ref, actionClassAddr }) => actionClassAddr === workspaceToolsNew.openedActionClass.value ? (
+                    {actionsMenuSlice.actions.length ? (
+                      actionsMenuSlice.actions.map(({ name, ref, actionClassAddr }) => actionClassAddr === actionsMenuSlice.openedActionClass.value ? (
                         <Button key={ref.ref.addr} onClick={() => {
-                          workspaceToolsNew.openActions(ref)
+                          actionsMenuSlice.openAction(ref)
                         }}>
                           {name}
                         </Button>
@@ -142,23 +139,23 @@ export const Playground = () => {
                   </div>
                 ) : (
                   <>
-                    <Button class='mt-3' onClick={() => workspaceToolsNew.closeAction()}>
-                      {workspaceToolsNew.openedAction[0]?.name}
+                    <Button class='mt-3' onClick={() => actionsMenuSlice.closeAction()}>
+                      {actionsMenuSlice.openedAction[0]?.name}
                     </Button>
 
                     <div class='mt-3 flex-wrap gap-3 px-3 centeric'>
-                      {workspaceToolsNew.openedArguments.value.map(({ title, value, selected }, index) => (
+                      {actionsMenuSlice.openedArguments.value.map(({ title, value, selected }, index) => (
                         <Button
                           class={`relative h-20 !w-32 flex-col gap-y-1 text-center text-sm ${selected ? 'border-primary bg-gray-100' : '!text-gray-400 hover:border-gray-300'}`}
-                          onClick={() => workspaceToolsNew.setArgSelector(index)}
+                          onClick={() => actionsMenuSlice.setArgSelector(index)}
                         >
                           <span class='text-xl'>{value ? <PiSelectionAllFill /> : <PiSelectionBold />}</span>
                           {value ? String(value) : title}
                           <span class='absolute right-1.5 top-1.5 text-xs'>{index + 1}</span>
                         </Button>
                       ))}
-                      {workspaceToolsNew.openedArguments.value.every(_ => _.value) && (
-                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(workspaceToolsNew.openedArguments.value.map(_ => _.value))}>
+                      {actionsMenuSlice.openedArguments.value.every(_ => _.value) && (
+                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(actionsMenuSlice.openedArguments.value.map(_ => _.value!))}>
                           Готово
                         </Button>
                       )}

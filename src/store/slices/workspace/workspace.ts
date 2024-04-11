@@ -1,8 +1,8 @@
 import { EdgeType, GraphEdge, GraphGroup, GraphNode, NodeType } from '@ennealand/enigraph'
 import { ScType, deepSignal } from '@ennealand/enneract'
 import { computed } from '@preact/signals'
-import { AppWorkspace, Edge, ElementEdge, ElementGroup, ElementVertex, Group, SetOfElementVertices, Vertex } from '../core.ts'
-import { $defined } from '../store.ts'
+import { AppWorkspace, Edge, ElementEdge, ElementGroup, ElementVertex, Group, SetOfElementVertices, Vertex } from '../../core.ts'
+import { $defined } from '../../utils.ts'
 
 const slice = (await AppWorkspace`example`.ref.one)!
 
@@ -260,4 +260,4 @@ const removeNode = async (id: number) => {
 }
 
 /** Workspace store slice */
-export const workspace = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel, changeNodePosition, removeNode }
+export const workspaceSlice = { vertices, edges, groups, addNode, addEdge, addGroup, changeNodeLabel, changeNodePosition, removeNode }

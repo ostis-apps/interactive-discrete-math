@@ -1,7 +1,7 @@
 import { effect } from '@preact/signals'
-import { simulate } from '../../components/graph-editor/simulation.ts'
-import { AgentArg, AgentType, AppWorkspace, ElementGroup, Group, Question, Runner, SetOfElementVertices } from '../core.ts'
-import { workspaceToolsSlice } from './workspace-tools.ts'
+import { actionsMenuSlice } from '.'
+import { simulate } from '../../../components/graph-editor/simulation.ts'
+import { AgentArg, AgentType, AppWorkspace, ElementGroup, Group, Question, Runner, SetOfElementVertices } from '../../core.ts'
 
 export const executeAction = async (args: number[]) => {
   const question = await new Question({
@@ -68,6 +68,6 @@ export const executeAction = async (args: number[]) => {
       Group.element.link(group),
     ])
 
-    workspaceToolsSlice.resetArguments()
+    actionsMenuSlice.clearArgs()
   })
 }
