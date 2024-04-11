@@ -1,10 +1,11 @@
 import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
+import { LuTrash2 } from 'react-icons/lu'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
-import { executeAction } from '../../store/slices/workspace/agents'
 import { navigation } from '../../store/slices/navigation'
-import { actionsMenuSlice } from '../../store/slices/workspace'
+import { actionsMenuSlice, activeActionsSlice } from '../../store/slices/workspace'
+import { executeAction } from '../../store/slices/workspace/agents'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
@@ -61,38 +62,47 @@ export const Playground = () => {
           </div>
 
           <ul class='gap-y- flex flex-col'>
-            {/* {workspaceTools.displayedMyOptions.map(({ type: _type, title, state }) => (
-              <li class='flex cursor-default items-center gap-x-2 rounded border border-transparent px-3 py-1.5 hover:border-inherit'>
-                <span class='text-sm text-green-600'>
-                  {
+            {activeActionsSlice.activeActions.value.map(action => (
+              <li class='group grid cursor-default grid-cols-[1fr,auto] items-center gap-x-2 rounded border border-transparent p-0.5 hover:border-inherit'>
+                <div class='flex w-full items-center gap-x-2 px-2.5 py-1'>
+                  <span class='text-sm text-green-600'>
                     {
-                      [OptionState.True]: (
-                        <span class='text-sm text-green-600'>
-                          <FaCheck />
-                        </span>
-                      ),
-                      [OptionState.False]: (
-                        <span class='text-sm text-red-600'>
-                          <FaXmark />
-                        </span>
-                      ),
-                      [OptionState.Details]: (
-                        <span class='text-sm text-red-600'>
-                          <FaXmark />
-                        </span>
-                      ),
-                    }[state]
-                  }
-                </span>
-                <Link>{title}</Link>
+                      {
+                        True: (
+                          <span class='text-sm text-green-600'>
+                            <FaCheck />
+                          </span>
+                        ),
+                        False: (
+                          <span class='text-sm text-red-600'>
+                            <FaXmark />
+                          </span>
+                        ),
+                        Details: (
+                          <span class='text-sm text-red-600'>
+                            <FaXmark />
+                          </span>
+                        ),
+                      }['Details']
+                    }
+                  </span>
+                  <Link>{action.agent.name}</Link>
+                </div>
+                <div class='h-8 w-8 cursor-pointer rounded-sm text-lg text-gray-400 opacity-30 centeric hover:bg-gray-100 hover:text-gray-700 group-hover:opacity-100'
+                onClick={() => activeActionsSlice.deleteActiveAction(action.addr)}>
+                  <LuTrash2 />
+                </div>
               </li>
-            ))} */}
+            ))}
           </ul>
 
-          <Button class='mt-3' onClick={() => {
-            if (actionsMenuSlice.openedMenu.value) actionsMenuSlice.closeMenu()
-            else actionsMenuSlice.openActionsMenu()
-          }}>
+          <Button
+            class='mt-3'
+            onClick={() => {
+              if (actionsMenuSlice.openedMenu.value) actionsMenuSlice.closeMenu()
+              else actionsMenuSlice.openActionsMenu()
+            }}
+          >
             {actionsMenuSlice.openedMenu.value ? (
               <>
                 {/* <FaAngleLeft /> */}
@@ -110,9 +120,13 @@ export const Playground = () => {
             (!actionsMenuSlice.openedActionClass.value ? (
               <div class='mt-3 grid grid-cols-2 gap-3 px-3'>
                 {actionsMenuSlice.actionClasses.map(({ name, icon, ref }) => (
-                  <Button key={ref.ref.addr} class='h-24 flex-col gap-y-1 text-center text-sm' onClick={() => {
-                    actionsMenuSlice.openActionsClass(ref)
-                  }}>
+                  <Button
+                    key={ref.ref.addr}
+                    class='h-24 flex-col gap-y-1 text-center text-sm'
+                    onClick={() => {
+                      actionsMenuSlice.openActionsClass(ref)
+                    }}
+                  >
                     <PlaygroundOptionTypeIcon icon={icon} />
                     {name}
                   </Button>
@@ -126,13 +140,18 @@ export const Playground = () => {
                 {!actionsMenuSlice.openedAction[0] ? (
                   <div class='mx-3 mt-3 flex max-h-72 flex-col gap-y-2 overflow-y-auto rounded px-2 scroll-default'>
                     {actionsMenuSlice.actions.length ? (
-                      actionsMenuSlice.actions.map(({ name, ref, actionClassAddr }) => actionClassAddr === actionsMenuSlice.openedActionClass.value ? (
-                        <Button key={ref.ref.addr} onClick={() => {
-                          actionsMenuSlice.openAction(ref)
-                        }}>
-                          {name}
-                        </Button>
-                      ) : null)
+                      actionsMenuSlice.actions.map(({ name, ref, actionClassAddr }) =>
+                        actionClassAddr === actionsMenuSlice.openedActionClass.value ? (
+                          <Button
+                            key={ref.ref.addr}
+                            onClick={() => {
+                              actionsMenuSlice.openAction(ref)
+                            }}
+                          >
+                            {name}
+                          </Button>
+                        ) : null
+                      )
                     ) : (
                       <div class='gap-2 rounded border-transparent text-gray-700 centeric'>- - -</div>
                     )}
@@ -155,7 +174,10 @@ export const Playground = () => {
                         </Button>
                       ))}
                       {actionsMenuSlice.openedArguments.value.every(_ => _.value) && (
-                        <Button class='w-[16.75rem] text-center text-sm' onClick={() => executeAction(actionsMenuSlice.openedArguments.value.map(_ => _.value!))}>
+                        <Button
+                          class='w-[16.75rem] text-center text-sm'
+                          onClick={() => executeAction(actionsMenuSlice.openedArguments.value.map(_ => _.value!))}
+                        >
                           Готово
                         </Button>
                       )}
