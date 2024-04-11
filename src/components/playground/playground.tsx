@@ -65,8 +65,8 @@ export const Playground = () => {
 
           <ul class='flex flex-col gap-y-2'>
             {activeActionsSlice.activeActions.value.map(action => (
-              <li class='group rounded border p-0.5 border-transparent hover:border-inherit'>
-                <div class='grid cursor-default grid-cols-[1fr,auto] items-center gap-x-2'>
+              <li class='group cursor-pointer rounded border border-transparent p-0.5 shadow-[0_0.5px_0px_0.5px_#0000000d] hover:border-inherit'>
+                <div class='grid grid-cols-[1fr,auto] items-center gap-x-2'>
                   <div class='flex w-full items-center gap-x-2 px-2.5 py-1'>
                     <span class='text-sm text-green-600'>
                       {
@@ -101,14 +101,16 @@ export const Playground = () => {
                   </div>
                 </div>
                 <div class='flex flex-wrap gap-x-2 gap-y-1 px-2.5 pb-2 pt-1'>
-                  {action.args[0] && <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
-                    <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
-                      1
-                    </span>
-                    <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
-                      {action.args[0]}
-                    </span>
-                  </div>}
+                  {action.args[0] && (
+                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
+                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
+                        1
+                      </span>
+                      <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
+                        {action.args[0]}
+                      </span>
+                    </div>
+                  )}
                   {action.args[1] && (
                     <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
                       <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
@@ -119,14 +121,16 @@ export const Playground = () => {
                       </span>
                     </div>
                   )}
-                  {action.answer && <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
-                    <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
-                      Результат
-                    </span>
-                    <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
-                      {action.answer}
-                    </span>
-                  </div>}
+                  {action.answer && (
+                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
+                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
+                        Результат
+                      </span>
+                      <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
+                        {action.answer}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </li>
             ))}
