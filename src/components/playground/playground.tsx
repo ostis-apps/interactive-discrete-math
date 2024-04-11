@@ -1,6 +1,7 @@
 import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
+import { HiMiniSquares2X2 } from 'react-icons/hi2'
 import { LuTrash2 } from 'react-icons/lu'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
@@ -19,7 +20,8 @@ export const Playground = () => {
   const height = useSignal(0)
 
   const resize = () => {
-    const rect = ref.current!.getBoundingClientRect()
+    if (!ref.current) return
+    const rect = ref.current.getBoundingClientRect()
     if (!rect.width && !rect.height) return
     width.value = Math.round(rect.width) - 360
     height.value = Math.round(rect.height) * 0.95 - 2
@@ -61,36 +63,70 @@ export const Playground = () => {
             </div>
           </div>
 
-          <ul class='gap-y- flex flex-col'>
+          <ul class='flex flex-col gap-y-2'>
             {activeActionsSlice.activeActions.value.map(action => (
-              <li class='group grid cursor-default grid-cols-[1fr,auto] items-center gap-x-2 rounded border border-transparent p-0.5 hover:border-inherit'>
-                <div class='flex w-full items-center gap-x-2 px-2.5 py-1'>
-                  <span class='text-sm text-green-600'>
-                    {
+              <li class='group rounded border p-0.5 border-transparent hover:border-inherit'>
+                <div class='grid cursor-default grid-cols-[1fr,auto] items-center gap-x-2'>
+                  <div class='flex w-full items-center gap-x-2 px-2.5 py-1'>
+                    <span class='text-sm text-green-600'>
                       {
-                        True: (
-                          <span class='text-sm text-green-600'>
-                            <FaCheck />
-                          </span>
-                        ),
-                        False: (
-                          <span class='text-sm text-red-600'>
-                            <FaXmark />
-                          </span>
-                        ),
-                        Details: (
-                          <span class='text-sm text-red-600'>
-                            <FaXmark />
-                          </span>
-                        ),
-                      }['Details']
-                    }
-                  </span>
-                  <Link>{action.agent.name}</Link>
+                        {
+                          True: (
+                            <span class='text-sm text-green-600'>
+                              <FaCheck />
+                            </span>
+                          ),
+                          False: (
+                            <span class='text-sm text-red-600'>
+                              <FaXmark />
+                            </span>
+                          ),
+                          Details: (
+                            <span class='text-xs text-blue-texture'>
+                              <HiMiniSquares2X2 />
+                            </span>
+                          ),
+                        }['Details']
+                      }
+                    </span>
+                    <span class='pt-[0.04rem]'>
+                      <Link>{action.agent.name}</Link>
+                    </span>
+                  </div>
+                  <div
+                    class='h-8 w-8 cursor-pointer rounded-sm text-lg text-gray-400 opacity-30 centeric hover:bg-gray-100 hover:text-gray-700 group-hover:opacity-100'
+                    onClick={() => activeActionsSlice.deleteActiveAction(action.addr)}
+                  >
+                    <LuTrash2 />
+                  </div>
                 </div>
-                <div class='h-8 w-8 cursor-pointer rounded-sm text-lg text-gray-400 opacity-30 centeric hover:bg-gray-100 hover:text-gray-700 group-hover:opacity-100'
-                onClick={() => activeActionsSlice.deleteActiveAction(action.addr)}>
-                  <LuTrash2 />
+                <div class='flex flex-wrap gap-x-2 gap-y-1 px-2.5 pb-2 pt-1'>
+                  {action.args[0] && <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
+                    <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
+                      1
+                    </span>
+                    <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
+                      {action.args[0]}
+                    </span>
+                  </div>}
+                  {action.args[1] && (
+                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
+                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
+                        2
+                      </span>
+                      <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
+                        {action.args[1]}
+                      </span>
+                    </div>
+                  )}
+                  {action.answer && <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
+                    <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
+                      Результат
+                    </span>
+                    <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
+                      {action.answer}
+                    </span>
+                  </div>}
                 </div>
               </li>
             ))}

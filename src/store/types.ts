@@ -128,6 +128,7 @@ export interface App {
   SetOfGroups: {
     element_1: 'ElementGroup_'
     element_2: 'ElementGroup_'
+    element_3: 'ElementGroup_'
   }
   ElementGroup_: {
     to: 'Group_'

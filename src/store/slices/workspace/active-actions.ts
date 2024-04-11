@@ -11,6 +11,7 @@ const activeActionRefs = await slice.properties.element.get({
 type Args = {
   addr: number
   args: number[]
+  answer: number
   agent: { agentArg: RefValue<'AgentArg'>; agentType: RefValue<'AgentType'>; name: string }
 } & Disposable
 const args: Signal<ReadonlySignal<Args[]>> = signal(signal([]))
@@ -24,15 +25,17 @@ effect(async () => {
         action.addr,
         action.argsRef.element_1.ref.addr.one.reactive,
         action.argsRef.element_2.ref.addr.one.reactive,
+        action.argsRef.element_3.ref.addr.one.reactive,
         action.actionRef.get({ agentArg: { ref: 'agentArg' }, agentType: { ref: 'agentType' }, name: true }).reactive,
       ])
     )
   )
 
   args.value = computed(() =>
-    signals.map(([addr, e1, e2, agent]) => ({
+    signals.map(([addr, e1, e2, e3, agent]) => ({
       addr,
       args: [e1.value, e2.value],
+      answer: e3.value,
       agent: agent[0],
       [Symbol.dispose]: () => (e1[Symbol.dispose](), e2[Symbol.dispose](), agent[Symbol.dispose]()),
     }))
@@ -47,7 +50,6 @@ effect(async () => {
 const activeActions = computed(() => args.value.value)
 
 const deleteActiveAction = (addr: number) => {
-  ActiveAction`${addr}`.args.ref.delete
   ActiveAction`${addr}`.ref.delete
 } 
 

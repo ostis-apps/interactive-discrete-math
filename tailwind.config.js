@@ -11,6 +11,7 @@ export default {
       },
       colors: {
         primary: '#337ab7',
+        'blue-texture': '#388fd9',
       },
       transitionDuration: {
         45: '45ms'
@@ -32,6 +33,8 @@ export default {
     },
   ],
 }
+
+// shadow-[1px_2px_6px_#00000012]
 
 // '.line-link': {
 // color: '#337ab7',
