@@ -3,6 +3,9 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      screens: {
+        'sm': '475px',
+      },
       fontFamily: {
         nunito: 'Nunito, "Helvetica Neue", Helvetica, Arial, sans-serif',
       },

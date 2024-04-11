@@ -6,7 +6,7 @@ type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T
 const BaseLandingCard = ({ class: classname, children, ...props }: JSX.HTMLAttributes<HTMLButtonElement>) => {
   return (
     <button
-      class={`centeric h-40 w-52 flex-col rounded-md border bg-gray-50 text-center font-nunito text-lg font-bold ${classname}`}
+      class={`centeric h-40 sm:min-w-52 sm:w-52 w-full flex-col rounded-md border bg-gray-50 text-center font-nunito text-lg font-bold ${classname}`}
       {...props}
     >
       {children}
