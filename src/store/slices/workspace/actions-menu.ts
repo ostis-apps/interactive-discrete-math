@@ -47,7 +47,7 @@ const closeActionClass = async () => {
 
 const openedAction = await slice.opened.where(Action).get({
   agentArg: { ref: 'agentArg' },
-  agentType: { ref: { addr: 'agentTypeAddr' } },
+  agentType: { ref: 'agentType' },
   name: true,
 }).reactive
 
@@ -75,9 +75,9 @@ const actionArgSelector: Signal<number | undefined> = await slice.argSelector.on
 
 const openedArguments = computed(() => {
   if (!openedAction[0]) return []
-  if (openedAction[0].agentTypeAddr === unaryOperation)
+  if (openedAction[0].agentType.ref.addr === unaryOperation)
     return [{ title: 'Выберите граф', value: actionArgument1.value, selected: actionArgSelector.value === 0 }]
-  if (openedAction[0].agentTypeAddr === binaryOperation)
+  if (openedAction[0].agentType.ref.addr === binaryOperation)
     return [
       { title: 'Выберите граф', value: actionArgument1.value, selected: actionArgSelector.value === 0 },
       { title: 'Выберите граф', value: actionArgument2.value, selected: actionArgSelector.value === 1 },

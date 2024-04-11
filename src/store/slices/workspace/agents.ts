@@ -2,7 +2,7 @@ import { effect } from '@preact/signals'
 import { actionsMenuSlice } from '.'
 import { simulate } from '../../../components/graph-editor/simulation.ts'
 import { Action, ActiveAction, AppWorkspaceToolsSlice, ElementGroup, RefValue, SetOfGroups } from '../../core'
-import { AgentArg, AgentType, AppWorkspace, Group, Question, Runner, SetOfElementVertices } from '../../core.ts'
+import { AgentType, AppWorkspace, Group, Question, Runner, SetOfElementVertices } from '../../core.ts'
 export const slice = (await AppWorkspaceToolsSlice`default`.ref.one)!
 
 export const executeAction = async (args: number[]) => {
@@ -10,10 +10,10 @@ export const executeAction = async (args: number[]) => {
     element: new Runner({
       element_1: ElementGroup`${args[0]}`.to,
       element_2: ElementGroup`${args[1]}`.to,
-      element_3: AgentArg.$`nrel_graph_union`,
+      element_3: actionsMenuSlice.openedAction[0].agentArg,
     }),
   }).create
-  await AgentType.$`question_using_binary_operation`.element.link(question)
+  await actionsMenuSlice.openedAction[0].agentType.element.link(question)
   await AgentType.$`question_initiated`.element.link(question)
   console.log(question)
 
