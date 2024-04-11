@@ -15,6 +15,7 @@ const openActionsMenu = async () => {
 
 const closeMenu = async () => {
   await slice.opened.unlink()
+  await clearArgs()
 }
 
 const actionClasses = await WorkspaceMenu`actions`.decomposition.element.get({ name: true, icon: true, ref: true }).reactive
@@ -30,13 +31,14 @@ const actions = await WorkspaceMenu`actions`.decomposition.element.get({
 const openedActionClass = await slice.opened.where(ActionClass as never).ref.addr.one.reactive
 const openedActionClassName = computed(() => actionClasses.find(_ => _.ref.ref.addr === openedActionClass.value)?.name)
 
-const openActionsClass = async (ref: unknown) => {
+const openActionsClass = async (ref: any) => {
   await slice.opened.unlink(ActionClass.element as never, Action.element)
-  await slice.opened.link(ref as never)
+  await slice.opened.link(ref)
 }
 
 const closeActionClass = async () => {
   await slice.opened.unlink(ActionClass.element as never, Action.element)
+  await clearArgs()
 }
 
 // ========================================================== //
@@ -49,13 +51,15 @@ const openedAction = await slice.opened.where(Action).get({
   name: true,
 }).reactive
 
-const openAction = async (ref: unknown) => {
-  await Promise.all([clearArgs(), slice.opened.unlink(Action.element)])
-  await slice.opened.link(ref as never)
+const openAction = async (ref: any) => {
+  await slice.opened.unlink(Action.element)
+  await slice.opened.link(ref)
 }
 
 const closeAction = async () => {
+  openedAction.splice(0)
   await slice.opened.unlink(Action.element)
+  await clearArgs()
 }
 
 // ========================================================== //

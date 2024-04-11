@@ -13,7 +13,7 @@ type GraphEdgeExtended = GraphEdge & {
 }
 
 // Reset the workspace state:
-// await import('../reset.ts').then(mod => mod.resetWorkspace())
+// await import('../../reset.ts').then(mod => mod.resetWorkspace())
 
 /**
  * Array of verices data in the workspace
