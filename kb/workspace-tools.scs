@@ -53,9 +53,9 @@ app_workspace_tools_slice_default
   => nrel_arg_selector: [0];
   => nrel_args: ... (*
     <- concept_set_of_groups;;
-    -> fake_graph_group_1;;
-    -> fake_graph_group_2;;
-  *);;
+    -> rrel_1: fake_graph_group_1;;
+    -> rrel_2: fake_graph_group_2;;
+  *);
 
   => nrel_properties: ... (*
     <- concept_set_of_active_actions;;
