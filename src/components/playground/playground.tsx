@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
 import { HiMiniSquares2X2 } from 'react-icons/hi2'
-import { LuTrash2 } from 'react-icons/lu'
+import { LuLoader2, LuTrash2 } from 'react-icons/lu'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
 import { actionsMenuSlice, activeActionsSlice } from '../../store/slices/workspace'
@@ -133,16 +133,20 @@ export const Playground = () => {
                       </span>
                     </div>
                   )}
-                  {action.answer && (
-                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
-                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
-                        Результат
-                      </span>
-                      <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
-                        {action.answer}
-                      </span>
-                    </div>
-                  )}
+                  <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
+                    <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
+                      Результат
+                    </span>
+                    <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
+                      {action.answer ? (
+                        action.answer
+                      ) : (
+                        <div class='pt-[1px] [&_path]:stroke-[3] [&_svg]:animate-spin'>
+                          <LuLoader2 />
+                        </div>
+                      )}
+                    </span>
+                  </div>
                 </div>
               </li>
             ))}
