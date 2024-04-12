@@ -9,12 +9,14 @@ export interface App {
   }
   AppNavigationSlice: {
     current_view: 'AppView'
-    current_addr: string
+    current_addr: 'AppWorkspace'
   }
   AppWorkspace: {
+    name: string
     elementVertex: 'Vertex'
     elementEdge: 'Edge'
     elementGroup: 'Group'
+    tools: 'AppWorkspaceToolsSlice'
   }
 
   ElementVertex: {

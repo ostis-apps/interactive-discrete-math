@@ -5,7 +5,7 @@ import { HiMiniSquares2X2 } from 'react-icons/hi2'
 import { LuTrash2 } from 'react-icons/lu'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
-import { actionsMenuSlice, activeActionsSlice } from '../../store/slices/workspace'
+import { actionsMenuSlice as actionsMenuSliceSignal, activeActionsSlice } from '../../store/slices/workspace'
 import { executeAction } from '../../store/slices/workspace/agents'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
@@ -13,8 +13,6 @@ import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
 
 export const Playground = () => {
-  const { gotoLanding } = navigation
-
   const ref = useRef<HTMLDivElement>(null)
   const width = useSignal(0)
   const height = useSignal(0)
@@ -39,13 +37,30 @@ export const Playground = () => {
     }
   }, [])
 
+  const actionsMenuSlice = actionsMenuSliceSignal
+  // if (!actionsMenuSlice) return 'damn'
+
   return (
     <div ref={ref} class='grid h-full grid-rows-[5%,1fr] items-baseline'>
       <div class='flex items-center justify-between'>
-        <button onClick={gotoLanding} class='cursor-pointer rounded-full bg-transparent p-3 text-xl hover:text-primary'>
+        <button onClick={() => navigation.gotoLanding()} class='cursor-pointer rounded-full bg-transparent p-3 text-xl hover:text-primary'>
           <FaAngleLeft />
         </button>
-        <input class='cursor-default px-5 text-right text-lg focus:cursor-text' placeholder={'Новое пространство'} />
+        <div class='flex gap-x-2'>
+          <input
+            class='cursor-default px-5 text-right text-lg focus:cursor-text'
+            placeholder={'Новое пространство'}
+            value={navigation.spaces.find(space => space.addr === navigation.current.value)?.name}
+            onBlur={e => navigation.renameSpace(e.currentTarget.value)}
+            onKeyDown={e => e.key === 'Enter' && e.currentTarget.blur()}
+          />
+          <button
+            class='h-8 w-8 cursor-pointer rounded-sm text-lg text-gray-500 opacity-30 centeric hover:bg-gray-100 hover:text-gray-700 hover:opacity-100'
+            onClick={() => navigation.deleteSpace()}
+          >
+            <LuTrash2 />
+          </button>
+        </div>
       </div>
 
       <div class='flex h-full gap-1'>
@@ -65,7 +80,7 @@ export const Playground = () => {
 
           <ul class='flex flex-col gap-y-2'>
             {activeActionsSlice.activeActions.value.map(action => (
-              <li class='group cursor-pointer rounded border border-transparent p-0.5 shadow-[0_0.5px_0px_0.5px_#0000000d] hover:border-inherit'>
+              <li class='group cursor-default rounded border border-transparent p-0.5 shadow-[0_0.5px_0px_0.5px_#0000000d] hover:border-inherit'>
                 <div class='grid grid-cols-[1fr,auto] items-center gap-x-2'>
                   <div class='flex w-full items-center gap-x-2 px-2.5 py-1'>
                     <span class='text-sm text-green-600'>

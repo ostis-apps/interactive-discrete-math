@@ -1,11 +1,14 @@
 import { effect } from '@preact/signals'
-import { actionsMenuSlice } from '.'
+import { actionsMenuSlice as actionsMenuSliceSignal } from '.'
 import { simulate } from '../../../components/graph-editor/simulation.ts'
 import { Action, ActiveAction, AppWorkspaceToolsSlice, ElementGroup, RefValue, SetOfGroups } from '../../core'
 import { AgentType, AppWorkspace, Group, Question, Runner, SetOfElementVertices } from '../../core.ts'
 export const slice = (await AppWorkspaceToolsSlice`default`.ref.one)!
 
 export const executeAction = async (args: number[]) => {
+  const actionsMenuSlice = actionsMenuSliceSignal.value
+  if (!actionsMenuSlice) return
+
   const question = await new Question({
     element: new Runner({
       element_1: ElementGroup`${args[0]}`.to,

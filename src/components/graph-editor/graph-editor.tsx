@@ -7,7 +7,7 @@ import { CgArrowsExpandUpRight } from 'react-icons/cg'
 import { LuPencilLine, LuTrash2 } from 'react-icons/lu'
 import { MdOutlineCategory } from 'react-icons/md'
 import { PiSelectionAllBold } from 'react-icons/pi'
-import { actionsMenuSlice, workspaceSlice } from '../../store/slices/workspace'
+import { actionsMenuSlice, editorSlice } from '../../store/slices/workspace'
 
 type Props = {
   w: number
@@ -23,9 +23,9 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
       // elements.value.$nodes!.value = workspace.vertices.map(v => ({ ...v, x: 0, y: 0 }))
       // elements.value.edges = workspace.edges.value.map(e => ({ ...e, source: { ...e.source, x: 0, y: 0 }, target: { ...e.target, x: 0, y: 0 } }))
       // setTimeout(() => {
-      elements.value.$edges = workspaceSlice.edges
-      elements.value.$groups = workspaceSlice.groups
-      elements.value.$nodes!.value = workspaceSlice.vertices
+      elements.value.$edges = editorSlice.edges
+      elements.value.$groups = editorSlice.groups
+      elements.value.$nodes = editorSlice.vertices
       // }, 20);
     }
     effect()
@@ -36,17 +36,17 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
       {elements.value ? (
         <Graph
           elements={elements.value}
-          addNode={workspaceSlice.addNode}
-          addEdge={workspaceSlice.addEdge}
-          addGroup={workspaceSlice.addGroup}
-          changeNodeLabel={workspaceSlice.changeNodeLabel}
+          addNode={editorSlice.addNode}
+          addEdge={editorSlice.addEdge}
+          addGroup={editorSlice.addGroup}
+          changeNodeLabel={editorSlice.changeNodeLabel}
           width={w}
           height={h}
           padding={15}
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
           objectSelection={actionsMenuSlice.groupSelection.value}
-          changeNodePosition={workspaceSlice.changeNodePosition}
-          removeNode={workspaceSlice.removeNode}
+          changeNodePosition={editorSlice.changeNodePosition}
+          removeNode={editorSlice.removeNode}
           buttonIcons={{
             type: <MdOutlineCategory />,
             arrow: <CgArrowsExpandUpRight />,
