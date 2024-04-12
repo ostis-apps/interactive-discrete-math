@@ -1,7 +1,7 @@
 import { Signal, computed } from '@preact/signals'
-import { Action, ActionClass, AgentType, AppWorkspaceToolsSlice, ElementGroup, WorkspaceMenu } from '../../core.ts'
+import { Action, ActionClass, AgentType, AppNavigationSlice, AppWorkspace, ElementGroup, WorkspaceMenu } from '../../core.ts'
 
-const slice = (await AppWorkspaceToolsSlice`default`.ref.one)!
+const slice = AppNavigationSlice`default`.current_addr.where(AppWorkspace).tools
 
 // ========================================================== //
 // ================= Level 0 | Actions Menu ================= //

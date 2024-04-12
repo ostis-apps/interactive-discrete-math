@@ -1,22 +1,37 @@
 import { effect } from '@preact/signals'
-import { actionsMenuSlice as actionsMenuSliceSignal } from '.'
+import { actionsMenuSlice } from '.'
 import { simulate } from '../../../components/graph-editor/simulation.ts'
-import { Action, ActiveAction, AppWorkspaceToolsSlice, ElementGroup, RefValue, SetOfGroups } from '../../core'
+import { Action, ActiveAction, AppNavigationSlice, ElementGroup, RefValue, SetOfGroups } from '../../core'
 import { AgentType, AppWorkspace, Group, Question, Runner, SetOfElementVertices } from '../../core.ts'
-export const slice = (await AppWorkspaceToolsSlice`default`.ref.one)!
 
 export const executeAction = async (args: number[]) => {
-  const actionsMenuSlice = actionsMenuSliceSignal.value
-  if (!actionsMenuSlice) return
+  const workspace = await AppNavigationSlice`default`.current_addr.where(AppWorkspace).ref.one
+  const openedAction = actionsMenuSlice.openedAction[0]
+  if (!actionsMenuSlice || !workspace || !openedAction) {
+    console.error('Something went wrong.. ', {actionsMenuSlice, workspace, openedAction})
+    return
+  }
+
+  const activeParams = await new SetOfGroups({
+    element_1: ElementGroup`${args[0]}` as never as RefValue<'ElementGroup_'>,
+    element_2: ElementGroup`${args[1]}` as never as RefValue<'ElementGroup_'>,
+  }).create
+  workspace.tools.properties.element.link(
+    new ActiveAction({
+      action: Action`union`,
+      args: activeParams,
+    })
+  )
+  actionsMenuSlice.closeMenu()
 
   const question = await new Question({
     element: new Runner({
       element_1: ElementGroup`${args[0]}`.to,
       element_2: ElementGroup`${args[1]}`.to,
-      element_3: actionsMenuSlice.openedAction[0].agentArg,
+      element_3: openedAction.agentArg,
     }),
   }).create
-  await actionsMenuSlice.openedAction[0].agentType.element.link(question)
+  await openedAction.agentType.element.link(question)
   await AgentType.$`question_initiated`.element.link(question)
   console.log(question)
 
@@ -26,18 +41,7 @@ export const executeAction = async (args: number[]) => {
     console.log('Solution addr:', solution.value)
     if (!solution.value) return
 
-    slice.properties.element.link(
-      new ActiveAction({
-        action: Action`union`,
-        args: new SetOfGroups({
-          element_1: ElementGroup`${args[0]}` as never as RefValue<'ElementGroup_'>,
-          element_2: ElementGroup`${args[1]}` as never as RefValue<'ElementGroup_'>,
-          element_3: ElementGroup`${solution.value}` as never as RefValue<'ElementGroup_'>,
-        }),
-      })
-    ).then(() => {
-      actionsMenuSlice.closeMenu()
-    })
+    activeParams.element_3.link(ElementGroup`${solution.value}` as never as RefValue<'ElementGroup_'>)
 
     // Wrap the solution addr into RefValue
     const group = Group`${solution.value}`
@@ -66,13 +70,13 @@ export const executeAction = async (args: number[]) => {
 
     // Create new "view" of the vertices inside the workspace and push it to the set
     const relations = await Promise.all(
-      nodes.map(node => AppWorkspace`example`.elementVertex.link(node.vertex, { x: node.x, y: node.y, is: { element: elements } }))
+      nodes.map(node => workspace.elementVertex.link(node.vertex, { x: node.x, y: node.y, is: { element: elements } }))
     )
 
     // Create new "view" of the edges inside the workspace
     await Promise.all(
       edges.map(edge =>
-        AppWorkspace`example`.elementEdge.link(edge.value, { source: relations[edge.sourceIndex], target: relations[edge.targetIndex] })
+        workspace.elementEdge.link(edge.value, { source: relations[edge.sourceIndex], target: relations[edge.targetIndex] })
       )
     )
 
@@ -81,7 +85,7 @@ export const executeAction = async (args: number[]) => {
       elements.element.link(relations),
 
       // Create new "view" of the group inside the workspace with its attributes
-      AppWorkspace`example`.elementGroup.link(group, { elements }),
+      workspace.elementGroup.link(group, { elements }),
 
       // Make the solution a Group
       Group.element.link(group),

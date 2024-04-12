@@ -2,6 +2,7 @@ import { EdgeType, GraphEdge, GraphGroup, GraphNode, NodeType } from '@ennealand
 import { ScType, deepSignal } from '@ennealand/enneract'
 import { computed, signal } from '@preact/signals'
 import {
+  AppNavigationSlice,
   AppWorkspace,
   Edge,
   ElementEdge,
@@ -14,7 +15,7 @@ import {
 } from '../../core.ts'
 import { $defined } from '../../utils.ts'
 
-const workspaceRef = await AppWorkspace`example`.ref.addr.one.reactive
+const workspaceRef = await AppNavigationSlice`default`.current_addr.where(AppWorkspace).ref.addr.one.reactive
 
 type GraphNodeExtended = GraphNode & { addr: number }
 type GraphEdgeExtended = GraphEdge & {

@@ -69,6 +69,6 @@ export const navigation = {
    */
   gotoLanding() {
     slice.current_view.update(AppView`landing`)
-    slice.current_addr.update(AppView`landing` as never)
+    slice.current_addr.unlink()
   },
 }

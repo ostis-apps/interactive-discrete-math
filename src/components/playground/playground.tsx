@@ -5,7 +5,7 @@ import { HiMiniSquares2X2 } from 'react-icons/hi2'
 import { LuTrash2 } from 'react-icons/lu'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
-import { actionsMenuSlice as actionsMenuSliceSignal, activeActionsSlice } from '../../store/slices/workspace'
+import { actionsMenuSlice, activeActionsSlice } from '../../store/slices/workspace'
 import { executeAction } from '../../store/slices/workspace/agents'
 import { Button } from '../common/button'
 import { Link } from '../common/link'
@@ -36,9 +36,6 @@ export const Playground = () => {
       if (windowsListButton) windowsListButton.removeEventListener('click', resize)
     }
   }, [])
-
-  const actionsMenuSlice = actionsMenuSliceSignal
-  // if (!actionsMenuSlice) return 'damn'
 
   return (
     <div ref={ref} class='grid h-full grid-rows-[5%,1fr] items-baseline'>

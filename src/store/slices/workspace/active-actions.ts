@@ -1,6 +1,6 @@
 import { ReadonlySignal, Signal, computed, effect, signal } from '@preact/signals'
-import { ActiveAction, AppWorkspaceToolsSlice, RefValue } from '../../core.ts'
-const slice = (await AppWorkspaceToolsSlice`default`.ref.one)!
+import { ActiveAction, AppNavigationSlice, AppWorkspace, RefValue } from '../../core.ts'
+const slice = AppNavigationSlice`default`.current_addr.where(AppWorkspace).tools
 
 const activeActionRefs = await slice.properties.element.get({
   ref: { addr: 'addr' },
