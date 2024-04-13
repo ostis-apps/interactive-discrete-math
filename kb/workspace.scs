@@ -3,7 +3,8 @@ concept_app_workspace
   -> app_workspace_example;;
 
 app_workspace_example
-  => nrel_main_idtf: [Workspace "Example"] (* <- lang_en;; *);;
+  => nrel_main_idtf: [Workspace "Example"] (* <- lang_en;; *);
+  => nrel_tools: app_workspace_tools_slice_default;;
   // -> rrel_vertex:
   //   ... (*
   //     <- concept_vertex;;

@@ -81,6 +81,7 @@ concept_agent_type ->
   question_using_binary_operation;;
 
 sc_node_norole_relation ->
+  nrel_tools;
   nrel_decomposition;
   nrel_agent_arg;
   nrel_agent_type;
