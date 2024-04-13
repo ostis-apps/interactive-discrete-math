@@ -86,8 +86,6 @@ const openedArguments = computed(() => {
   return []
 })
 
-const numberOfOpenedArguments = computed(() => openedArguments.value.length)
-
 const setArgSelector = async (index: number) => {
   if (actionArgSelector.value === index) {
     await slice.argSelector.unlink()
@@ -169,5 +167,4 @@ export const actionsMenuSlice = {
   clearArgs,
   
   groupSelection,
-  numberOfOpenedArguments,
 }

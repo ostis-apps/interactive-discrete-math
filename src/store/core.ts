@@ -17,6 +17,7 @@ export const {
   SetOfElementVertices,
   ActionClass,
   ActiveAction,
+  ActiveActionStatus,
   AppWorkspaceToolsSlice,
   SetOfActionClasses,
   SetOfActiveActions,

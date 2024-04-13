@@ -98,7 +98,12 @@ export const Playground = () => {
                               <HiMiniSquares2X2 />
                             </span>
                           ),
-                        }['Details']
+                          Unknown: (
+                            <div class='pb-[1px] text-sm text-gray-500 [&_path]:stroke-[3] [&_svg]:animate-spin'>
+                              <LuLoader2 />
+                            </div>
+                          ),
+                        }[action.status]
                       }
                     </span>
                     <span class='pt-[0.04rem]'>
@@ -133,20 +138,22 @@ export const Playground = () => {
                       </span>
                     </div>
                   )}
-                  <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
-                    <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
-                      Результат
-                    </span>
-                    <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
-                      {action.answer ? (
-                        action.answer
-                      ) : (
-                        <div class='pt-[1px] [&_path]:stroke-[3] [&_svg]:animate-spin'>
-                          <LuLoader2 />
-                        </div>
-                      )}
-                    </span>
-                  </div>
+                  {action.status === 'Details' && (
+                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-green-600 hover:border-opacity-30'>
+                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
+                        Результат
+                      </span>
+                      <div class='flex items-center bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
+                        {action.answer ? (
+                          action.answer
+                        ) : (
+                          <div class='[&_path]:stroke-[3] [&_svg]:animate-spin'>
+                            <LuLoader2 />
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </li>
             ))}

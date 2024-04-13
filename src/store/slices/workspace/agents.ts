@@ -1,32 +1,45 @@
 import { actionsMenuSlice } from '.'
 import { simulate } from '../../../components/graph-editor/simulation.ts'
-import { ActiveAction, AppNavigationSlice, ElementGroup, RefValue, SetOfGroups } from '../../core'
-import { AgentType, AppWorkspace, Group, Question, Runner, SetOfElementVertices } from '../../core.ts'
+import {
+  ActiveAction,
+  ActiveActionStatus,
+  AgentType,
+  AppNavigationSlice,
+  AppWorkspace,
+  ElementGroup,
+  Group,
+  Question,
+  RefValue,
+  Runner,
+  SetOfElementVertices,
+  SetOfGroups,
+} from '../../core.ts'
 
 const initializeAgent = (args: number[], agentArg: RefValue<'AgentArg'>) => {
-  if (actionsMenuSlice.numberOfOpenedArguments.value === 2) {
+  if (args.length === 2) {
     const activeParamsQuery = {
       element_1: ElementGroup`${args[0]}` as never as RefValue<'ElementGroup_'>,
       element_2: ElementGroup`${args[1]}` as never as RefValue<'ElementGroup_'>,
-    } as const
+    }
 
     const runner = {
       element_1: ElementGroup`${args[0]}`.to,
       element_2: ElementGroup`${args[1]}`.to,
       element_3: agentArg,
-    } as const
+    }
 
     return [activeParamsQuery, runner] as const
   }
 
   const activeParamsQuery = {
     element_1: ElementGroup`${args[0]}` as never as RefValue<'ElementGroup_'>,
-  } as const
+  }
 
   const runner = {
     element_1: ElementGroup`${args[0]}`.to,
     element_2: agentArg,
-  } as const
+  }
+
   return [activeParamsQuery, runner] as const
 }
 
@@ -44,6 +57,7 @@ export const executeAction = async (args: number[]) => {
     new ActiveAction({
       action: openedAction.ref,
       args: activeParams,
+      status: args.length === 2 ? ActiveActionStatus`details` : ActiveActionStatus`unknown`,
     })
   )
   actionsMenuSlice.closeMenu()
@@ -63,19 +77,20 @@ export const executeAction = async (args: number[]) => {
     if (!solutionAddr) return
     unsubscribe()
 
-    if (actionsMenuSlice.numberOfOpenedArguments.value === 2) {
+    if (args.length === 2) {
       await processGraphResult(workspace, activeParams, solutionAddr)
     } else {
       // await processClassificationResult(workspace, activeParams, solutionAddr)
       // @ts-ignore
       const fool = await ElementGroup`${args[0]}`.to.is.element.ref.addr.many
-      console.log(fool.includes(openedAction.agentArg.ref.addr))
+      const success = fool.includes(openedAction.agentArg.ref.addr)
+      activeParams.is.args.status.update(success ? ActiveActionStatus`true` : ActiveActionStatus`false`)
     }
   })
 }
 
 // const processClassificationResult = async (workspace: RefValue<'AppWorkspace'>, activeParams: RefValue<'SetOfGroups'>, solutionAddr: number) => {
-  
+
 // }
 
 const processGraphResult = async (workspace: RefValue<'AppWorkspace'>, activeParams: RefValue<'SetOfGroups'>, solutionAddr: number) => {

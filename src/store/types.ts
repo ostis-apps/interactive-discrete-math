@@ -125,6 +125,11 @@ export interface App {
   ActiveAction: {
     action: 'Action'
     args: 'SetOfGroups'
+    status: 'ActiveActionStatus'
+  }
+
+  ActiveActionStatus: {
+    name: 'True' | 'False' | 'Details' | 'Unknown'
   }
 
   SetOfGroups: {

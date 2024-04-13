@@ -88,10 +88,27 @@ app_workspace_tools_slice_default
       => nrel_action: action_union;;
       => nrel_args: ... (*
         <- concept_set_of_groups;;
-        -> fake_graph_group_1;;
-        -> fake_graph_group_2;;
+        -> rrel_1: fake_graph_group_1;;
+        -> rrel_2: fake_graph_group_2;;
+        -> rrel_3: fake_graph_group_2;;
       *);;
+      => nrel_status: active_action_status_details;;
     *);;
+  *);;
+
+concept_active_action_status
+  <- sc_node_class;
+  -> active_action_status_true (*
+    => nrel_main_idtf: [True];;
+  *);
+  -> active_action_status_false (*
+    => nrel_main_idtf: [False];;
+  *);
+  -> active_action_status_details (*
+    => nrel_main_idtf: [Details];;
+  *);
+  -> active_action_status_unknown (*
+    => nrel_main_idtf: [Unknown];;
   *);;
 
 concept_agent_arg ->
@@ -113,6 +130,7 @@ sc_node_norole_relation ->
   nrel_arg_selector;
   nrel_properties;
   nrel_args;
+  nrel_status;
   nrel_icon;;
 
 sc_node_class ->
