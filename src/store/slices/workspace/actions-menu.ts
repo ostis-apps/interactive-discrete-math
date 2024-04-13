@@ -49,6 +49,7 @@ const openedAction = await slice.opened.where(Action).get({
   agentArg: { ref: 'agentArg' },
   agentType: { ref: 'agentType' },
   name: true,
+  ref: true,
 }).reactive
 
 const openAction = async (ref: any) => {
@@ -84,6 +85,8 @@ const openedArguments = computed(() => {
     ]
   return []
 })
+
+const numberOfOpenedArguments = computed(() => openedArguments.value.length)
 
 const setArgSelector = async (index: number) => {
   if (actionArgSelector.value === index) {
@@ -164,6 +167,7 @@ export const actionsMenuSlice = {
   openedArguments,
   setArgSelector,
   clearArgs,
-
+  
   groupSelection,
+  numberOfOpenedArguments,
 }
