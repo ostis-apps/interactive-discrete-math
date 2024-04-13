@@ -27,8 +27,8 @@ export const executeAction = async (args: number[]) => {
   const question = await new Question({
     element: new Runner({
       element_1: ElementGroup`${args[0]}`.to,
-      element_2: ElementGroup`${args[1]}`.to,
-      element_3: openedAction.agentArg,
+      element_2: openedAction.agentArg,
+      element_3: ElementGroup`${args[1]}`.to,
     }),
   }).create
   await openedAction.agentType.element.link(question)

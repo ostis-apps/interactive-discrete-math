@@ -77,8 +77,8 @@ export interface App {
   Runner: {
     name: string
     element_1: 'Group' | 'AnotherGroup'
-    element_2: 'Group' | 'AnotherGroup'
-    element_3: 'AgentArg'
+    element_2: 'AgentArg'
+    element_3: 'Group' | 'AnotherGroup'
   }
 
   WorkspaceMenu: {
