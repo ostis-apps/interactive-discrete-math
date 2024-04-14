@@ -51,15 +51,20 @@ export const executeAction = async (args: number[]) => {
     return
   }
 
+  if (args.length === 1) {
+    // @ts-ignore
+    await openedAction.agentArg.element.unlink(ElementGroup`${args[0]}`)
+  }
+  
+
   const [activeParamsQuery, runner] = initializeAgent(args, openedAction.agentArg)
   const activeParams = await new SetOfGroups(activeParamsQuery).create
-  workspace.tools.properties.element.link(
-    new ActiveAction({
-      action: openedAction.ref,
-      args: activeParams,
-      status: args.length === 2 ? ActiveActionStatus`details` : ActiveActionStatus`unknown`,
-    })
-  )
+  const activeAction = await new ActiveAction({
+    action: openedAction.ref,
+    args: activeParams,
+    status: args.length === 2 ? ActiveActionStatus`details` : ActiveActionStatus`unknown`,
+    is: { element: workspace.tools.properties }
+  }).create
   actionsMenuSlice.closeMenu()
 
   const question = await new Question({
@@ -84,7 +89,7 @@ export const executeAction = async (args: number[]) => {
       // @ts-ignore
       const fool = await ElementGroup`${args[0]}`.to.is.element.ref.addr.many
       const success = fool.includes(openedAction.agentArg.ref.addr)
-      activeParams.is.args.status.update(success ? ActiveActionStatus`true` : ActiveActionStatus`false`)
+      activeAction.status.update(success ? ActiveActionStatus`true` : ActiveActionStatus`false`)
     }
   })
 }
