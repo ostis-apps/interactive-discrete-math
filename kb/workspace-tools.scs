@@ -18,12 +18,6 @@ workspace_menu_actions
           => nrel_agent_arg: concept_directed_graph;;
           => nrel_agent_type: question_using_unary_operation;;  
         *);;
-        -> action_power (*
-          <- concept_action;;
-          => nrel_main_idtf: [Мощность множеств] (* <- lang_ru;; *);;
-          => nrel_agent_arg: question_finding_power;;
-          => nrel_agent_type: question_finding_power;;
-        *);;
       *);;
     *);;
     -> action_class_operations (*
@@ -56,6 +50,20 @@ workspace_menu_actions
           => nrel_agent_arg: nrel_graph_union;;
           => nrel_agent_type: question_using_binary_operation;;
         *);;
+      *);;
+    *);;
+    -> action_class_numeric_value (*
+      <- concept_action_class;;
+      => nrel_main_idtf: [Числовая характеристика] (* <- lang_ru;; *);;
+      => nrel_icon: [calculator];;
+      => nrel_decomposition: set_of_actions_numeric_value (*
+        <- concept_set_of_actions;;
+        -> action_power (*
+            <- concept_action;;
+            => nrel_main_idtf: [Мощность множеств] (* <- lang_ru;; *);;
+            => nrel_agent_arg: question_finding_power;;
+            => nrel_agent_type: question_finding_power;;
+          *);;
       *);;
     *);;
   *);;
@@ -137,4 +145,5 @@ sc_node_class ->
   concept_question;
   concept_set_of_actions;
   concept_agent_arg;
+  concept_numeric_value_response;
   concept_action;;
