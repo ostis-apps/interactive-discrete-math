@@ -1,5 +1,5 @@
 import { Signal, computed } from '@preact/signals'
-import { Action, ActionClass, AgentType, AppNavigationSlice, AppWorkspace, ElementGroup, WorkspaceMenu } from '../../core.ts'
+import { Action, ActionClass, AppNavigationSlice, AppWorkspace, ElementGroup, WorkspaceMenu } from '../../core.ts'
 
 const slice = AppNavigationSlice`default`.current_addr.where(AppWorkspace).tools
 
@@ -69,14 +69,17 @@ const closeAction = async () => {
 
 const actionClassClassification = await ActionClass`classification`.ref.addr.one
 const actionClassOperations = await ActionClass`operations`.ref.addr.one
+const actionClassNumericValue = await ActionClass`numeric_value`.ref.addr.one
 
 const actionArgument1: Signal<number | undefined> = await slice.args.element_1.ref.addr.one.reactive
 const actionArgument2: Signal<number | undefined> = await slice.args.element_2.ref.addr.one.reactive
 const actionArgSelector: Signal<number | undefined> = await slice.argSelector.one.reactive
 
+const isNumericValue = computed(() => openedActionClass.value === actionClassNumericValue)
+
 const openedArguments = computed(() => {
   if (!openedAction[0]) return []
-  if (openedActionClass.value === actionClassClassification)
+  if (openedActionClass.value === actionClassClassification || openedActionClass.value === actionClassNumericValue)
     return [{ title: 'Выберите граф', value: actionArgument1.value, selected: actionArgSelector.value === 0 }]
   if (openedActionClass.value === actionClassOperations)
     return [
@@ -165,4 +168,5 @@ export const actionsMenuSlice = {
   clearArgs,
   
   groupSelection,
+  isNumericValue,
 }

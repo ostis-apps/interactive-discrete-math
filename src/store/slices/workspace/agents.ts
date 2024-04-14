@@ -8,6 +8,7 @@ import {
   AppWorkspace,
   ElementGroup,
   Group,
+  NumericValueResponse,
   Question,
   RefValue,
   Runner,
@@ -51,6 +52,7 @@ export const executeAction = async (args: number[]) => {
     return
   }
 
+  const isNumericValue = actionsMenuSlice.isNumericValue.value
   if (args.length === 1) {
     // @ts-ignore
     await openedAction.agentArg.element.unlink(ElementGroup`${args[0]}`)
@@ -97,6 +99,10 @@ export const executeAction = async (args: number[]) => {
       await processGraphResult(workspace, activeParams, solutionAddr)
     } else {
       // await processClassificationResult(workspace, activeParams, solutionAddr)
+      if (isNumericValue) {
+        console.warn(await NumericValueResponse`${solutionAddr}`.element.one)
+        return
+      }
       // @ts-ignore
       const fool = await ElementGroup`${args[0]}`.to.is.element.ref.addr.many
       const success = fool.includes(openedAction.agentArg.ref.addr)

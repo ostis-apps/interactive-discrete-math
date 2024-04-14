@@ -142,4 +142,8 @@ export interface App {
     to: 'Group_'
   }
   Group_: {}
+
+  NumericValueResponse: {
+    element: string
+  }
 }

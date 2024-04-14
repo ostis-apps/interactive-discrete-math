@@ -14,6 +14,7 @@ export const {
   ElementVertex,
   ElementEdge,
   ElementGroup,
+  NumericValueResponse,
   SetOfElementVertices,
   ActionClass,
   ActiveAction,
