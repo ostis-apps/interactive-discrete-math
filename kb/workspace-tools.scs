@@ -18,6 +18,12 @@ workspace_menu_actions
           => nrel_agent_arg: concept_directed_graph;;
           => nrel_agent_type: question_using_unary_operation;;  
         *);;
+        -> action_power (*
+          <- concept_action;;
+          => nrel_main_idtf: [Мощность множеств] (* <- lang_ru;; *);;
+          => nrel_agent_arg: question_finding_power;;
+          => nrel_agent_type: question_finding_power;;
+        *);;
       *);;
     *);;
     -> action_class_operations (*
@@ -40,27 +46,15 @@ workspace_menu_actions
         *);;
         -> action_set_intersections (*
           <- concept_action;;
-          => nrel_main_idtf: [Пересечение мультимножеств] (* <- lang_ru;; *);;
+          => nrel_main_idtf: [Пересечение множеств] (* <- lang_ru;; *);;
           => nrel_agent_arg: nrel_graph_intersection;;
-          => nrel_agent_type: question_finding_multisets_intersection;;
+          => nrel_agent_type: question_using_binary_operation;;
         *);;
         -> action_set_union (*
           <- concept_action;;
-          => nrel_main_idtf: [Объединение мультимножеств] (* <- lang_ru;; *);;
-          => nrel_agent_arg: nrel_graph_intersection;;
-          => nrel_agent_type: question_finding_multisets_union;;
-        *);;
-        -> action_set_product (*
-          <- concept_action;;
-          => nrel_main_idtf: [Произведение мультимножеств] (* <- lang_ru;; *);;
-          => nrel_agent_arg: nrel_graph_intersection;;
-          => nrel_agent_type: question_finding_multisets_product;;
-        *);;
-        -> action_power (*
-          <- concept_action;;
-          => nrel_main_idtf: [Мощность мультимножеств] (* <- lang_ru;; *);;
-          => nrel_agent_arg: nrel_graph_intersection;;
-          => nrel_agent_type: question_finding_power;;
+          => nrel_main_idtf: [Объединение множеств] (* <- lang_ru;; *);;
+          => nrel_agent_arg: nrel_graph_union;;
+          => nrel_agent_type: question_using_binary_operation;;
         *);;
       *);;
     *);;
