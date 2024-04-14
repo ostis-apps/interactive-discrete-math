@@ -54,8 +54,13 @@ export const executeAction = async (args: number[]) => {
   if (args.length === 1) {
     // @ts-ignore
     await openedAction.agentArg.element.unlink(ElementGroup`${args[0]}`)
+  } else if (args.length === 2) {
+    // Super dummy hack sdhfskjdhfusdhfukdhjghsjdfgbkjsfdbg (add)
+    const g1 = ElementGroup`${args[0]}`.to as unknown as RefValue<'Group'>
+    const g2 = ElementGroup`${args[1]}`.to as unknown as RefValue<'Group'>
+    console.logDarkCyan('hack linked', await g1.element_oredge.link(g1.element_edge))
+    console.logDarkCyan('hack linked', await g2.element_oredge.link(g2.element_edge))
   }
-  
 
   const [activeParamsQuery, runner] = initializeAgent(args, openedAction.agentArg)
   const activeParams = await new SetOfGroups(activeParamsQuery).create
@@ -63,7 +68,7 @@ export const executeAction = async (args: number[]) => {
     action: openedAction.ref,
     args: activeParams,
     status: args.length === 2 ? ActiveActionStatus`details` : ActiveActionStatus`unknown`,
-    is: { element: workspace.tools.properties }
+    is: { element: workspace.tools.properties },
   }).create
   actionsMenuSlice.closeMenu()
 
@@ -83,6 +88,12 @@ export const executeAction = async (args: number[]) => {
     unsubscribe()
 
     if (args.length === 2) {
+      // Super dummy hack sdhfskjdhfusdhfukdhjghsjdfgbkjsfdbg (remove)
+      const g1 = ElementGroup`${args[0]}`.to as unknown as RefValue<'Group'>
+      const g2 = ElementGroup`${args[1]}`.to as unknown as RefValue<'Group'>
+      g1.element_oredge.unlink(g1.element_edge).then(n => console.logDarkCyan('hack unlinked', n))
+      g2.element_oredge.unlink(g2.element_edge).then(n => console.logDarkCyan('hack unlinked', n))
+
       await processGraphResult(workspace, activeParams, solutionAddr)
     } else {
       // await processClassificationResult(workspace, activeParams, solutionAddr)
@@ -108,8 +119,11 @@ const processGraphResult = async (workspace: RefValue<'AppWorkspace'>, activePar
   const vertices = await group.element_vertex.ref.many
   console.log(vertices)
 
-  // Get the list of actual edges inside the solution graph
+  // Get the list of actual oredges inside the solution graph
   const oredges = await group.element_oredge.get({ ref: true, from: { ref: { addr: 'from' } }, to: { ref: { addr: 'to' } } })
+
+  // Get the list of actual edges inside the solution graph
+  const nonoredges = await group.element_edge.get({ ref: true, from: { ref: { addr: 'from' } }, to: { ref: { addr: 'to' } } })
 
   // Create a set for new "views" of the vertices inside the workspace
   const elementsReq = new SetOfElementVertices().create
@@ -120,6 +134,11 @@ const processGraphResult = async (workspace: RefValue<'AppWorkspace'>, activePar
     const sourceIndex = nodes.findIndex(n => n.id === edge.from)
     const targetIndex = nodes.findIndex(n => n.id === edge.to)
     return { id: edge.ref.ref.addr, source: nodes[sourceIndex], target: nodes[targetIndex], sourceIndex, targetIndex, value: edge.ref }
+  })
+  nonoredges.forEach(edge => {
+    const sourceIndex = nodes.findIndex(n => n.id === edge.from)
+    const targetIndex = nodes.findIndex(n => n.id === edge.to)
+    edges.push({ id: edge.ref.ref.addr, source: nodes[sourceIndex], target: nodes[targetIndex], sourceIndex, targetIndex, value: edge.ref })
   })
   simulate({ nodes, edges }, { strength: -16 })
 

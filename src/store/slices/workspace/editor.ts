@@ -170,10 +170,17 @@ const smartAddEdge = async (edge: { from: number; to: number; source: number; ta
     console.logMediumSeaGreen('Edge created:', `id ${relation.ref.addr}`)
     return
   }
+  const scmatch = {
+    [EdgeType.ArcConst]: ScType.EdgeDCommonVar,
+    [EdgeType.EdgeConst]: ScType.EdgeUCommonVar,
+    [EdgeType.ArcConstPermPosAccess]: ScType.EdgeAccessVarPosPerm,
+    [EdgeType.ArcConstPermNegAccess]: ScType.EdgeAccessVarPosPerm,
+    [EdgeType.ArcConstPermFuzAccess]: ScType.EdgeAccessVarPosPerm,
+  } as const
   const newEdge = await new Edge({
     from: Vertex`${edge.from}`,
     to: Vertex`${edge.to}`,
-    sc: ScType.EdgeDCommonVar,
+    sc: scmatch[edge.type],
     customType: edge.type,
     is: { elementEdge: { value: slice.value, relation: { source: ElementVertex`${edge.source}`, target: ElementVertex`${edge.target}` } } },
   }).create
@@ -235,7 +242,14 @@ const addGroup = async (group: GraphGroup) => {
     elements.element.link(Array.from(group.values).map(id => ElementVertex`${id}`)),
     newGroup.element_vertex.link(vertices.value.filter(vertex => group.values.has(vertex.id)).map(vertex => Vertex`${vertex.addr}}`)),
     newGroup.element_oredge.link(
-      edgeIds.value.filter(e => group.values.has(e.source) || group.values.has(e.target)).map(e => Edge`${e.addr}}`)
+      edgeIds.value
+        .filter(e => e.type === EdgeType.ArcConst && group.values.has(e.source) && group.values.has(e.target))
+        .map(e => Edge`${e.addr}}`)
+    ),
+    newGroup.element_edge.link(
+      edgeIds.value
+        .filter(e => e.type === EdgeType.EdgeConst && group.values.has(e.source) && group.values.has(e.target))
+        .map(e => Edge`${e.addr}}`)
     ),
   ])
 }
