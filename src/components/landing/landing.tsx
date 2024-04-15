@@ -37,6 +37,10 @@ export const Landing = () => {
         </div>
       </section>
 
+      <section class='pb-5'>
+        <h2 class='py-1 text-2xl'>Справка</h2>
+        <div class='flex flex-col flex-wrap justify-center gap-4 px-10 py-2 sm:flex-row sm:justify-start sm:px-0'>
+          <LandingCard link={links.documentationGraphTheory}>Документация</LandingCard>
         </div>
       </section>
     </div>
