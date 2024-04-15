@@ -12,6 +12,7 @@ type Args = {
   addr: number
   args: number[]
   answer: number
+  value: number
   status: 'True' | 'False' | 'Details' | 'Unknown'
   agent: { agentArg: RefValue<'AgentArg'>; agentType: RefValue<'AgentType'>; name: string }
 } & Disposable

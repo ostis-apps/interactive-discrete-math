@@ -60,7 +60,7 @@ workspace_menu_actions
         <- concept_set_of_actions;;
         -> action_power (*
             <- concept_action;;
-            => nrel_main_idtf: [Мощность множеств] (* <- lang_ru;; *);;
+            => nrel_main_idtf: [Мощность множества] (* <- lang_ru;; *);;
             => nrel_agent_arg: question_finding_power;;
             => nrel_agent_type: question_finding_power;;
           *);;

@@ -107,8 +107,9 @@ export const Playground = () => {
                       }
                     </span>
                     <span class='pt-[0.04rem]'>
-                      <Link>{action.agent.name}</Link>
+                      <Link>{action.agent.name}{action.value === undefined ? '' : ': '}</Link>
                     </span>
+                    {action.value !== undefined && <span class='font-bold pt-[0.1rem]'>{action.value}</span>}
                   </div>
                   <div
                     class='h-8 w-8 cursor-pointer rounded-sm text-lg text-gray-400 opacity-30 centeric hover:bg-gray-100 hover:text-gray-700 group-hover:opacity-100'
