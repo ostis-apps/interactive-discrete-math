@@ -34,4 +34,6 @@ export const {
 
 export type RefValue<T extends keyof App> = NonNullable<Awaited<Magic<App>[T]['element']['ref']['one']>>
 
+export const getKeynode = enneract.engine.getKeynode.bind(enneract.engine)
+
 export const $extract = <T extends unknown>(args: T[]) => args[0] as Required<DeepSignal<T>>

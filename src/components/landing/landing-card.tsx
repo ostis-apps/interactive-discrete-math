@@ -3,10 +3,12 @@ import { FaLock, FaPlus } from 'react-icons/fa6'
 type Without<T, U> = { [P in Exclude<keyof T, keyof U>]?: never }
 type XOR<T, U> = T | U extends object ? (Without<T, U> & U) | (Without<U, T> & T) : T | U
 
-const BaseLandingCard = ({ class: classname, children, ...props }: JSX.HTMLAttributes<HTMLButtonElement>) => {
+const BaseLandingCard = ({ class: classname, children, link, ...props }: JSX.HTMLAttributes<HTMLButtonElement> & { link?: number }) => {
   return (
     <button
-      class={`centeric h-40 sm:min-w-52 sm:w-52 w-full flex-col rounded-md border bg-gray-50 text-center font-nunito text-lg font-bold ${classname}`}
+      class={`h-40 w-full flex-col rounded-md border bg-gray-50 text-center font-nunito text-lg font-bold centeric sm:w-52 sm:min-w-52 ${classname}`}
+      // @ts-ignore
+      sc_addr={link}
       {...props}
     >
       {children}
@@ -15,13 +17,14 @@ const BaseLandingCard = ({ class: classname, children, ...props }: JSX.HTMLAttri
 }
 
 export const LandingCard = (
-  props: XOR<{ lock?: true; children: string }, { new: true }> & { click?: JSX.MouseEventHandler<HTMLButtonElement> }
+  props: XOR<{ lock?: true; children: string }, { new: true }> & { click?: JSX.MouseEventHandler<HTMLButtonElement>; link?: number }
 ) => {
   if (props.new)
     return (
       <BaseLandingCard
-        class='text-primary hover:border-primary cursor-pointer text-xl hover:bg-gray-100'
+        class='cursor-pointer text-xl text-primary hover:border-primary hover:bg-gray-100'
         onClick={props.click}
+        link={props.link}
       >
         <FaPlus />
       </BaseLandingCard>
@@ -36,7 +39,7 @@ export const LandingCard = (
     )
 
   return (
-    <BaseLandingCard class='text-primary hover:border-primary cursor-pointer hover:bg-gray-100' onClick={props.click}>
+    <BaseLandingCard class='cursor-pointer text-primary hover:border-primary hover:bg-gray-100' onClick={props.click} link={props.link}>
       {props.children}
     </BaseLandingCard>
   )

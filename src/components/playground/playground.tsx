@@ -11,6 +11,7 @@ import { Button } from '../common/button'
 import { Link } from '../common/link'
 import { GraphComponent } from '../graph-editor/graph-editor'
 import { PlaygroundOptionTypeIcon } from './option-type-icon'
+import { links } from '../../store/slices/links'
 
 export const Playground = () => {
   const ref = useRef<HTMLDivElement>(null)
@@ -107,9 +108,12 @@ export const Playground = () => {
                       }
                     </span>
                     <span class='pt-[0.04rem]'>
-                      <Link>{action.agent.name}{action.value === undefined ? '' : ': '}</Link>
+                      <Link>
+                        {action.agent.name}
+                        {action.value === undefined ? '' : ': '}
+                      </Link>
                     </span>
-                    {action.value !== undefined && <span class='font-bold pt-[0.1rem]'>{action.value}</span>}
+                    {action.value !== undefined && <span class='pt-[0.1rem] font-bold'>{action.value}</span>}
                   </div>
                   <div
                     class='h-8 w-8 cursor-pointer rounded-sm text-lg text-gray-400 opacity-30 centeric hover:bg-gray-100 hover:text-gray-700 group-hover:opacity-100'
@@ -162,7 +166,9 @@ export const Playground = () => {
 
           <Button
             class='mt-3'
-            onClick={() => {
+            link={links.workspaceMenuActions}
+            onClick={e => {
+              e.stopPropagation()
               if (actionsMenuSlice.openedMenu.value) actionsMenuSlice.closeMenu()
               else actionsMenuSlice.openActionsMenu()
             }}
@@ -186,8 +192,10 @@ export const Playground = () => {
                 {actionsMenuSlice.actionClasses.map(({ name, icon, ref }) => (
                   <Button
                     key={ref.ref.addr}
+                    link={ref.ref.addr}
                     class='h-24 flex-col gap-y-1 text-center text-sm'
-                    onClick={() => {
+                    onClick={e => {
+                      e.stopPropagation()
                       actionsMenuSlice.openActionsClass(ref)
                     }}
                   >
@@ -198,7 +206,14 @@ export const Playground = () => {
               </div>
             ) : (
               <>
-                <Button class='mt-3' onClick={() => actionsMenuSlice.closeActionClass()}>
+                <Button
+                  class='mt-3'
+                  link={actionsMenuSlice.openedActionClass.value}
+                  onClick={e => {
+                    e.stopPropagation()
+                    actionsMenuSlice.closeActionClass()
+                  }}
+                >
                   {actionsMenuSlice.openedActionClassName.value ?? ''}
                 </Button>
                 {!actionsMenuSlice.openedAction[0] ? (
@@ -208,7 +223,9 @@ export const Playground = () => {
                         actionClassAddr === actionsMenuSlice.openedActionClass.value ? (
                           <Button
                             key={ref.ref.addr}
-                            onClick={() => {
+                            link={ref.ref.addr}
+                            onClick={e => {
+                              e.stopPropagation()
                               actionsMenuSlice.openAction(ref)
                             }}
                           >
@@ -222,7 +239,14 @@ export const Playground = () => {
                   </div>
                 ) : (
                   <>
-                    <Button class='mt-3' onClick={() => actionsMenuSlice.closeAction()}>
+                    <Button
+                      class='mt-3'
+                      link={actionsMenuSlice.openedAction[0].ref.ref.addr}
+                      onClick={e => {
+                        e.stopPropagation()
+                        actionsMenuSlice.closeAction()
+                      }}
+                    >
                       {actionsMenuSlice.openedAction[0]?.name}
                     </Button>
 
