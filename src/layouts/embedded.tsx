@@ -6,15 +6,32 @@ export const EmbeddedLayout = (props: { children: ComponentChildren; full?: true
   //   console.warn('mount?!')
   // })
   return (
-    <section class={`absolute flex flex-col font-nunito ${props.full ? 'inset-0 rounded-[4px]' : 'inset-4'} ${props.class ?? ''}`}>
+    <section
+      class={`absolute flex flex-col font-nunito text-base ${props.full ? 'inset-0 rounded-[4px]' : 'inset-4'} ${props.class ?? ''}`}
+      onContextMenu={e => !(e.target as any)?.getAttribute('sc_addr') && e.stopPropagation()}
+    >
       <style type='text/css'>{`
-        // #window-header-tools {
-        //   top: -62px;
-        //   right: 230px;
-        // }
-        // #window-header-tools #search-panel {
-        //   display: none;
-        // }
+        #window-header-tools {
+          top: -53px;
+          right: 230px;
+        }
+        #window-header-tools {
+          display: flex;
+          flex-direction: row-reverse;
+          gap: 0.5rem;        
+        }
+        .nav.navbar-nav {
+          display: none;
+        }
+        #header {
+          height: 52px;
+        }
+        .help-button {
+          margin-top: 9px;
+        }
+        ul#context-menu {
+          transform: translate(1px, -72px);
+        }
       `}</style>
       {props.children}
     </section>
