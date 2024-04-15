@@ -64,6 +64,12 @@ workspace_menu_actions
             => nrel_agent_arg: question_finding_power;;
             => nrel_agent_type: question_finding_power;;
           *);;
+        -> action_vertexes (*
+            <- concept_action;;
+            => nrel_main_idtf: [Количество вершин] (* <- lang_ru;; *);;
+            => nrel_agent_arg: nrel_number_of_vertexes;;
+            => nrel_agent_type: question_using_unary_operation;;
+          *);;
       *);;
     *);;
   *);;
