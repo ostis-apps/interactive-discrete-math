@@ -1,5 +1,5 @@
 import { ReadonlySignal, Signal, computed, effect, signal } from '@preact/signals'
-import { ActiveAction, AppNavigationSlice, AppWorkspace, RefValue } from '../../core.ts'
+import { ActiveAction, AppNavigationSlice, AppWorkspace, Group, RefValue } from '../../core.ts'
 const slice = AppNavigationSlice`default`.current_addr.where(AppWorkspace).tools
 
 const activeActionRefs = await slice.properties.element.get({
@@ -26,7 +26,8 @@ effect(async () => {
         action.ref.ref.addr,
         action.argsRef.element_1.ref.addr.one.reactive,
         action.argsRef.element_2.ref.addr.one.reactive,
-        action.argsRef.element_3.ref.addr.one.reactive,
+        action.argsRef.element_3.where(Group as never).ref.addr.one.reactive,
+        action.ref.value.one.reactive,
         action.ref.status.name.one.reactive,
         action.actionRef.get({ agentArg: { ref: 'agentArg' }, agentType: { ref: 'agentType' }, name: true }).reactive,
       ])
@@ -34,15 +35,21 @@ effect(async () => {
   )
 
   args.value = computed(() =>
-    signals.map(([addr, e1, e2, e3, status, agent]) => ({
+    signals.map(([addr, e1, e2, e3, value, status, agent]) => ({
       addr,
       args: [e1.value, e2.value],
       answer: e3.value,
       status: status.value,
+      value: value.value,
       agent: agent[0],
-      [Symbol.dispose]: () => (
-        e1[Symbol.dispose](), e2[Symbol.dispose](), e3[Symbol.dispose](), status[Symbol.dispose](), agent[Symbol.dispose]()
-      ),
+      [Symbol.dispose]: () => {
+        e1[Symbol.dispose]()
+        e2[Symbol.dispose]()
+        e3[Symbol.dispose]()
+        value[Symbol.dispose]()
+        status[Symbol.dispose]()
+        agent[Symbol.dispose]()
+      },
     }))
   )
   console.logMediumSeaGreen('Subscribed to active actions:', signals.length)

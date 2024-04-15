@@ -8,7 +8,7 @@ import {
   AppWorkspace,
   ElementGroup,
   Group,
-  NumericValueResponse,
+  NumericValue,
   Question,
   RefValue,
   Runner,
@@ -52,7 +52,6 @@ export const executeAction = async (args: number[]) => {
     return
   }
 
-  const isNumericValue = actionsMenuSlice.isNumericValue.value
   if (args.length === 1) {
     // @ts-ignore
     await openedAction.agentArg.element.unlink(ElementGroup`${args[0]}`)
@@ -98,11 +97,14 @@ export const executeAction = async (args: number[]) => {
 
       await processGraphResult(workspace, activeParams, solutionAddr)
     } else {
-      // await processClassificationResult(workspace, activeParams, solutionAddr)
-      if (isNumericValue) {
-        console.warn(await NumericValueResponse`${solutionAddr}`.element.one)
+      const value = await NumericValue`${solutionAddr}`.value.one
+      if (value !== undefined) {
+        // Process numeric value
+        activeAction.value.link(value)
+        activeAction.status.update(ActiveActionStatus`true`)
         return
       }
+      // Process classification result
       // @ts-ignore
       const fool = await ElementGroup`${args[0]}`.to.is.element.ref.addr.many
       const success = fool.includes(openedAction.agentArg.ref.addr)
@@ -116,10 +118,11 @@ export const executeAction = async (args: number[]) => {
 // }
 
 const processGraphResult = async (workspace: RefValue<'AppWorkspace'>, activeParams: RefValue<'SetOfGroups'>, solutionAddr: number) => {
-  activeParams.element_3.link(ElementGroup`${solutionAddr}` as never as RefValue<'ElementGroup_'>)
-
   // Wrap the solution addr into RefValue
   const group = Group`${solutionAddr}`
+
+  // Put the solution into active action result arg
+  activeParams.element_3.link(group as never)
 
   // Get the list of actual vertices inside the solution graph
   const vertices = await group.element_vertex.ref.many

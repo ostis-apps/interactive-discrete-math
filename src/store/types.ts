@@ -127,6 +127,7 @@ export interface App {
     action: 'Action'
     args: 'SetOfGroups'
     status: 'ActiveActionStatus'
+    value: number
   }
 
   ActiveActionStatus: {
@@ -143,7 +144,7 @@ export interface App {
   }
   Group_: {}
 
-  NumericValueResponse: {
-    element: string
+  NumericValue: {
+    value: number
   }
 }

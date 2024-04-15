@@ -75,8 +75,6 @@ const actionArgument1: Signal<number | undefined> = await slice.args.element_1.r
 const actionArgument2: Signal<number | undefined> = await slice.args.element_2.ref.addr.one.reactive
 const actionArgSelector: Signal<number | undefined> = await slice.argSelector.one.reactive
 
-const isNumericValue = computed(() => openedActionClass.value === actionClassNumericValue)
-
 const openedArguments = computed(() => {
   if (!openedAction[0]) return []
   if (openedActionClass.value === actionClassClassification || openedActionClass.value === actionClassNumericValue)
@@ -168,5 +166,4 @@ export const actionsMenuSlice = {
   clearArgs,
   
   groupSelection,
-  isNumericValue,
 }
