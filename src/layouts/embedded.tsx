@@ -20,9 +20,6 @@ export const EmbeddedLayout = (props: { children: ComponentChildren; full?: true
           flex-direction: row-reverse;
           gap: 0.5rem;        
         }
-        .nav.navbar-nav {
-          display: none;
-        }
         #header {
           height: 52px;
         }
