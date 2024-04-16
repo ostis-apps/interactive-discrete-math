@@ -153,4 +153,5 @@ sc_node_class ->
   concept_set_of_actions;
   concept_agent_arg;
   concept_agent_type;
+  concept_numeric_value;
   concept_action;;
