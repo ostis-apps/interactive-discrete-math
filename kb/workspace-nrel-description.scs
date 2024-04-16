@@ -197,3 +197,8 @@ definition -> definition_of_icon (*
 		concept_action
 	};;
 *);;
+
+nrel_button_name
+=> nrel_main_idtf:
+    [имя кнопки*] (* <- lang_ru;; *);
+    [имя кнопки*] (* <- lang_en;; *);;

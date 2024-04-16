@@ -329,12 +329,6 @@ definition -> definition_of_app_workspace_tools_slice (*
 *);;
 
 
-app_workspace_example
-=> nrel_main_idtf:
-	[Рабочее пространство "Пример"] (* <- lang_ru;; *);
-	[Workspace "Example"] (* <- lang_en;; *);;
-
-
 concept_app_workspace
 => nrel_main_idtf:
 	[рабочее пространство] (* <- lang_ru;; *);
@@ -351,4 +345,179 @@ definition -> definition_of_app_workspace (*
 		=> nrel_main_idtf:
 		[Опр. (рабочее пространство)] (* <- lang_ru;; *);
 		[Def. (workspace)] (* <- lang_en;; *);;
+*);;
+
+dm_code
+  <- ui_external_languages;
+  => nrel_main_idtf: 
+    [Дискретная математика] (* <- lang_ru;; *);
+    [Discrete Math] (* <- lang_en;; *);;
+
+format_discrete_math
+  <- sc_node_not_relation;
+  <- format;
+  => nrel_main_idtf:
+    [формат интерактивного интерфейса по дискретной математике] (* <- lang_ru;; *);
+    [format of interactive interface of discrete mathematics] (* <- lang_en;; *);
+  => nrel_mimetype:
+  [application/json];;
+
+
+action_directed_graph
+=> nrel_main_idtf:
+	[определение графа на ориентированность] (* <- lang_ru;; *);
+	[defining a graph for orientation] (* <- lang_en;; *);;
+
+definition -> definition_of_action_directed_graph (*
+	-> rrel_key_sc_element: action_directed_graph;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению графа на ориентированность.] (* <- lang_ru;; *);;
+		-> [The action of defining a graph for orientation.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение графа на ориентированность)] (* <- lang_ru;; *);
+		[Def. (defining a graph for orientation)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+action_union
+=> nrel_main_idtf:
+	[определение объединения графов] (* <- lang_ru;; *);
+	[defining a graphs union] (* <- lang_en;; *);;
+
+definition -> definition_of_action_union (*
+	-> rrel_key_sc_element: action_union;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению объединения графов.] (* <- lang_ru;; *);;
+		-> [The action to determine the union of graphs.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение объединения графов)] (* <- lang_ru;; *);
+		[Def. (defining a graphs union)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+action_intersection
+=> nrel_main_idtf:
+	[определение пересечения графов] (* <- lang_ru;; *);
+	[defining the intersection of graphs] (* <- lang_en;; *);;
+
+definition -> definition_of_action_intersection (*
+	-> rrel_key_sc_element: action_intersection;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению пересечения графов.] (* <- lang_ru;; *);;
+		-> [The action to determine the intersection of graphs.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение пересечения графов)] (* <- lang_ru;; *);
+		[Def. (defining the intersection of graphs)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+action_set_intersections
+=> nrel_main_idtf:
+	[определение пересечения множеств] (* <- lang_ru;; *);
+	[defining the intersection of sets] (* <- lang_en;; *);;
+
+definition -> definition_of_action_set_intersections (*
+	-> rrel_key_sc_element: action_set_intersections;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению пересечения множеств.] (* <- lang_ru;; *);;
+		-> [The action to determine the intersection of sets.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение пересечения множеств)] (* <- lang_ru;; *);
+		[Def. (defining the intersection of sets)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+action_set_union
+=> nrel_main_idtf:
+	[определение объединения множеств] (* <- lang_ru;; *);
+	[defining the union of sets] (* <- lang_en;; *);;
+
+definition -> definition_of_action_set_union (*
+	-> rrel_key_sc_element: action_set_union;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению объединения множеств.] (* <- lang_ru;; *);;
+		-> [The action to determine the union of sets.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение объединения множеств)] (* <- lang_ru;; *);
+		[Def. (defining the union of sets)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+action_power
+=> nrel_main_idtf:
+	[определение мощности множества] (* <- lang_ru;; *);
+	[defining the power of set] (* <- lang_en;; *);;
+
+definition -> definition_of_action_power (*
+	-> rrel_key_sc_element: action_power;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению мощности множества.] (* <- lang_ru;; *);;
+		-> [The action to determine the power of set.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение мощности множества)] (* <- lang_ru;; *);
+		[Def. (defining the power of sets)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+action_vertexes
+=> nrel_main_idtf:
+	[определение количество вершин графа] (* <- lang_ru;; *);
+	[determining the number of vertices of a graph] (* <- lang_en;; *);;
+
+definition -> definition_of_action_vertexes (*
+	-> rrel_key_sc_element: action_vertexes;;
+
+	<= nrel_sc_text_translation: ... (*
+		-> [Действие по определению количества вершин графа.] (* <- lang_ru;; *);;
+		-> [The action of determining the number of vertices of a graph.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (определение количество вершин графа)] (* <- lang_ru;; *);
+		[Def. (determining the number of vertices of a graph)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
 *);;
