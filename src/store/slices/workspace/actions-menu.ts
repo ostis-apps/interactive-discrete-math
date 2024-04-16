@@ -20,7 +20,7 @@ const closeMenu = async () => {
 
 const actionClasses = await WorkspaceMenu`actions`.decomposition.element.get({ name: true, icon: true, ref: true }).reactive
 const actions = await WorkspaceMenu`actions`.decomposition.element.get({
-  decomposition: { element: { button_name: 'name', ref: 'ref' } },
+  decomposition: { element: { buttonName: 'name', ref: 'ref' } },
   ref: { addr: 'actionClassAddr' },
 }).reactive
 
@@ -48,7 +48,7 @@ const closeActionClass = async () => {
 const openedAction = await slice.opened.where(Action).get({
   agentArg: { ref: 'agentArg' },
   agentType: { ref: 'agentType' },
-  name: true,
+  buttonName: 'name',
   ref: true,
 }).reactive
 

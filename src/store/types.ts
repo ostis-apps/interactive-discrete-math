@@ -101,7 +101,7 @@ export interface App {
   }
 
   Action: {
-    button_name: string
+    buttonName: string
     agentArg: 'AgentArg'
     agentType: 'AgentType'
   }
