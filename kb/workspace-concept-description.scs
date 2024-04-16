@@ -347,22 +347,6 @@ definition -> definition_of_app_workspace (*
 		[Def. (workspace)] (* <- lang_en;; *);;
 *);;
 
-dm_code
-  <- ui_external_languages;
-  => nrel_main_idtf: 
-    [Дискретная математика] (* <- lang_ru;; *);
-    [Discrete Math] (* <- lang_en;; *);;
-
-format_discrete_math
-  <- sc_node_not_relation;
-  <- format;
-  => nrel_main_idtf:
-    [формат интерактивного интерфейса по дискретной математике] (* <- lang_ru;; *);
-    [format of interactive interface of discrete mathematics] (* <- lang_en;; *);
-  => nrel_mimetype:
-  [application/json];;
-
-
 action_directed_graph
 => nrel_main_idtf:
 	[определение графа на ориентированность] (* <- lang_ru;; *);
