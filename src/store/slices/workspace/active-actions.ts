@@ -30,7 +30,7 @@ effect(async () => {
         action.argsRef.element_3.where(Group as never).ref.addr.one.reactive,
         action.ref.value.one.reactive,
         action.ref.status.name.one.reactive,
-        action.actionRef.get({ agentArg: { ref: 'agentArg' }, agentType: { ref: 'agentType' }, name: true }).reactive,
+        action.actionRef.get({ agentArg: { ref: 'agentArg' }, agentType: { ref: 'agentType' }, button_name: 'name' }).reactive,
       ])
     )
   )

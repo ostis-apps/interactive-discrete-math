@@ -20,7 +20,7 @@ const closeMenu = async () => {
 
 const actionClasses = await WorkspaceMenu`actions`.decomposition.element.get({ name: true, icon: true, ref: true }).reactive
 const actions = await WorkspaceMenu`actions`.decomposition.element.get({
-  decomposition: { element: { name: 'name', ref: 'ref' } },
+  decomposition: { element: { button_name: 'name', ref: 'ref' } },
   ref: { addr: 'actionClassAddr' },
 }).reactive
 
