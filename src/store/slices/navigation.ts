@@ -1,3 +1,4 @@
+import { smartBatch } from '@ennealand/enneract'
 import { AppNavigationSlice, AppView, AppWorkspace, AppWorkspaceToolsSlice, SetOfActiveActions, SetOfGroups } from '../core.ts'
 
 export enum View {
@@ -55,7 +56,7 @@ export const navigation = {
 
   /** Renames current workspace (playground) */
   renameSpace(name: string) {
-    AppWorkspace`${this.current.value}`.name.update(name)
+    smartBatch(() => AppWorkspace`${this.current.value}`.name.update(name), [this.spaces])
   },
 
   /** Deletes current workspace (playground) */
