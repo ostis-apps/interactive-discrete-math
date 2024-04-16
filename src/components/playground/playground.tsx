@@ -78,7 +78,7 @@ export const Playground = () => {
 
           <ul class='flex flex-col gap-y-2'>
             {activeActionsSlice.activeActions.value.map(action => (
-              <li class='group cursor-default rounded border border-transparent p-0.5 shadow-[0_0.5px_0px_0.5px_#0000000d] hover:border-inherit'>
+              <li key={action.addr} class='group cursor-default rounded border border-transparent p-0.5 shadow-[0_0.5px_0px_0.5px_#0000000d] hover:border-inherit'>
                 <div class='grid grid-cols-[1fr,auto] items-center gap-x-2'>
                   <div class='flex w-full items-center gap-x-2 px-2.5 py-1'>
                     <span class='text-sm text-green-600'>
@@ -108,7 +108,7 @@ export const Playground = () => {
                       }
                     </span>
                     <span class='pt-[0.04rem]'>
-                      <Link>
+                      <Link link={action.agent.agentArg.ref.addr}>
                         {action.agent.name}
                         {action.value === undefined ? '' : ': '}
                       </Link>
