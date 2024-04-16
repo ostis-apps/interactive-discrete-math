@@ -45,7 +45,7 @@ const closeActionClass = async () => {
 // ==================== Level 2 | Action ==================== //
 // ========================================================== //
 
-const openedAction = await slice.opened.where(Action).get({
+const openedAction = await slice.opened.where(Action as never).get({
   agentArg: { ref: 'agentArg' },
   agentType: { ref: 'agentType' },
   buttonName: 'name',

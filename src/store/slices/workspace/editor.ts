@@ -1,5 +1,5 @@
 import { EdgeType, GraphEdge, GraphGroup, GraphNode, NodeType } from '@ennealand/enigraph'
-import { ScType, deepSignal } from '@ennealand/enneract'
+import { ScType, deepSignal, smartBatch } from '@ennealand/enneract'
 import { computed, signal } from '@preact/signals'
 import {
   AppNavigationSlice,
@@ -275,38 +275,49 @@ const addGroup = async (group: GraphGroup) => {
  */
 const changeNodeLabel = async (reactiveNode: GraphNodeExtended, label: string) => {
   if (reactiveNode.label === label) return
-  const untrackedVertices = vertices.value.map(_ => ({ ..._ }))
-  const untrackedEdgeIds = edgeIds.value.map(_ => ({ ..._ }))
-  const mutableUntrackedEdgeIds = edgeIds.value.map(_ => ({ ..._ }))
-  const node = { ...reactiveNode }
-  reactiveNode.label = label
-  const vertex = await smartAddVertex({ ...node, label }, untrackedVertices)
-  reactiveNode.type = vertex.type
-  for (const edge of untrackedEdgeIds) {
-    if (edge.source === node.id) {
-      await smartAddEdge(
-        { from: vertex.addr, to: edge.to, source: vertex.id, target: edge.target, type: edge.type },
-        mutableUntrackedEdgeIds
-      )
-      await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+  await smartBatch(async () => {
+    const untrackedVertices = vertices.value.map(_ => ({ ..._ }))
+    const untrackedEdgeIds = edgeIds.value.map(_ => ({ ..._ }))
+    const mutableUntrackedEdgeIds = edgeIds.value.map(_ => ({ ..._ }))
+    const untrackedGroupArray = groupsArray.value.map(_ => ({ ..._ }))
+    const node = { ...reactiveNode }
+    reactiveNode.label = label
+    const vertex = await smartAddVertex({ ...node, label }, untrackedVertices)
+    reactiveNode.type = vertex.type
+    for (const edge of untrackedEdgeIds) {
+      if (edge.source === node.id) {
+        await smartAddEdge(
+          { from: vertex.addr, to: edge.to, source: vertex.id, target: edge.target, type: edge.type },
+          mutableUntrackedEdgeIds
+        )
+        await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+      }
+      if (edge.target === node.id) {
+        await smartAddEdge(
+          { from: edge.from, to: vertex.addr, source: edge.source, target: vertex.id, type: edge.type },
+          mutableUntrackedEdgeIds
+        )
+        await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+      }
     }
-    if (edge.target === node.id) {
-      await smartAddEdge(
-        { from: edge.from, to: vertex.addr, source: edge.source, target: vertex.id, type: edge.type },
-        mutableUntrackedEdgeIds
-      )
-      await smartDeleteEdge(edge, mutableUntrackedEdgeIds)
+    for (const group of untrackedGroupArray) {
+      if (group.element === node.id) {
+        console.logDarkOrange('Redefining group vertex', vertex.addr, node.addr, vertex.id, node.id)
+        const anotherVertex = untrackedGroupArray.some(
+          g => g.element !== node.id && untrackedVertices.some(v => v.id === g.element && v.addr === node.addr)
+        )
+        console.warn(anotherVertex)
+        if (!anotherVertex) {
+          Group`${group.addr}`.element_vertex.link(Vertex`${vertex.addr}`)
+          Group`${group.addr}`.element_vertex.unlink(Vertex`${node.addr}`)
+        } else {
+          ElementGroup`${group.id}`.elements.element.unlink(ElementVertex`${node.id}`)
+        }
+        await ElementGroup`${group.id}`.elements.element.link(ElementVertex`${vertex.id}`)
+      }
     }
-  }
-  for (const group of groupsArray.value) {
-    if (group.element === node.id) {
-      Group`${group.addr}`.element_vertex.link(Vertex`${vertex.addr}`)
-      Group`${group.addr}`.element_vertex.unlink(Vertex`${node.addr}`)
-      ElementGroup`${group.id}`.elements.element.link(ElementVertex`${vertex.id}`)
-      ElementGroup`${group.id}`.elements.element.unlink(ElementVertex`${node.id}`)
-    }
-  }
-  smartDeleteVertex(node, untrackedVertices)
+    smartDeleteVertex(node, untrackedVertices)
+  }, [vertices.value, edgeIds.value, groupsArray.value])
 }
 
 /**
