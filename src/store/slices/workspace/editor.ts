@@ -130,16 +130,25 @@ const newNodeIds = new WeakMap<GraphNode, { addr: Promise<number>; id: Promise<n
  */
 const addNode = async (node: GraphNode) => {
   if (!slice.value) return
+  let name = ''
+  for (let i = 65; i <= 90; i++) {
+    const letter = String.fromCharCode(i)
+    if (takenLetters.has(letter)) continue
+    takenLetters.add(letter)
+    name = letter
+    break
+  }
   const newVertex = new Vertex({
     customType: node.type,
-    name: 'i',
+    name,
     is: { elementVertex: { value: slice.value, relation: { x: node.x, y: node.y } } },
   }).create
   const id = newVertex.then(v => v.relations[0])
   const addr = newVertex.then(v => v.ref.addr)
   newNodeIds.set(node, { id, addr })
-  vertices.value.push({ label: 'i', type: node.type, x: node.x, y: node.y, id: await id, addr: await addr })
+  vertices.value.push({ label: name, type: node.type, x: node.x, y: node.y, id: await id, addr: await addr })
 }
+const takenLetters = new Set<string>()
 
 /**
  * Create a new graph edge in sc-memory associated with the current workspace.\
@@ -215,15 +224,19 @@ const smartAddVertex = async (
       sc: ScType.NodeVarClass,
       is: { elementVertex: { value: slice.value, relation: { x: vertex.x, y: vertex.y } } },
     }).create
+    takenLetters.add(vertex.label)
     console.logMediumSeaGreen('Vertex created:', `addr ${vertex.addr}`)
     return { ...vertex, id: newVertex.relations[0], addr: newVertex.ref.addr }
   }
 }
 
-const smartDeleteVertex = async (node: { addr: number; id: number }, root = vertices.value) => {
+const smartDeleteVertex = async (node: { addr: number; id: number; label?: string }, root = vertices.value) => {
   const anotherVertex = root.some(v => v.addr === node.addr && v.id !== node.id)
   if (anotherVertex) await ElementVertex`${node.id}`.ref.delete
-  else await Vertex`${node.addr}`.ref.delete
+  else {
+    node.label && takenLetters.delete(node.label)
+    await Vertex`${node.addr}`.ref.delete
+  }
   console.logDeepPink('Vertex deleted:', anotherVertex ? `id ${node.id}` : `addr ${node.addr}`)
 }
 
@@ -265,8 +278,8 @@ const changeNodeLabel = async (reactiveNode: GraphNodeExtended, label: string) =
   const untrackedVertices = vertices.value.map(_ => ({ ..._ }))
   const untrackedEdgeIds = edgeIds.value.map(_ => ({ ..._ }))
   const mutableUntrackedEdgeIds = edgeIds.value.map(_ => ({ ..._ }))
-  reactiveNode.label = label
   const node = { ...reactiveNode }
+  reactiveNode.label = label
   const vertex = await smartAddVertex({ ...node, label }, untrackedVertices)
   reactiveNode.type = vertex.type
   for (const edge of untrackedEdgeIds) {
