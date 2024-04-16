@@ -1,0 +1,199 @@
+nrel_tools
+=> nrel_main_idtf:
+    [инструменты*] (* <- lang_ru;; *);
+    [tools*] (* <- lang_en;; *);;
+
+definition -> definition_of_tools (*
+    -> rrel_key_sc_element: nrel_tools;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Набор инструментов, используемых для выполнения определенных задач.] (* <- lang_ru;; *);;
+        -> [A set of tools used to perform specific tasks.] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+        [Опр. (инструменты)] (* <- lang_ru;; *);
+        [Def. (tools)] (* <- lang_en;; *);;
+*);;
+
+
+nrel_decomposition
+=> nrel_main_idtf:
+    [декомпозиция*] (* <- lang_ru;; *); // тут не нужно же определение?
+    [decomposition*] (* <- lang_en;; *);;
+
+
+nrel_agent_arg
+=> nrel_main_idtf:
+    [аргумент агента*] (* <- lang_ru;; *);
+    [agent argument*] (* <- lang_en;; *);;
+
+definition -> definition_of_agent_arg (*
+    -> rrel_key_sc_element: nrel_agent_arg;;
+
+    <= nrel_sc_text_translation: ... (*
+		-> [Аргумент, который использует действие (агент) для запуска.] (* <- lang_ru;; *);;
+		-> [The argument that uses the action (agent) to run.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (аргумент агента)] (* <- lang_ru;; *);
+		[Def. (agent's argument)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+nrel_agent_type
+=> nrel_main_idtf:
+    [тип агента*] (* <- lang_ru;; *);
+    [agent type*] (* <- lang_en;; *);;
+
+definition -> definition_of_agent_type (*
+    -> rrel_key_sc_element: nrel_agent_type;;
+
+    <= nrel_sc_text_translation: ... (*
+		-> [Тип аргумента, который использует действие (агент).] (* <- lang_ru;; *);;
+		-> [The type of argument that the action (agent) uses.] (* <- lang_en;; *);;
+	*);;
+
+		=> nrel_main_idtf:
+		[Опр. (тип аргумента агента)] (* <- lang_ru;; *);
+		[Def. (agent's argument type)] (* <- lang_en;; *);;
+
+	=> nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+nrel_opened
+=> nrel_main_idtf:
+    [открыт*] (* <- lang_ru;; *);
+    [opened*] (* <- lang_en;; *);;
+
+definition -> definition_of_opened (*
+    -> rrel_key_sc_element: nrel_opened;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Состояние объекта, который доступен для использования или просмотра.] (* <- lang_ru;; *);;
+        -> [The state of an object that is accessible for use or viewing.] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+        [Опр. (открыт)] (* <- lang_ru;; *);
+        [Def. (opened)] (* <- lang_en;; *);;
+*);;
+
+
+nrel_arg_selector
+=> nrel_main_idtf:
+    [селектор аргумента*] (* <- lang_ru;; *);
+    [argument selector*] (* <- lang_en;; *);;
+
+definition -> definition_of_arg_selector (*
+    -> rrel_key_sc_element: nrel_arg_selector;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Значение выбора определенного аргумента или параметр.] (* <- lang_ru;; *);; // не знаю какое определение?
+        -> [The value of selecting a specific argument or parameter.] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+        [Опр. (селектор аргумента)] (* <- lang_ru;; *);
+        [Def. (argument selector)] (* <- lang_en;; *);;
+*);;
+
+
+nrel_properties
+=> nrel_main_idtf:
+    [свойства*] (* <- lang_ru;; *);
+    [properties*] (* <- lang_en;; *);;
+
+definition -> definition_of_properties (*
+    -> rrel_key_sc_element: nrel_properties;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Характеристики, конкретного действия, которое открыто.] (* <- lang_ru;; *);;
+        -> [Characteristics of a specific action that is open.] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+        [Опр. (свойства)] (* <- lang_ru;; *);
+        [Def. (properties)] (* <- lang_en;; *);;
+
+    => nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+nrel_args
+=> nrel_main_idtf:
+    [аргументы*] (* <- lang_ru;; *);
+    [arguments*] (* <- lang_en;; *);;
+
+definition -> definition_of_args (*
+    -> rrel_key_sc_element: nrel_args;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Значения, передаваемые действию (агенту) для выполнения.] (* <- lang_ru;; *);;
+        -> [Values passed to the action (agent) for execution.] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+       [Опр. (аргументы)] (* <- lang_ru;; *);
+       [Def. (arguments)] (* <- lang_en;; *);;
+
+    => nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+nrel_status
+=> nrel_main_idtf:
+    [статус*] (* <- lang_ru;; *);
+    [status*] (* <- lang_en;; *);;
+
+definition -> definition_of_status (*
+    -> rrel_key_sc_element: nrel_status;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Статус выолняемого действия (агента).] (* <- lang_ru;; *);;
+        -> [Status of the action being performed (agent).] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+       [Опр. (статус)] (* <- lang_ru;; *);
+       [Def. (status)] (* <- lang_en;; *);;
+
+    => nrel_using_constants: {
+		concept_action
+	};;
+*);;
+
+
+nrel_icon
+=> nrel_main_idtf:
+    [иконка*] (* <- lang_ru;; *);
+    [icon*] (* <- lang_en;; *);;
+
+definition -> definition_of_icon (*
+    -> rrel_key_sc_element: nrel_icon;;
+
+    <= nrel_sc_text_translation: ... (*
+        -> [Иконка выполняемого действия (агента).] (* <- lang_ru;; *);;
+        -> [Icon of the action being performed (agent).] (* <- lang_en;; *);;
+    *);;
+
+    => nrel_main_idtf:
+       [Опр. (иконка)] (* <- lang_ru;; *);
+       [Def. (icon)] (* <- lang_en;; *);;
+
+    => nrel_using_constants: {
+		concept_action
+	};;
+*);;
