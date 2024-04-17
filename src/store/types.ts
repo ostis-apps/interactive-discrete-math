@@ -91,7 +91,7 @@ export interface App {
   }
 
   ActionClass: {
-    name: string
+    buttonName: string
     icon: PlaygroundOptionTypeIcons
     decomposition: 'SetOfActions'
   }

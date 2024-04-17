@@ -18,7 +18,7 @@ const closeMenu = async () => {
   await clearArgs()
 }
 
-const actionClasses = await WorkspaceMenu`actions`.decomposition.element.get({ name: true, icon: true, ref: true }).reactive
+const actionClasses = await WorkspaceMenu`actions`.decomposition.element.get({ buttonName: 'name', icon: true, ref: true }).reactive
 const actions = await WorkspaceMenu`actions`.decomposition.element.get({
   decomposition: { element: { buttonName: 'name', ref: 'ref' } },
   ref: { addr: 'actionClassAddr' },

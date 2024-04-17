@@ -8,7 +8,8 @@ workspace_menu_actions
     <- concept_set_of_action_classes;;
     -> action_class_classification (*
       <- concept_action_class;;
-      => nrel_main_idtf: [Классификация] (* <- lang_ru;; *);;
+      => nrel_main_idtf: [Класс действий "Классификация"] (* <- lang_ru;; *);;
+      => nrel_button_name: [Классификация] (* <- lang_ru;; *);;
       => nrel_icon: [tag];;
       => nrel_decomposition: set_of_actions_classification (*
         <- concept_set_of_actions;;
@@ -22,7 +23,8 @@ workspace_menu_actions
     *);;
     -> action_class_operations (*
       <- concept_action_class;;
-      => nrel_main_idtf: [Операция] (* <- lang_ru;; *);;
+      => nrel_main_idtf: [Класс действий "Операция"] (* <- lang_ru;; *);;
+      => nrel_button_name: [Операция] (* <- lang_ru;; *);;
       => nrel_icon: [math];;
       => nrel_decomposition: set_of_actions_operations (*
         <- concept_set_of_actions;;
@@ -54,7 +56,8 @@ workspace_menu_actions
     *);;
     -> action_class_numeric_value (*
       <- concept_action_class;;
-      => nrel_main_idtf: [Числовая характеристика] (* <- lang_ru;; *);;
+      => nrel_main_idtf: [Класс действий "Числовая характеристика"] (* <- lang_ru;; *);;
+      => nrel_button_name: [Числовая характеристика] (* <- lang_ru;; *);;
       => nrel_icon: [calculator];;
       => nrel_decomposition: set_of_actions_numeric_value (*
         <- concept_set_of_actions;;
