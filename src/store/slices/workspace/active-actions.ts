@@ -25,8 +25,8 @@ effect(async () => {
     activeActionRefs.map(action =>
       Promise.all([
         action.ref.ref.addr,
-        action.argsRef.element_1.ref.addr.one.reactive,
-        action.argsRef.element_2.ref.addr.one.reactive,
+        action.argsRef.element_1.to.ref.addr.one.reactive,
+        action.argsRef.element_2.to.ref.addr.one.reactive,
         action.argsRef.element_3.where(Group as never).ref.addr.one.reactive,
         action.ref.value.one.reactive,
         action.ref.status.name.one.reactive,

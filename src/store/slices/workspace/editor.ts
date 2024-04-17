@@ -249,7 +249,7 @@ const smartDeleteVertex = async (node: { addr: number; id: number; label?: strin
 const addGroup = async (group: GraphGroup) => {
   if (!slice.value) return
   const elements = await new SetOfElementVertices().create
-  const newGroup = await new Group({ is: { elementGroup: { value: slice.value, relation: { elements } } } }).create
+  const newGroup = await new Group({ sc: ScType.NodeVarStruct, is: { elementGroup: { value: slice.value, relation: { elements } } } }).create
   for (const element of group.values) groupsArray.value.push({ addr: newGroup.ref.addr, id: newGroup.relations[0], element })
   await Promise.all([
     elements.element.link(Array.from(group.values).map(id => ElementVertex`${id}`)),

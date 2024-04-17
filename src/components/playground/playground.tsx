@@ -124,21 +124,21 @@ export const Playground = () => {
                 </div>
                 <div class='flex flex-wrap gap-x-2 gap-y-1 px-2.5 pb-2 pt-1'>
                   {action.args[0] && (
-                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
-                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
+                    <div onClick={e => e.stopPropagation()} class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
+                      <span sc_addr={action.args[0]} class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
                         1
                       </span>
-                      <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
+                      <span sc_addr={action.args[0]} class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
                         {action.args[0]}
                       </span>
                     </div>
                   )}
                   {action.args[1] && (
-                    <div class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
-                      <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
+                    <div onClick={e => e.stopPropagation()} class='group/label grid cursor-pointer grid-cols-[auto,1fr] overflow-hidden rounded-md border border-transparent hover:border-primary hover:border-opacity-30'>
+                      <span sc_addr={action.args[1]} class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-primary group-hover/label:bg-opacity-15 group-hover/label:text-primary'>
                         2
                       </span>
-                      <span class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
+                      <span sc_addr={action.args[1]} class='bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-primary group-hover/label:bg-primary group-hover/label:bg-opacity-5'>
                         {action.args[1]}
                       </span>
                     </div>
@@ -148,7 +148,7 @@ export const Playground = () => {
                       <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
                         Результат
                       </span>
-                      <div class='flex items-center bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
+                      <div onClick={e => e.stopPropagation()} sc_addr={action.answer} class='flex items-center bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
                         {action.answer ? (
                           action.answer
                         ) : (
