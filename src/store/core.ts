@@ -3,7 +3,7 @@ import { DeepSignal } from 'deepsignal'
 import type { Magic } from '../../node_modules/@ennealand/enneract/dist/types/magic-types.d.ts'
 import { App } from './types.ts'
 
-const enneract = new Enneract<App>(`ws://localhost:${import.meta.env.VITE_MACHINE_PORT}/ws_json`)
+const enneract = new Enneract<App>(`ws://localhost:${import.meta.env.VITE_MACHINE_PORT}/ws_json`, { reconnect: true })
 export const {
   AppNavigationSlice,
   AppView,
