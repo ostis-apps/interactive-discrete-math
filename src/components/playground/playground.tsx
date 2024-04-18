@@ -66,14 +66,14 @@ export const Playground = () => {
         <div class='w-full rounded border p-3'>
           <div class='flex items-end justify-between pb-4'>
             <div class='pt-0.5 text-lg font-semibold'>Параметры</div>
-            <div class='flex rounded border text-lg'>
+            {/* <div class='flex rounded border text-lg'>
               <div class='cursor-pointer bg-gray-50 px-2.5 py-1.5 text-primary hover:bg-gray-100'>
                 <FaListUl />
               </div>
               <div class='cursor-pointer px-2.5 py-1.5 hover:bg-gray-100'>
                 <FaCode />
               </div>
-            </div>
+            </div> */}
           </div>
 
           <ul class='flex flex-col gap-y-2'>
