@@ -46,6 +46,7 @@ export const GraphComponent = ({ w, h, ...props }: Props) => {
           edgeTypes={[EdgeType.ArcConst, EdgeType.EdgeConst, EdgeType.ArcConstPermPosAccess]}
           objectSelection={actionsMenuSlice.groupSelection.value}
           changeNodePosition={editorSlice.changeNodePosition}
+          nodePositionChanged={editorSlice.nodePositionChanged}
           removeNode={editorSlice.removeNode}
           buttonIcons={{
             type: <MdOutlineCategory />,

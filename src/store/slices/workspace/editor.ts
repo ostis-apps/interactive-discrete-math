@@ -249,7 +249,8 @@ const smartDeleteVertex = async (node: { addr: number; id: number; label?: strin
 const addGroup = async (group: GraphGroup) => {
   if (!slice.value) return
   const elements = await new SetOfElementVertices().create
-  const newGroup = await new Group({ sc: ScType.NodeVarStruct, is: { elementGroup: { value: slice.value, relation: { elements } } } }).create
+  const newGroup = await new Group({ sc: ScType.NodeVarStruct, is: { elementGroup: { value: slice.value, relation: { elements } } } })
+    .create
   for (const element of group.values) groupsArray.value.push({ addr: newGroup.ref.addr, id: newGroup.relations[0], element })
   await Promise.all([
     elements.element.link(Array.from(group.values).map(id => ElementVertex`${id}`)),
@@ -330,9 +331,15 @@ const changeNodeLabel = async (reactiveNode: GraphNodeExtended, label: string) =
 const changeNodePosition = async (node: GraphNode, x: number, y: number) => {
   node.x = x
   node.y = y
-  console.log('fone')
-  await ElementVertex`${node.id}`.x.write(x)
-  await ElementVertex`${node.id}`.y.write(y)
+  // await ElementVertex`${node.id}`.x.write(x)
+  // await ElementVertex`${node.id}`.y.write(y)
+}
+
+const nodePositionChanged = async (node: GraphNode) => {
+  await smartBatch(
+    () => Promise.all([ElementVertex`${node.id}`.x.update(node.x), ElementVertex`${node.id}`.y.update(node.y)]),
+    [vertices.value]
+  )
 }
 
 const removeNode = async (id: number) => {
@@ -346,4 +353,15 @@ const removeNode = async (id: number) => {
 }
 
 /** Workspace store slice */
-export const editorSlice = { addEdge, addGroup, addNode, changeNodeLabel, changeNodePosition, edges, groups, removeNode, vertices }
+export const editorSlice = {
+  addEdge,
+  addGroup,
+  addNode,
+  changeNodeLabel,
+  changeNodePosition,
+  nodePositionChanged,
+  edges,
+  groups,
+  removeNode,
+  vertices,
+}
