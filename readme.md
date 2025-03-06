@@ -18,6 +18,8 @@ cp .env.example .env
 ```
 
 ## Development
+Make sure that path to `kb` folder exists in repo.path that is used to build knowledge base.
+
 Start the dev server:
 ```sh
 pnpm dev
