@@ -148,9 +148,9 @@ export const Playground = () => {
                       <span class='bg-gray-100 px-2 py-0.5 text-xs font-bold text-gray-500 centeric group-hover/label:bg-green-600 group-hover/label:bg-opacity-15 group-hover/label:text-green-600'>
                         Результат
                       </span>
-                      <div onClick={e => e.stopPropagation()} sc_addr={action.answer} class='flex items-center bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
-                        {action.answer ? (
-                          action.answer
+                      <div onClick={e => e.stopPropagation()} sc_addr={action.result} class='flex items-center bg-gray-50 px-2.5 py-0.5 text-sm font-semibold text-green-600 group-hover/label:bg-green-600 group-hover/label:bg-opacity-5 group-hover/label:text-green-600'>
+                        {action.result ? (
+                          action.result
                         ) : (
                           <div class='[&_path]:stroke-[3] [&_svg]:animate-spin'>
                             <LuLoader2 />

@@ -11,7 +11,7 @@ const activeActionRefs = await slice.properties.element.get({
 type Args = {
   addr: number
   args: number[]
-  answer: number
+  result: number
   value: number
   status: 'True' | 'False' | 'Details' | 'Unknown'
   agent: { agentArg: RefValue<'AgentArg'>; agentType: RefValue<'AgentType'>; name: string }
@@ -39,7 +39,7 @@ effect(async () => {
     signals.map(([addr, e1, e2, e3, value, status, agent]) => ({
       addr,
       args: [e1.value, e2.value],
-      answer: e3.value,
+      result: e3.value,
       status: status.value,
       value: value.value,
       agent: agent[0],

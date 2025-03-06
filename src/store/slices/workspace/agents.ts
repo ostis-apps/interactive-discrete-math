@@ -78,10 +78,10 @@ export const executeAction = async (args: number[]) => {
   }).create
 
   await openedAction.agentType.element.link(question)
-  await AgentType.$`question_initiated`.element.link(question)
+  await AgentType.$`action_initiated`.element.link(question)
   console.log(question)
 
-  const solution = await question.answer.element_1.ref.addr.one.reactive
+  const solution = await question.result.element_1.ref.addr.one.reactive
 
   const unsubscribe = solution.subscribe(async solutionAddr => {
     console.log('Solution addr:', solutionAddr)
