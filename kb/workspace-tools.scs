@@ -17,7 +17,7 @@ workspace_menu_actions
           <- concept_action;;
           => nrel_button_name: [Ориентированный граф] (* <- lang_ru;; *);;
           => nrel_agent_arg: concept_directed_graph;;
-          => nrel_agent_type: question_using_unary_operation;;  
+          => nrel_agent_type: action_using_unary_operation;;
         *);;
       *);;
     *);;
@@ -32,25 +32,25 @@ workspace_menu_actions
           <- concept_action;;
           => nrel_button_name: [Объединение графов] (* <- lang_ru;; *);;
           => nrel_agent_arg: nrel_graph_union;;
-          => nrel_agent_type: question_using_binary_operation;;
+          => nrel_agent_type: action_using_binary_operation;;
         *);;
         -> action_intersection (*
           <- concept_action;;
           => nrel_button_name: [Пересечение графов] (* <- lang_ru;; *);;
           => nrel_agent_arg: nrel_graph_intersection;;
-          => nrel_agent_type: question_using_binary_operation;;
+          => nrel_agent_type: action_using_binary_operation;;
         *);;
         -> action_set_intersections (*
           <- concept_action;;
           => nrel_button_name: [Пересечение множеств] (* <- lang_ru;; *);;
           => nrel_agent_arg: nrel_graph_intersection;;
-          => nrel_agent_type: question_using_binary_operation;;
+          => nrel_agent_type: action_using_binary_operation;;
         *);;
         -> action_set_union (*
           <- concept_action;;
           => nrel_button_name: [Объединение множеств] (* <- lang_ru;; *);;
           => nrel_agent_arg: nrel_graph_union;;
-          => nrel_agent_type: question_using_binary_operation;;
+          => nrel_agent_type: action_using_binary_operation;;
         *);;
       *);;
     *);;
@@ -64,14 +64,14 @@ workspace_menu_actions
         -> action_power (*
             <- concept_action;;
             => nrel_button_name: [Мощность множества] (* <- lang_ru;; *);;
-            => nrel_agent_arg: question_finding_power;;
-            => nrel_agent_type: question_finding_power;;
+            => nrel_agent_arg: action_finding_power;;
+            => nrel_agent_type: action_finding_power;;
           *);;
         -> action_vertexes (*
             <- concept_action;;
             => nrel_button_name: [Количество вершин] (* <- lang_ru;; *);;
             => nrel_agent_arg: nrel_number_of_vertexes;;
-            => nrel_agent_type: question_using_unary_operation;;
+            => nrel_agent_type: action_using_unary_operation;;
           *);;
       *);;
     *);;
@@ -128,9 +128,9 @@ concept_agent_arg ->
   nrel_graph_intersection;;
 
 concept_agent_type -> 
-  question_initiated;
-  question_using_unary_operation;
-  question_using_binary_operation;;
+  action_initiated;
+  action_using_unary_operation;
+  action_using_binary_operation;;
 
 sc_node_norole_relation ->
   nrel_tools;

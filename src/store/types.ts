@@ -68,10 +68,10 @@ export interface App {
 
   Question: {
     element: 'Runner'
-    answer: 'Answer'
+    result: 'Result'
   }
 
-  Answer: {
+  Result: {
     element_1: 'AnotherGroup'
   }
 
