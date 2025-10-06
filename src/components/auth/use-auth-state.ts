@@ -27,7 +27,7 @@ export function logout() {
 }
 
 export function useAuthState() {
-  const isAuthenticated = isAuthenticatedSignal.value;
+  const isAuthenticated = !!(usernameSignal.value);
   const username = usernameSignal.value;
 
   const handleLogout = useCallback(() => {
