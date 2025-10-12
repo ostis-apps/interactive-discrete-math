@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 import { useEffect, useRef } from 'preact/hooks'
 import { FaAngleLeft, FaCheck, FaCode, FaListUl, FaPlus, FaXmark } from 'react-icons/fa6'
 import { HiMiniSquares2X2 } from 'react-icons/hi2'
-import { LuLoader2, LuTrash2 } from 'react-icons/lu'
+import { LuLoader, LuTrash2 } from 'react-icons/lu'
 import { PiSelectionAllFill, PiSelectionBold } from 'react-icons/pi'
 import { navigation } from '../../store/slices/navigation'
 import { actionsMenuSlice, activeActionsSlice } from '../../store/slices/workspace'
@@ -101,7 +101,7 @@ export const Playground = () => {
                           ),
                           Unknown: (
                             <div class='pb-[1px] text-sm text-gray-500 [&_path]:stroke-[3] [&_svg]:animate-spin'>
-                              <LuLoader2 />
+                              <LuLoader />
                             </div>
                           ),
                         }[action.status]
@@ -153,7 +153,7 @@ export const Playground = () => {
                           action.result
                         ) : (
                           <div class='[&_path]:stroke-[3] [&_svg]:animate-spin'>
-                            <LuLoader2 />
+                            <LuLoader />
                           </div>
                         )}
                       </div>

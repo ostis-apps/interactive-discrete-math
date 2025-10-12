@@ -24,3 +24,30 @@ Start the dev server:
 ```sh
 pnpm dev
 ```
+
+
+## костыли 
+для запуска проекта требуется создать файл `crutch.scs` в папке `kb`
+```
+section_graph_theory_hierarchy <- crutch;;
+
+set_theory_knowledge_base <- crutch;;
+	
+workspace_menu_actions <- crutch;;
+	
+doc_graph_theory <- crutch;;
+	
+scn_code <- crutch;;
+	
+scg_code <- crutch;;
+	
+dm_code <- crutch;;
+```
+
+папку `kb` требуется скопировать в `ostis-web-platform/knowledge-base`
+
+в файле `src/components/playground/playground.tsx` заменить все `LuLoader2` на `LuLoader`
+
+```
+pnpm install axios
+```
